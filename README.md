@@ -1,8 +1,9 @@
 # Lenny's Podcast 中文深度解析 Archive
 
-> 297 期 Lenny's Podcast 访谈的中文深度分析 + 双语逐字稿
+> 297 期 Lenny's Podcast 访谈的中文深度分析 + 双语逐字稿 + PDF 下载
 
 [![Episodes](https://img.shields.io/badge/Episodes-297-ff3e00)](./episodes)
+[![PDFs](https://img.shields.io/badge/PDFs-594-blue)](./pdf)
 [![Language](https://img.shields.io/badge/Language-中文%20%7C%20English-blue)](./episodes)
 [![License](https://img.shields.io/badge/License-Educational-green)](#disclaimer)
 
@@ -10,12 +11,14 @@
 
 ## Overview
 
-这是一份针对 [Lenny's Podcast](https://www.lennyspodcast.com/) 的中文深度解析档案库。每期节目包含两份文档：
+这是一份针对 [Lenny's Podcast](https://www.lennyspodcast.com/) 的中文深度解析档案库。每期节目包含：
 
-| 文档 | 说明 |
-|------|------|
-| `analysis.md` | **深度分析报告** - 核心观点提炼、框架拆解、行动清单 |
-| `bilingual.md` | **双语逐字稿** - 完整英文原文 + 中文翻译对照 |
+| 格式 | 文件 | 说明 |
+|------|------|------|
+| Markdown | `analysis.md` | **深度分析报告** - 核心观点提炼、框架拆解、行动清单 |
+| Markdown | `bilingual.md` | **双语逐字稿** - 完整英文原文 + 中文翻译对照 |
+| PDF | `pdf/*.pdf` | **分析报告 PDF** - 精美排版，适合打印和离线阅读 |
+| PDF | `pdf-bilingual/*.pdf` | **双语逐字稿 PDF** - 精美排版，适合打印和离线阅读 |
 
 **适用场景**：
 - 产品经理 / 创业者学习世界级产品思维
@@ -65,10 +68,21 @@ episodes/brian-chesky/
 │   ├── shreyas-doshi/
 │   ├── julie-zhuo/
 │   └── ... (297 位嘉宾)
-└── index/                       # 话题索引 (Coming Soon)
+├── pdf/                         # 分析报告 PDF (297 份)
+│   ├── brian-chesky.pdf
+│   ├── shreyas-doshi.pdf
+│   └── ...
+├── pdf-bilingual/               # 双语逐字稿 PDF (297 份)
+│   ├── brian-chesky.pdf
+│   ├── shreyas-doshi.pdf
+│   └── ...
+└── index/                       # 话题索引
     ├── product-management.md
-    ├── growth.md
-    └── leadership.md
+    ├── growth-marketing.md
+    ├── leadership.md
+    ├── ai-technology.md
+    ├── founders-ceos.md
+    └── career.md
 ```
 
 ---

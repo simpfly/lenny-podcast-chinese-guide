@@ -144,7 +144,7 @@ export function BuilderCard({ episode }: BuilderCardProps) {
                 size="icon"
                 className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 onClick={toggleChecklist}
-                title={isAdded ? "Remove from Checklist" : "Add to Checklist"}
+                title={isAdded ? "Unsave Builder" : "Save Builder"}
               >
                 {isAdded ? (
                   <Check className="w-4 h-4 text-primary" />

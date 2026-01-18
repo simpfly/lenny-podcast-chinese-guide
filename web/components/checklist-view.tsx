@@ -187,7 +187,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
     <div className="space-y-10 pb-12">
         <div className="grid gap-4 p-4 border rounded-xl bg-primary/5 text-primary-foregroundish mb-8">
              <div className="flex items-center justify-between">
-                 <div className="font-medium text-foreground">Total Completed (Actions & Tools)</div>
+                 <div className="font-medium text-foreground">Total Saved (Actions & Tools)</div>
                  <div className="text-2xl font-bold text-primary">{totalCount}</div>
              </div>
         </div>
@@ -199,7 +199,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
         {productStack.length > 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold flex items-center gap-2">
-              <span>🛠️</span> My Product Stack
+              <span>🛠️</span> My Stack
               <span className="text-sm font-normal text-muted-foreground ml-2">({productStack.length})</span>
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -237,7 +237,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
         {savedBuilders.length > 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold flex items-center gap-2">
-              <span>👷</span> Saved Builders
+              <span>👷</span> Builders
               <span className="text-sm font-normal text-muted-foreground ml-2">({savedBuilders.length})</span>
             </h2>
              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

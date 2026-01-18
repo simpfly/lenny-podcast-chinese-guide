@@ -8,9 +8,9 @@ export default function ChecklistPage() {
   return (
     <div className="container py-8 max-w-4xl mx-auto">
       <div className="flex flex-col space-y-2 mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">My Action Plan</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Saved Items</h1>
         <p className="text-muted-foreground">
-          Track and review the actions you've committed to from various episodes.
+          Your collection of saved episodes, actions, tools, and builders.
         </p>
       </div>
       

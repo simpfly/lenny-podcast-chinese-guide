@@ -56,12 +56,12 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
             Timeline
           </Link>
           <Link
-            href="/checklist"
+            href="/saved"
             className="flex items-center justify-between rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
           >
             <div className="flex items-center gap-3">
               <CheckSquare className="h-4 w-4" />
-              Checklist
+              Saved
             </div>
             {mounted && checklistCount > 0 && (
               <Badge variant="secondary" className="px-1.5 py-0 h-4 min-w-[1.2rem] flex justify-center text-[10px] font-bold">

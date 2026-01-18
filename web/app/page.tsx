@@ -89,7 +89,7 @@ export default function Home() {
             {latestEpisodes.map((episode) => (
                <Link key={episode.slug} href={`/episode/${episode.slug}`} className="group h-full">
                  <Card className="h-full border-muted-foreground/10 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group-hover:-translate-y-1 overflow-hidden flex flex-col">
-                    <div className="h-2 bg-primary/10 group-hover:bg-primary/20 transition-colors" />
+
                     <CardHeader className="pb-4">
                         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-3">
                             <Calendar className="w-3.5 h-3.5" />

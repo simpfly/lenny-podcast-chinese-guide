@@ -259,6 +259,105 @@ export function getEpisodeContent(slug: string) {
   return matter(content);
 }
 
+
+export type Product = {
+  name: string;
+  category?: string; // e.g. "Tool", "Book", "Resource"
+  description: string;
+  link?: string;
+  mentionedIn: Array<{
+    episodeSlug: string;
+    episodeTitle: string;
+  }>;
+};
+
+export function getAllProducts(): Product[] {
+  const episodes = getAllEpisodes();
+  const productMap = new Map<string, Product>();
+
+  episodes.forEach((episode) => {
+    if (!episode.resources) return;
+
+    // Regex to capture various formats:
+    // **工具 1**: **Name**
+    // **推荐阅读**: **Title**
+    // Format: **Type**: **Name** or **Type**: [Name](Link)
+    // Then followed by description bullets
+    
+    // We strictly look for lines starting with **Prefix**:
+    const items = episode.resources.split(/\n(?=\*\*)/);
+
+    items.forEach(item => {
+        // Parse Name and Link
+        // Try to match: **Type**: **Name** or **Type**: [Name](Link)
+        // Groups: 1=Type, 2=Content(Name/Link)
+        const headerMatch = item.match(/^\*\*(.*?)\*\*[:：]\s*(.*?)(\n|$)/);
+        if (!headerMatch) return;
+
+        const typeRaw = headerMatch[1].trim(); // e.g. "工具 1", "推荐阅读"
+        let contentRaw = headerMatch[2].trim();
+
+        // Refine Category
+        let category = "Resource";
+        if (typeRaw.includes("工具")) category = "Tool";
+        if (typeRaw.includes("书") || typeRaw.includes("阅读")) category = "Book";
+
+        // Parse Link and Name from contentRaw
+        let name = contentRaw;
+        let link = "";
+
+        // Check for markdown link [Name](url)
+        const linkMatch = contentRaw.match(/\[(.*?)\]\((.*?)\)/);
+        if (linkMatch) {
+            name = linkMatch[1];
+            link = linkMatch[2];
+        } else {
+            // Remove bolding if present **Name**
+            name = name.replace(/\*\*/g, "");
+        }
+
+        // Clean name further (remove bolding if left)
+        name = name.trim();
+
+        // Extract Description (everything after header)
+        // usually starts with - 说明: or just -
+        let description = item.replace(headerMatch[0], "").trim();
+        // Remove common prefixes
+        description = description.replace(/^-\s*说明[:：]\s*/m, "");
+        description = description.replace(/^-\s*/m, "");
+        // Only take the first paragraph or bullet
+        description = description.split('\n')[0].trim();
+
+        // Key for deduplication: Lowercase name
+        const key = name.toLowerCase();
+
+        if (productMap.has(key)) {
+            const existing = productMap.get(key)!;
+            // Add episode if not present
+            if (!existing.mentionedIn.find(ep => ep.episodeSlug === episode.slug)) {
+                existing.mentionedIn.push({
+                    episodeSlug: episode.slug,
+                    episodeTitle: episode.guest
+                });
+            }
+        } else {
+            productMap.set(key, {
+                name,
+                category,
+                description,
+                link,
+                mentionedIn: [{
+                    episodeSlug: episode.slug,
+                    episodeTitle: episode.guest
+                }]
+            });
+        }
+    });
+  });
+
+  return Array.from(productMap.values()).sort((a, b) => b.mentionedIn.length - a.mentionedIn.length);
+}
+
 export function getAllTopicsWithCounts(): { topic: string; count: number }[] {
   const episodes = getAllEpisodes();
   const topicCounts: Record<string, number> = {};
@@ -273,3 +372,4 @@ export function getAllTopicsWithCounts(): { topic: string; count: number }[] {
     .map(([topic, count]) => ({ topic, count }))
     .sort((a, b) => b.count - a.count);
 }
+

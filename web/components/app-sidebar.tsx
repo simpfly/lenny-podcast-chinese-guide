@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getAllCategories } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Home, BookOpen, Tag, History, CheckSquare } from "lucide-react";
+import { Home, BookOpen, Tag, History, CheckSquare, Package } from "lucide-react";
 
 export function AppSidebar() {
   const categories = getAllCategories();
@@ -44,6 +44,13 @@ export function AppSidebar() {
           >
             <CheckSquare className="h-4 w-4" />
             Checklist
+          </Link>
+          <Link
+            href="/products"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+          >
+            <Package className="h-4 w-4" />
+            Product Wall
           </Link>
           <div className="my-2 border-t" />
           <div className="px-3 py-1 text-xs font-semibold uppercase text-muted-foreground">

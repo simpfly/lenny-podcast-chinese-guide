@@ -18,11 +18,6 @@ export function ProductCard({ product }: ProductCardProps) {
           <Badge variant="outline" className="font-mono text-[10px] py-0 px-1.5 h-5">
             {product.category}
           </Badge>
-          {mentionCount > 1 && (
-            <Badge variant="secondary" className="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border-orange-200 dark:border-orange-800 font-bold">
-              {mentionCount} Mentions
-            </Badge>
-          )}
         </div>
         <CardTitle className="text-xl font-bold line-clamp-1 transition-colors">
           {product.link ? (
@@ -48,7 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
               <Tag className="h-3 w-3" />
-              <span>Mentioned In</span>
+              <span>{mentionCount} Mention{mentionCount > 1 ? 's' : ''} In</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {product.mentionedIn.map((ep) => (

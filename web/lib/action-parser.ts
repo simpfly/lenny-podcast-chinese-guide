@@ -39,7 +39,8 @@ export function parseActions(markdown: string): ActionCategory[] {
                 // Remove "- [ ]" or "- " prefix
                 let cleanText = trimmed.replace(/^-\s*(\[\s*\])?\s*/, '');
                 
-                if (cleanText) {
+                // IGNORE noise like "--" or single punctuation
+                if (cleanText && cleanText.length > 2) {
                     items.push({
                         id: btoa(unescape(encodeURIComponent(cleanText))).slice(0, 16), // Simple hash for ID
                         text: cleanText,

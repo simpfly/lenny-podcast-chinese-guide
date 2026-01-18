@@ -435,7 +435,6 @@ export function getAllChecklistItemsCount(): number {
     if (!episode.actions) return;
 
     // Count lines starting with - [x] or - [X] (completed items)
-    // Uses a regex that matches the markdown completed checkbox pattern
     const items = episode.actions.match(/-\s*\[[xX]\]/g);
     if (items) {
       count += items.length;
@@ -443,6 +442,34 @@ export function getAllChecklistItemsCount(): number {
   });
 
   return count;
+}
+
+/**
+ * Get total number of all possible actions ( [ ], [x], [/] )
+ */
+export function getTotalActionsCount(): number {
+    const episodes = getAllEpisodes();
+    let count = 0;
+  
+    episodes.forEach((episode) => {
+      if (!episode.actions) return;
+      const items = episode.actions.match(/-\s*\[[\s/xX]\]/g);
+      if (items) {
+        count += items.length;
+      }
+    });
+  
+    return count;
+}
+
+export function getLatestEpisodes(limit: number = 3): Episode[] {
+    const episodes = getAllEpisodes();
+    return episodes
+        .filter(ep => ep.date) // Only include episodes with a date
+        .sort((a, b) => {
+            return new Date(b.date!).getTime() - new Date(a.date!).getTime();
+        })
+        .slice(0, limit);
 }
 
 

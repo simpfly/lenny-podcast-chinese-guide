@@ -1,10 +1,10 @@
-import { getEpisodeContent } from "@/lib/data";
+import { getEpisodeContent, getEpisodeMetadata, getAllEpisodes } from "@/lib/data";
 import { notFound } from "next/navigation";
-import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, Download } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { ArrowLeft } from "lucide-react";
+import { EpisodeDetailView } from "@/components/episode-detail-view";
+import { RandomEpisodeButton } from "@/components/random-episode-button";
 
 import { Metadata } from "next";
 
@@ -14,29 +14,25 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const data = getEpisodeContent(slug);
+  const metadata = getEpisodeMetadata(slug);
 
-  if (!data) {
+  if (!metadata) {
     return {
       title: "Episode Not Found",
     };
   }
-
-  const { data: frontmatter } = data;
   
-  // Logic to extract title and guest similar to the component
-  const guest = frontmatter.guest || slug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-  const title = `${guest} on Lenny's Podcast`;
-  const description = frontmatter.summary || `Deep dive analysis of the episode with ${guest}.`;
+  const title = `${metadata.guest} on Lenny's Podcast`;
+  const description = metadata.summary || `Deep dive analysis of the episode with ${metadata.guest}.`;
 
   return {
     title: `${title} - Analysis`,
-    description: description.slice(0, 160), // SEO optimal length
+    description: description.slice(0, 160),
     openGraph: {
       title: `${title} - Analysis`,
       description: description.slice(0, 200),
       type: "article",
-      authors: ["Lenny Rachitsky", guest],
+      authors: ["Lenny Rachitsky", metadata.guest],
     },
     twitter: {
       card: "summary_large_image",
@@ -48,51 +44,48 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function EpisodePage({ params }: PageProps) {
   const { slug } = await params;
-  const data = getEpisodeContent(slug);
+  const contentData = getEpisodeContent(slug);
+  const metadata = getEpisodeMetadata(slug);
 
-  if (!data) {
+  if (!contentData || !metadata) {
     notFound();
   }
 
-  const { content, data: frontmatter } = data;
+  const { content } = contentData;
 
-  // Attempt to parse Title from content if frontmatter doesn't have it
-  const title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-
-  // Remove the first H1 from markdown content if it exists, to avoid duplication
+  // Remove the first H1 from markdown content if it exists
   const contentWithoutTitle = content.replace(/^# .*?\n/, '');
 
+  // Fetch all episodes for random navigation
+  const allEpisodes = getAllEpisodes();
+  const allSlugs = allEpisodes.map(ep => ep.slug);
+
   return (
-    <div className="max-w-4xl mx-auto w-full">
-      <div className="mb-8 flex items-start gap-4 flex-col">
-        <Button variant="ghost" className="pl-0 gap-2" asChild>
-             <Link href="/">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Home
-             </Link>
-        </Button>
+    <div className="max-w-5xl mx-auto w-full px-2 sm:px-4">
+      <div className="mb-6">
+        <div className="flex items-center justify-between">
+            <Button variant="ghost" className="pl-0 gap-2 hover:bg-transparent" asChild>
+                <Link href="/">
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Archive
+                </Link>
+            </Button>
+            <RandomEpisodeButton allSlugs={allSlugs} currentSlug={slug} />
+        </div>
         
-        <div className="flex flex-col gap-2">
-            <div className="flex gap-2">
-                <Badge variant="outline">Analysis</Badge>
-                <Badge variant="secondary">Podcast</Badge>
-            </div>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-balance">
-                 {title} - Detailed Analysis
+        <div className="mt-4 flex flex-col gap-2">
+            <h1 className="text-3xl font-black tracking-tighter sm:text-5xl text-balance">
+                 {metadata.guest}
             </h1>
+            <p className="text-muted-foreground text-sm flex items-center gap-2">
+                <span>Detailed Analysis & Action Guide</span>
+                {metadata.date && <span className="opacity-50">/</span>}
+                {metadata.date && <span className="font-mono">{metadata.date}</span>}
+            </p>
         </div>
       </div>
 
-      <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 sm:p-10">
-        <MarkdownRenderer content={contentWithoutTitle} />
-      </div>
-
-       <div className="mt-10 flex justify-center gap-4">
-         <Button variant="outline" className="gap-2" disabled>
-            <Download className="h-4 w-4" />
-            Download PDF (Coming Soon)
-         </Button>
-       </div>
+      <EpisodeDetailView episode={metadata} content={contentWithoutTitle} />
     </div>
   );
 }

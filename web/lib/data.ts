@@ -319,26 +319,41 @@ export function getAllProducts(): Product[] {
         // Clean name further (remove bolding if left)
         name = name.trim();
 
+        // Extract Description (everything after header)
+        // usually starts with - 说明: or just -
+        let description = item.replace(headerMatch[0], "").trim();
+        
         // VALIDATION: If name is generic like "官网", "链接", "Website", etc.
         // Try to swap it with Category or find something better
         const genericNames = ["官网", "链接", "website", "link", "官方网站"];
         if (genericNames.includes(name.toLowerCase())) {
             // If name is generic, try to see if the description contains a bolded name at the start
             // e.g. - **Text-to-SQL**: description...
-            const descBoldMatch = item.match(/-\s*\*\*(.*?)\*\*/);
+            const descBoldMatch = description.match(/-\s*\*\*(.*?)\*\*[:：]?\s*/);
             if (descBoldMatch) {
-                name = descBoldMatch[1];
+                name = descBoldMatch[1].trim();
+                // Strip the extracted name from description
+                description = description.replace(descBoldMatch[0], "- ").trim();
+            }
+        } else {
+            // Even if not generic, if description starts with the same name, strip it to avoid redundancy
+            const redundantMatch = description.match(new RegExp(`^-\\s*\\*\\*${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\*\\*[:：]?\\s*`, 'i'));
+            if (redundantMatch) {
+                description = description.replace(redundantMatch[0], "- ").trim();
             }
         }
 
-        // Extract Description (everything after header)
-        // usually starts with - 说明: or just -
-        let description = item.replace(headerMatch[0], "").trim();
-        // Remove common prefixes
+        // Clean common prefixes from description
         description = description.replace(/^-\s*说明[:：]\s*/m, "");
         description = description.replace(/^-\s*/m, "");
-        // Only take the first paragraph or bullet
+        
+        // Remove trailing or inline markdown link indicators like [官网] or [链接]
+        description = description.replace(/\[(?:官网|链接|website|link|官方网站)\](\(.*\))?/gi, "").trim();
+
+        // Only take the first paragraph/line
         description = description.split('\n')[0].trim();
+        // Remove trailing punctuation like 。 if it's the only thing left
+        description = description.replace(/[。\.]$/, "").trim();
 
         // Key for deduplication: Lowercase name
         const key = name.toLowerCase();

@@ -322,6 +322,47 @@ export function getAllProducts(): Product[] {
         // Extract Description (everything after header)
         // usually starts with - 说明: or just -
         let description = item.replace(headerMatch[0], "").trim();
+
+        // IMPROVEMENT: If link is missing in header, look for it in the description
+        // sometimes it's formatted as - **官网**: [Link](url)
+        if (!link) {
+            const descLinkMatch = description.match(/\[(?:官网|链接|website|link|官方网站)\]\((.*?)\)/i);
+            if (descLinkMatch) {
+                link = descLinkMatch[1];
+            } else {
+                // Try to find any URL in the description
+                const urlMatch = description.match(/https?:\/\/[^\s\)]+/);
+                if (urlMatch) {
+                    link = urlMatch[0];
+                }
+            }
+        }
+
+        // HARDCODED FALLBACKS: For high-frequency tools mentioned in the podcast
+        const toolLinks: Record<string, string> = {
+            "coda": "https://coda.io/lenny",
+            "linear": "https://linear.app/lenny",
+            "reforge": "https://www.reforge.com/",
+            "miro": "https://miro.com/",
+            "figma": "https://www.figma.com/",
+            "notion": "https://www.notion.so/",
+            "amplitude": "https://amplitude.com/",
+            "mixpanel": "https://mixpanel.com/",
+            "segment": "https://segment.com/",
+            "pendo": "https://www.pendo.io/",
+            "statsig": "https://www.statsig.com/",
+            "vanta": "https://www.vanta.com/",
+            "loom": "https://www.loom.com/",
+            "slack": "https://slack.com/",
+            "chatgpt": "https://chat.openai.com/",
+            "cursor": "https://www.cursor.com/",
+            "perplexity": "https://www.perplexity.ai/",
+        };
+
+        const normalizedName = name.toLowerCase();
+        if (!link && toolLinks[normalizedName]) {
+            link = toolLinks[normalizedName];
+        }
         
         // VALIDATION: If name is generic like "官网", "链接", "Website", etc.
         // Try to swap it with Category or find something better

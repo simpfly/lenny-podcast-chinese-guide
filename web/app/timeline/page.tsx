@@ -20,7 +20,7 @@ export default function TimelinePage() {
         </p>
       </div>
 
-      <div className="relative border-l border-muted ml-4 md:ml-6 space-y-12 pb-12">
+      <div className="relative border-l border-muted ml-4 md:ml-32 space-y-12 pb-12">
         {episodes.map((episode, index) => {
           const score = parseFloat(episode.score?.overall || "0");
           const isHighRated = score >= 9.5;
@@ -38,7 +38,7 @@ export default function TimelinePage() {
               />
               
               {/* Date Label */}
-              <div className="absolute -left-16 md:-left-24 top-5 text-sm text-muted-foreground font-mono w-16 text-right hidden md:block">
+              <div className="absolute -left-[5.5rem] md:-left-32 top-5 text-sm text-muted-foreground font-mono w-20 md:w-28 text-right hidden md:block pr-4 whitespace-nowrap">
                  {episode.date || "Unknown"}
               </div>
 

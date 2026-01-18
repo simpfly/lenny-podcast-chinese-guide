@@ -12,70 +12,7 @@ import { cn } from "@/lib/utils";
 
 type ViewMode = "score" | "actions" | "resources";
 
-interface ActionItem {
-    id: string; // hash or cleaned text
-    text: string;
-    originalText: string;
-}
-
-interface ActionCategory {
-    label: string; // "今天", "本周", "深入"
-    items: ActionItem[];
-}
-
-function parseActions(markdown: string): ActionCategory[] {
-    const sections = markdown.split(/###\s+/);
-    const categories: ActionCategory[] = [];
-
-    // Map keywords to unified labels
-    // Order matters? Usually standard order.
-    // keywords: 
-    // "立即" -> "今天"
-    // "本周" -> "本周"
-    // "深度" -> "深入"
-    
-    sections.forEach(section => {
-        if (!section.trim()) return;
-        
-        const lines = section.split('\n');
-        const header = lines[0].trim();
-        const contentLines = lines.slice(1);
-        
-        let label = "";
-        if (header.includes("立即") || header.includes("今天")) label = "今天";
-        else if (header.includes("本周")) label = "本周";
-        else if (header.includes("深度") || header.includes("深入")) label = "深入";
-        
-        if (!label) return; // Skip unknown sections or intro text
-
-        const items: ActionItem[] = [];
-        contentLines.forEach(line => {
-            const trimmed = line.trim();
-            // Match list items: - [ ] or - 
-            if (trimmed.startsWith('-')) {
-                // Remove "- [ ]" or "- " prefix
-                let cleanText = trimmed.replace(/^-\s*(\[\s*\])?\s*/, '');
-                // Remove bold markers if they wrap the whole line roughly, or keep them?
-                // Plan said "Interactive checkbox". 
-                // Let's just strip the markdown checkbox syntax.
-                
-                if (cleanText) {
-                    items.push({
-                        id: btoa(unescape(encodeURIComponent(cleanText))).slice(0, 16), // Simple hash for ID
-                        text: cleanText,
-                        originalText: cleanText 
-                    });
-                }
-            }
-        });
-
-        if (items.length > 0) {
-            categories.push({ label, items });
-        }
-    });
-
-    return categories;
-}
+import { ActionCategory, parseActions } from "@/lib/action-parser";
 
 function ActionList({ content, slug }: { content: string, slug: string }) {
     const categories = parseActions(content);
@@ -174,38 +111,93 @@ function parseResources(markdown: string): ResourceItem[] {
     const blocks = markdown.split(/\n(?=\*\*)/);
     
     blocks.forEach(block => {
-        // Extract Name and Category
-        // Match: **Prefix**: **Name**
-        // e.g. **工具 1**: **Coda**
-        // e.g. **推荐阅读**: **Book Name**
-        const nameMatch = block.match(/\*\*(.*?)\*\*:\s*\*\*(.*?)\*\*/);
-        
-        // Extract URL
-        const urlMatch = block.match(/-\s*(?:链接|Link):\s*\[.*?\]\((.*?)\)/);
+        // Generic Parse Strategy:
+        // 1. Identify Key/Value pair: **Key**: Value
+        // 2. If Value exists -> Single Item (Format A/B/D)
+        // 3. If Value is empty -> Group Header (Format C)
 
+        const mainLineMatch = block.match(/^\*\*(.*?)\*\*:\s*(.*)$/m);
+        
+        // Extract URL (Separate line)
+        const urlMatch = block.match(/-\s*(?:链接|Link):\s*\[.*?\]\((.*?)\)/);
         // Extract Description
         const descMatch = block.match(/-\s*(?:说明|Description|Desc)[:：]\s*(.*)/);
 
-        if (nameMatch && urlMatch) {
-            const category = nameMatch[1];
-            let type: ResourceItem['type'] = 'other';
-            
-            if (category.includes('工具') || category.toLowerCase().includes('tool')) {
-                type = 'tool';
-            } else if (category.includes('阅读') || category.includes('书') || category.toLowerCase().includes('read') || category.toLowerCase().includes('book')) {
-                type = 'book';
-            }
+        if (mainLineMatch) {
+            const category = mainLineMatch[1];
+            const content = mainLineMatch[2].trim();
 
-            items.push({
-                name: nameMatch[2], // The actual name is now in group 2
-                url: urlMatch[1],
-                description: descMatch ? descMatch[1].trim() : undefined,
-                type
-            });
+            if (content) {
+                // It has content, so it's a Single Item
+                let name = content;
+                let url = urlMatch ? urlMatch[1] : '';
+
+                // Try to extract name/url from content if inline
+                // Check for Inline Link: [Name](Url)
+                const inlineLinkMatch = content.match(/^\[(.*?)\]\((.*?)\)$/);
+                // Check for Bold Name: **Name**
+                const boldNameMatch = content.match(/^\*\*(.*?)\*\*$/);
+
+                if (inlineLinkMatch) {
+                    name = inlineLinkMatch[1];
+                    url = inlineLinkMatch[2];
+                } else if (boldNameMatch) {
+                    name = boldNameMatch[1];
+                }
+
+                items.push(createResourceItem(category, name, url, descMatch ? descMatch[1] : undefined));
+            } else {
+                // It's a Group Header (content is empty)
+                // Parse following lines as items
+                const lines = block.split('\n').slice(1);
+                 
+                lines.forEach(line => {
+                     // Match bullet point with bold name
+                     // - **Name**: Description [Label](Url)
+                     const itemMatch = line.match(/-\s*\*\*(.*?)\*\*:\s*(.*?)(\[.*?\]\((.*?)\))?$/);
+                     if (itemMatch) {
+                         const name = itemMatch[1];
+                         let description = itemMatch[2].trim();
+                         let url = itemMatch[4];
+                         
+                         if (!url) {
+                              const linkInDesc = description.match(/\[.*?\]\((.*?)\)/);
+                              if (linkInDesc) {
+                                  url = linkInDesc[1];
+                                  description = description.replace(linkInDesc[0], '').trim();
+                              }
+                         }
+
+                         if (url) {
+                              items.push(createResourceItem(category, name, url, description));
+                         }
+                     }
+                 })
+            }
         }
     });
 
     return items;
+}
+
+function createResourceItem(category: string, name: string, url: string, description: string | undefined): ResourceItem {
+    let type: ResourceItem['type'] = 'other';
+    
+    // Check type based on category OR item name (sometimes helps)
+    const lowerCat = category.toLowerCase();
+    
+    if (lowerCat.includes('工具') || lowerCat.includes('tool') || lowerCat.includes('app') || lowerCat.includes('softwar')) {
+        type = 'tool';
+    } else if (lowerCat.includes('阅读') || lowerCat.includes('书') || lowerCat.includes('read') || lowerCat.includes('book')) {
+        type = 'book';
+    }
+
+    return {
+        name: name,
+        url: url,
+        description: description?.trim(),
+        type
+    };
 }
 
 export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {

@@ -4,7 +4,7 @@ import matter from "gray-matter";
 import { normalizeTopic } from "./topic-mapping";
 import { getOfficialDate } from "./episode-date-map";
 
-const CONTENT_DIR = path.join(process.cwd(), "../"); // Root of the repo
+const CONTENT_DIR = path.join(process.cwd(), "content"); // Inside web/content
 const EPISODES_DIR = path.join(CONTENT_DIR, "episodes");
 const INDEX_DIR = path.join(CONTENT_DIR, "index");
 

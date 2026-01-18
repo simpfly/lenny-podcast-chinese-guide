@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Episode, Category } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Home, BookOpen, Tag, History, CheckSquare, Package, Users } from "lucide-react";
+import { Home, BookOpen, Folder, History, CheckSquare, Package, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useChecklistCount } from "@/hooks/use-checklist-count";
 import { useEffect, useState } from "react";
@@ -41,19 +41,14 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
             <Users className="h-4 w-4" />
             Builders
           </Link>
+
+          {/* Timeline link removed */}
           <Link
-            href="/topics"
+            href="/products"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
           >
-            <Tag className="h-4 w-4" />
-            Topic Cloud
-          </Link>
-          <Link
-            href="/timeline"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
-          >
-            <History className="h-4 w-4" />
-            Timeline
+            <Package className="h-4 w-4" />
+            Product Wall
           </Link>
           <Link
             href="/saved"
@@ -68,13 +63,6 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
                 {checklistCount}
               </Badge>
             )}
-          </Link>
-          <Link
-            href="/products"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
-          >
-            <Package className="h-4 w-4" />
-            Product Wall
           </Link>
           <div className="my-2 border-t" />
           <div className="px-3 py-1 text-xs font-semibold uppercase text-muted-foreground">

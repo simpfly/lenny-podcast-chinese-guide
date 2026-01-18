@@ -1,16 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Episode } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Tag, LayoutList, Zap, Wrench, Check, ArrowRight, Linkedin, LinkIcon, BookOpen } from "lucide-react";
+import { Tag, LayoutList, Zap, Wrench, Check, ArrowRight, Linkedin, LinkIcon, BookOpen, Lightbulb } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
 
-type ViewMode = "score" | "actions" | "resources";
+type ViewMode = "keypoints" | "actions" | "resources";
 
 import { ActionCategory, parseActions } from "@/lib/action-parser";
 
@@ -200,20 +200,123 @@ function createResourceItem(category: string, name: string, url: string, descrip
     };
 }
 
+// Helper component for responsive tags
+// Helper component for responsive tags
+function ResponsiveTopicTags({ topics }: { topics: string[] }) {
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const ghostRef = React.useRef<HTMLDivElement>(null);
+    const [visibleCount, setVisibleCount] = useState(topics.length);
+
+    useEffect(() => {
+        const calculateVisible = () => {
+            if (!containerRef.current || !ghostRef.current) return;
+            
+            // Sync width of ghost to real container
+            const width = containerRef.current.getBoundingClientRect().width;
+            ghostRef.current.style.width = `${width}px`;
+
+            const children = Array.from(ghostRef.current.children) as HTMLElement[];
+            if (children.length === 0) return;
+
+            const firstTop = children[0].offsetTop;
+            let newVisibleCount = topics.length;
+
+            // Find the first item that wraps to the next line in the GHOST container
+            for (let i = 0; i < children.length; i++) {
+                if (children[i].offsetTop > firstTop) {
+                    newVisibleCount = i;
+                    break;
+                }
+            }
+
+            // Adjust for counter space if truncated
+            // If we are truncating, we generally need space for the "+N" badge.
+            // A simple heuristic is to remove one more item to be safe.
+            if (newVisibleCount < topics.length) {
+                newVisibleCount = Math.max(1, newVisibleCount - 1);
+            }
+
+            setVisibleCount(newVisibleCount);
+        };
+
+        const observer = new ResizeObserver(() => {
+            // No need to reset state or requestAnimationFrame loops that cause flicker.
+            // Just recalculate based on the Ghost.
+            // We use requestAnimationFrame to throttle slightly and ensure DOM is ready.
+            requestAnimationFrame(calculateVisible);
+        });
+
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+        
+        // Initial calc
+        calculateVisible();
+
+        return () => observer.disconnect();
+    }, [topics]);
+
+    return (
+        <div className="relative w-full">
+            {/* Real Visible Container */}
+            <div 
+                ref={containerRef} 
+                className="flex flex-wrap gap-2 w-full overflow-hidden"
+                style={{ maxHeight: '24px' }}
+            >
+                {topics.map((t, i) => {
+                    if (i < visibleCount) {
+                         return (
+                            <Badge key={t} variant="secondary" className="text-xs font-normal whitespace-nowrap">
+                                {t}
+                            </Badge>
+                        );
+                    }
+                    if (i === visibleCount && visibleCount < topics.length) {
+                         return (
+                             <span key="more" className="text-xs text-muted-foreground self-center whitespace-nowrap pl-1">
+                                +{topics.length - visibleCount} more
+                             </span>
+                         );
+                    }
+                    return null;
+                })}
+            </div>
+
+            {/* Ghost Container for Measurement - Absolute, Hidden but Layout Active */}
+            <div 
+                ref={ghostRef}
+                className="flex flex-wrap gap-2 absolute top-0 left-0 opacity-0 pointer-events-none -z-10"
+                style={{ visibility: 'hidden' }} 
+                aria-hidden="true"
+            >
+                 {topics.map((t) => (
+                    <Badge key={t} variant="secondary" className="text-xs font-normal whitespace-nowrap">
+                        {t}
+                    </Badge>
+                ))}
+                 {/* Add a fake "more" badge to account for its width? 
+                     Ideally we'd measure with it, but simple reduction (count - 1) usually works. 
+                  */}
+            </div>
+        </div>
+    );
+}
+
 export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
-  const [viewMode, setViewMode] = useState<ViewMode>("score");
+  const [viewMode, setViewMode] = useState<ViewMode>("keypoints");
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-end gap-2">
         <Button 
-            variant={viewMode === "score" ? "default" : "outline"} 
+            variant={viewMode === "keypoints" ? "default" : "outline"} 
             size="sm"
-            onClick={() => setViewMode("score")}
+            onClick={() => setViewMode("keypoints")}
             className="text-xs"
         >
-            <LayoutList className="mr-2 h-3.5 w-3.5" />
-            Scores
+            <Lightbulb className="mr-2 h-3.5 w-3.5" />
+            Keypoints
         </Button>
         <Button 
             variant={viewMode === "actions" ? "default" : "outline"} 
@@ -295,28 +398,41 @@ export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
                     )}
                 </div>
                 
-                {viewMode === "score" && episode.score && (
-                    <div className="grid grid-cols-2 gap-y-1 gap-x-4 text-xs mt-2 bg-muted/30 p-2 rounded-md">
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">知识价值</span>
-                            <span className="font-medium">{episode.score.knowledge}</span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">可执行性</span>
-                            <span className="font-medium">{episode.score.actionable}</span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">商业潜力</span>
-                            <span className="font-medium">{episode.score.business}</span>
-                        </div>
-                         <div className="flex justify-between">
-                            <span className="text-muted-foreground">投入产出</span>
-                            <span className="font-medium">{episode.score.roi}</span>
-                        </div>
-                         <div className="col-span-2 pt-1 mt-1 border-t flex justify-between">
-                            <span className="font-semibold text-primary">综合评分</span>
-                            <span className="font-bold text-primary">{episode.score.overall}</span>
-                        </div>
+                {viewMode === "keypoints" && (
+                    <div className="mt-2 bg-muted/30 p-3 rounded-md">
+                        {episode.coreArguments && episode.coreArguments.length > 0 ? (
+                            <ol className="list-decimal list-outside pl-4 space-y-1.5 text-xs text-muted-foreground font-medium">
+                                {episode.coreArguments.map((arg, i) => (
+                                    <li key={i} className="pl-1">
+                                        <span className="text-foreground/90">{arg}</span>
+                                    </li>
+                                ))}
+                            </ol>
+                        ) : (
+                             // Fallback to Scores if no arguments found (Backward Compatibility)
+                            episode.score ? (
+                                <div className="grid grid-cols-2 gap-y-1 gap-x-4 text-xs">
+                                     <div className="flex justify-between">
+                                        <span className="text-muted-foreground">知识价值</span>
+                                        <span className="font-medium">{episode.score.knowledge}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-muted-foreground">可执行性</span>
+                                        <span className="font-medium">{episode.score.actionable}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-muted-foreground">商业潜力</span>
+                                        <span className="font-medium">{episode.score.business}</span>
+                                    </div>
+                                     <div className="col-span-2 pt-1 mt-1 border-t flex justify-between">
+                                        <span className="font-semibold text-primary">综合评分</span>
+                                        <span className="font-bold text-primary">{episode.score.overall}</span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <p className="text-muted-foreground italic text-center py-4 text-xs">No keypoints available.</p>
+                            )
+                        )}
                     </div>
                 )}
 
@@ -383,18 +499,8 @@ export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
 
 
               </CardContent>
-              <CardFooter className="flex gap-2 flex-wrap pt-0 text-xs"> 
-                 {/* Z-index for tags too if they are clickable links? 
-                     Current Tags are just Badges, not links here.
-                  */}
-                 {episode.topics.slice(0, 3).map(t => (
-                    <Badge key={t} variant="secondary" className="text-xs font-normal">
-                        {t}
-                    </Badge>
-                 ))}
-                 {episode.topics.length > 3 && (
-                    <span className="text-xs text-muted-foreground">+{episode.topics.length - 3} more</span>
-                 )}
+              <CardFooter className="pt-0 min-h-[24px]"> 
+                 <ResponsiveTopicTags topics={episode.topics} />
               </CardFooter>
             </Card>
         ))}

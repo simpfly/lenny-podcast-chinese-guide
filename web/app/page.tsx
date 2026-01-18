@@ -17,7 +17,9 @@ import {
   Sparkles, 
   TrendingUp, 
   BookOpen,
-  Calendar
+  Calendar,
+  Rocket,
+  Lightbulb
 } from "lucide-react";
 import { HomeClientSection } from "@/components/home-client-section";
 import { cn } from "@/lib/utils";
@@ -53,7 +55,7 @@ export default function Home() {
               <div className="mt-4 flex flex-wrap items-center gap-2 justify-center md:justify-start">
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mr-2">Popular:</span>
                 {["Growth", "AI", "Marketplace", "Leadership"].map(tag => (
-                   <Link key={tag} href={`/topic/${tag.toLowerCase()}`}>
+                   <Link key={tag} href={`/search?q=${tag.toLowerCase()}`}>
                     <Badge variant="outline" className="cursor-pointer hover:bg-primary/5 hover:text-primary transition-colors">#{tag}</Badge>
                    </Link>
                 ))}
@@ -80,10 +82,7 @@ export default function Home() {
                 <Sparkles className="w-6 h-6 text-primary" />
                 最新深度分析 <span className="text-muted-foreground font-normal text-sm ml-2">Latest Insights</span>
             </h2>
-            <Link href="/timeline" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">
-                查看全部往期
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+            {/* Link removed */}
         </div>
         <div className="grid gap-6 md:grid-cols-3">
             {latestEpisodes.map((episode) => (
@@ -175,7 +174,6 @@ export default function Home() {
               )}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <span className="text-2xl">{idx % 3 === 0 ? "🚀" : idx % 3 === 1 ? "💡" : "📈"}</span>
                     {category.title}
                   </CardTitle>
                   <CardDescription className="mt-1">
@@ -184,7 +182,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex items-center justify-between text-xs text-muted-foreground font-medium">
-                       <span>Topic Index</span>
+                       <span>View Topics</span>
                        <ArrowRight className="w-3.5 h-3.5" />
                     </div>
                 </CardContent>

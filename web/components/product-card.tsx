@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Tag, Plus, Check } from "lucide-react";
+import { ExternalLink, Tag, Plus, Check, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Product } from "@/lib/data";
 import { Button } from "@/components/ui/button";
@@ -54,8 +54,10 @@ export function ProductCard({ product }: ProductCardProps) {
             variant="ghost"
             size="icon"
             className={cn(
-              "h-7 w-7 rounded-full transition-all opacity-0 group-hover:opacity-100",
-              isInStack ? "text-primary bg-primary/10 opacity-100" : "text-muted-foreground hover:text-primary hover:bg-muted"
+              "h-7 w-7 rounded-full transition-all opacity-0 group-hover:opacity-100 group/action",
+              isInStack 
+                ? "text-primary bg-primary/10 opacity-100 hover:bg-destructive/10 hover:text-destructive" 
+                : "text-muted-foreground hover:text-primary hover:bg-muted"
             )}
             onClick={(e) => {
               e.preventDefault();
@@ -63,7 +65,14 @@ export function ProductCard({ product }: ProductCardProps) {
             }}
             title={isInStack ? "Remove from my stack" : "Add to my tool stack"}
           >
-            {isInStack ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            {isInStack ? (
+              <>
+                <Check className="h-4 w-4 group-hover/action:hidden" />
+                <Trash2 className="h-4 w-4 hidden group-hover/action:block" />
+              </>
+            ) : (
+              <Plus className="h-4 w-4" />
+            )}
           </Button>
         </div>
         <CardTitle className="text-xl font-bold line-clamp-1 transition-colors">

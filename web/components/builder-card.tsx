@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Twitter, Linkedin, ExternalLink, Plus, Check } from "lucide-react";
+import { Twitter, Linkedin, ExternalLink, Plus, Check, Trash2 } from "lucide-react";
 import { Episode } from "@/lib/data";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
@@ -142,12 +142,19 @@ export function BuilderCard({ episode }: BuilderCardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                className={`h-8 w-8 transition-colors group/action ${
+                    isAdded 
+                    ? "text-primary hover:text-destructive hover:bg-destructive/10" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
                 onClick={toggleChecklist}
                 title={isAdded ? "Unsave Builder" : "Save Builder"}
               >
                 {isAdded ? (
-                  <Check className="w-4 h-4 text-primary" />
+                  <>
+                     <Check className="w-4 h-4 group-hover/action:hidden" />
+                     <Trash2 className="w-4 h-4 hidden group-hover/action:block" />
+                  </>
                 ) : (
                   <Plus className="w-4 h-4" />
                 )}

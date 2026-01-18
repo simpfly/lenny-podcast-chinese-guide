@@ -29,6 +29,7 @@ export type Episode = {
   score?: Score;
   actions?: string;
   resources?: string;
+  coreArguments?: string[];
 };
 
 export type Category = {
@@ -216,6 +217,30 @@ export function getEpisodeMetadata(slug: string): Episode | null {
   const resourcesMatch = markdownBody.match(/## 🛠️ 提到的工具\/资源\s*([\s\S]*?)(?:\n---|(?:\n##\s))/);
   const resources = resourcesMatch ? resourcesMatch[1].trim() : undefined;
 
+  // Extract Core Arguments
+  const argumentsMatch = markdownBody.match(/## 💡 核心论点\s*([\s\S]*?)(?:\n---|(?:\n##\s))/);
+  let coreArguments: string[] = [];
+  if (argumentsMatch) {
+      const argsContent = argumentsMatch[1];
+      // Match headers like ### 论点一：Title
+      const argMatches = argsContent.matchAll(/###\s*.*[:：]\s*(.*)/g);
+      for (const match of argMatches) {
+          if (match[1]) {
+              coreArguments.push(match[1].trim());
+          }
+      }
+      
+      // Fallback: if no colon format, just take the header text after ###
+      if (coreArguments.length === 0) {
+          const simpleMatches = argsContent.matchAll(/###\s*(.*)/g);
+           for (const match of simpleMatches) {
+              if (match[1]) {
+                  coreArguments.push(match[1].trim());
+              }
+          }
+      }
+  }
+
   return {
     slug,
     title,
@@ -228,7 +253,8 @@ export function getEpisodeMetadata(slug: string): Episode | null {
     topics,
     score,
     actions,
-    resources
+    resources,
+    coreArguments
   };
 }
 
@@ -487,4 +513,6 @@ export function getAllTopicsWithCounts(): { topic: string; count: number }[] {
     .map(([topic, count]) => ({ topic, count }))
     .sort((a, b) => b.count - a.count);
 }
+
+
 

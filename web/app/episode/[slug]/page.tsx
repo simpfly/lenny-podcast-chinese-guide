@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { EpisodeDetailView } from "@/components/episode-detail-view";
 import { RandomEpisodeButton } from "@/components/random-episode-button";
+import { SaveBuilderButton } from "@/components/save-builder-button";
 
 import { Metadata } from "next";
 
@@ -74,9 +75,12 @@ export default async function EpisodePage({ params }: PageProps) {
         </div>
         
         <div className="mt-4 flex flex-col gap-2">
-            <h1 className="text-3xl font-black tracking-tighter sm:text-5xl text-balance">
-                 {metadata.guest}
-            </h1>
+            <div className="flex items-center gap-4 group w-fit">
+                <h1 className="text-3xl font-black tracking-tighter sm:text-5xl text-balance">
+                    {metadata.guest}
+                </h1>
+                <SaveBuilderButton episode={metadata} />
+            </div>
             <p className="text-muted-foreground text-sm flex items-center gap-2">
                 <span>Detailed Analysis & Action Guide</span>
                 {metadata.date && <span className="opacity-50">/</span>}

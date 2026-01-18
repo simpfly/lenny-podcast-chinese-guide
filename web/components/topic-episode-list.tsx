@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Episode } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SaveToolButton } from "@/components/save-tool-button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Tag, LayoutList, Zap, Wrench, Check, ArrowRight, Linkedin, LinkIcon, BookOpen, Lightbulb } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -43,7 +44,7 @@ function ActionList({ content, slug }: { content: string, slug: string }) {
                     <h4 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70 mb-2">
                         {cat.label}
                     </h4>
-                    <ul className="space-y-2">
+                    <ul className="space-y-2.5">
                         {cat.items.map((item) => {
                             const isChecked = checkedState[item.id] || false;
                             return (
@@ -51,7 +52,7 @@ function ActionList({ content, slug }: { content: string, slug: string }) {
                                     key={item.id} 
                                     className={cn(
                                         "flex items-start gap-2.5 group cursor-pointer select-none transition-all duration-200",
-                                        isChecked ? "opacity-50" : "opacity-100"
+                                        isChecked ? "opacity-100" : "opacity-100"
                                     )}
                                     onClick={(e) => {
                                         e.preventDefault(); // Prevent card click
@@ -60,17 +61,17 @@ function ActionList({ content, slug }: { content: string, slug: string }) {
                                     }}
                                 >
                                     <div className={cn(
-                                        "mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors pointer-events-auto relative z-20", // pointer-events-auto just in case
+                                        "mt-1 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors pointer-events-auto relative z-20", // pointer-events-auto just in case
                                         isChecked 
-                                            ? "bg-primary border-primary text-primary-foreground" 
+                                            ? "bg-green-600 border-green-600 text-white" 
                                             : "border-muted-foreground/30 bg-background group-hover:border-primary/50"
                                     )}>
                                         {isChecked && <Check className="w-2.5 h-2.5" strokeWidth={3} />}
                                     </div>
-                                    <div className="flex-1 text-sm leading-snug pt-0.5">
+                                    <div className="flex-1 text-sm leading-relaxed pt-0.5">
                                         <ReactMarkdown 
                                             components={{
-                                                p: ({children}) => <p className={cn("m-0", isChecked && "line-through text-muted-foreground")}>{children}</p>,
+                                                p: ({children}) => <p className={cn("m-0")}>{children}</p>,
                                                 // Ensure links inside are clickable and don't toggle the checkbox if clicked directly? 
                                                 // Actually strict check: prevent checkbox toggle if clicking link?
                                                 // Simplify: Just let it toggle.
@@ -303,8 +304,8 @@ function ResponsiveTopicTags({ topics }: { topics: string[] }) {
     );
 }
 
-export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
-  const [viewMode, setViewMode] = useState<ViewMode>("keypoints");
+export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Episode[], initialViewMode?: ViewMode }) {
+  const [viewMode, setViewMode] = useState<ViewMode>(initialViewMode || "keypoints");
 
   return (
     <div className="flex flex-col gap-6">
@@ -340,7 +341,7 @@ export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
         {episodes.map((episode) => (
-            <Card key={episode.slug} className="h-full group relative hover:bg-muted/50 transition-colors flex flex-col">
+            <Card key={episode.slug} className="h-full group/card relative hover:bg-muted/50 transition-colors flex flex-col">
               <CardHeader>
                 <CardTitle className="leading-tight text-xl mb-1">
                    <Link href={`/episode/${episode.slug}`} className="after:absolute after:inset-0 focus:outline-none">
@@ -398,12 +399,13 @@ export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
                     )}
                 </div>
                 
+                
                 {viewMode === "keypoints" && (
-                    <div className="mt-2 bg-muted/30 p-3 rounded-md">
+                    <div className="mt-4 pt-4 border-t">
                         {episode.coreArguments && episode.coreArguments.length > 0 ? (
-                            <ol className="list-decimal list-outside pl-4 space-y-1.5 text-xs text-muted-foreground font-medium">
+                            <ol className="list-decimal list-outside pl-4 space-y-2.5 text-xs text-muted-foreground font-medium">
                                 {episode.coreArguments.map((arg, i) => (
-                                    <li key={i} className="pl-1">
+                                    <li key={i} className="pl-1 leading-relaxed">
                                         <span className="text-foreground/90">{arg}</span>
                                     </li>
                                 ))}
@@ -437,7 +439,7 @@ export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
                 )}
 
                 {viewMode === "actions" && (
-                    <div className="text-xs bg-muted/20 p-3 rounded-md mt-2 relative">
+                    <div className="mt-4 pt-4 border-t text-xs relative">
                          {episode.actions ? (
                              <ActionList content={episode.actions} slug={episode.slug} />
                          ) : (
@@ -448,13 +450,13 @@ export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
 
 
                 {viewMode === "resources" && (
-                     <div className="text-sm bg-muted/20 p-3 rounded-md mt-2 relative">
+                     <div className="mt-4 pt-4 border-t text-sm relative">
                          {episode.resources ? (
-                             <div className="space-y-2">
+                             <div className="space-y-3">
                                  {parseResources(episode.resources).length > 0 ? (
                                      parseResources(episode.resources).map((item, i) => (
-                                         <div key={i} className="leading-snug flex items-start gap-2">
-                                             <div className="mt-0.5 text-muted-foreground/70 shrink-0">
+                                         <div key={i} className="leading-snug flex items-start gap-2.5 group">
+                                             <div className="mt-1 text-muted-foreground/70 shrink-0">
                                                 {item.type === 'tool' && <Wrench className="w-3.5 h-3.5" />}
                                                 {item.type === 'book' && <BookOpen className="w-3.5 h-3.5" />}
                                                 {item.type === 'other' && <LinkIcon className="w-3.5 h-3.5" />}
@@ -470,11 +472,23 @@ export function TopicEpisodeList({ episodes }: { episodes: Episode[] }) {
                                                      {item.name}
                                                  </a>
                                                  {item.description && (
-                                                    <span className="text-muted-foreground">
-                                                        - {item.description}
+                                                    <span className="text-muted-foreground leading-relaxed block mt-0.5 text-xs">
+                                                        {item.description}
                                                     </span>
                                                  )}
                                              </div>
+                                            
+                                            <div className="ml-auto shrink-0 relative z-30">
+                                                 <SaveToolButton 
+                                                    product={{
+                                                        name: item.name,
+                                                        link: item.url,
+                                                        description: item.description,
+                                                        category: item.type === 'tool' ? 'Tool' : item.type === 'book' ? 'Book' : 'Resource'
+                                                    }}
+                                                    className="w-5 h-5"
+                                                 />
+                                            </div>
                                          </div>
                                      ))
                                  ) : (

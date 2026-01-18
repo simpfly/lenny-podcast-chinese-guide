@@ -44,11 +44,11 @@ export function HomeClientSection({ totalActions, episodes }: { totalActions: nu
     return (
         <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-black tracking-tight flex items-center gap-2">
+                <h2 className="text-3xl font-black tracking-tight flex items-center gap-2">
                     <LayoutDashboard className="w-6 h-6 text-primary" />
-                    知识罗盘 <span className="text-muted-foreground font-normal text-sm ml-2">Your Knowledge Compass</span>
+                    知识罗盘
                 </h2>
-                <Link href="/checklist" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">
+                <Link href="/saved" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">
                     详细清单
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>

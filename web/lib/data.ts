@@ -132,7 +132,8 @@ export function getEpisodeMetadata(slug: string): Episode | null {
 
 
   // Extract Guest Intro (Core Identity ONLY)
-  const guestIntroSection = markdownBody.match(/## 🎤 嘉宾介绍\s*([\s\S]*?)\n---/);
+  // Robust match: stops at separator (---), next header (##), or end of string
+  const guestIntroSection = markdownBody.match(/## 🎤 嘉宾介绍\s*([\s\S]*?)(?:\n---|(?:\n##\s)|$)/);
   let guestIntro = "";
   let twitterUrl: string | undefined;
   let linkedinUrl: string | undefined;
@@ -141,15 +142,14 @@ export function getEpisodeMetadata(slug: string): Episode | null {
       const sectionContent = guestIntroSection[1];
       
       // Look for Twitter/X link
-      // Matches: - Twitter/X: [@user](https://twitter.com/user)
-      const twitterMatch = sectionContent.match(/Twitter\/X:\s*\[.*?\]\((.*?)\)/);
+      // Matches "Twitter:" or "Twitter/X:" or "Twitter / X:" followed by link
+      const twitterMatch = sectionContent.match(/(?:Twitter\/X|Twitter|Twitter \/ X)[:：]\s*\[.*?\]\((.*?)\)/i);
       if (twitterMatch) {
           twitterUrl = twitterMatch[1];
       }
 
       // Look for LinkedIn link
-      // Matches: - LinkedIn: [Name](https://linkedin.com/in/name)
-      const linkedinMatch = sectionContent.match(/LinkedIn:\s*\[.*?\]\((.*?)\)/i);
+      const linkedinMatch = sectionContent.match(/LinkedIn[:：]\s*\[.*?\]\((.*?)\)/i);
       if (linkedinMatch) {
           linkedinUrl = linkedinMatch[1];
       }
@@ -301,151 +301,163 @@ export function getAllProducts(): Product[] {
   const episodes = getAllEpisodes();
   const productMap = new Map<string, Product>();
 
+  // Canonical names for high-frequency tools to ensure perfect deduplication
+  const canonicalNames: Record<string, string> = {
+    "cursor": "Cursor",
+    "windsurf": "Windsurf",
+    "chatgpt": "ChatGPT",
+    "rewind": "Rewind",
+    "replit": "Replit",
+    "v0": "v0.dev",
+    "linear": "Linear",
+    "slack": "Slack",
+    "notion": "Notion",
+    "figma": "Figma",
+    "arc": "Arc Browser",
+    "raycast": "Raycast",
+    "copilot": "GitHub Copilot",
+    "claude": "Claude",
+    "perplexity": "Perplexity",
+    "coda": "Coda",
+    "reforge": "Reforge",
+    "miro": "Miro",
+  };
+
   episodes.forEach((episode) => {
     if (!episode.resources) return;
 
-    // Regex to capture various formats:
-    // **工具 1**: **Name**
-    // **推荐阅读**: **Title**
-    // Format: **Type**: **Name** or **Type**: [Name](Link)
-    // Then followed by description bullets
-    
-    // We strictly look for lines starting with **Prefix**:
+    // Items starting with **Prefix**:
     const items = episode.resources.split(/\n(?=\*\*)/);
 
     items.forEach(item => {
-        // Parse Name and Link
-        // Try to match: **Type**: **Name** or **Type**: [Name](Link)
-        // Groups: 1=Type, 2=Content(Name/Link)
         const headerMatch = item.match(/^\*\*(.*?)\*\*[:：]\s*(.*?)(\n|$)/);
         if (!headerMatch) return;
 
-        const typeRaw = headerMatch[1].trim(); // e.g. "工具 1", "推荐阅读"
+        const typeRaw = headerMatch[1].trim(); 
         let contentRaw = headerMatch[2].trim();
 
-        // Refine Category
         let category = "Resource";
         if (typeRaw.includes("工具")) category = "Tool";
         if (typeRaw.includes("书") || typeRaw.includes("阅读")) category = "Book";
 
-        // Parse Link and Name from contentRaw
-        let name = contentRaw;
-        let link = "";
+        // SPLIT logic: Handle "Cursor / Windsurf" or "Cursor & Replit"
+        // Avoid splitting on slashes that are part of a URL (http://) or inside markdown links
+        // Rule: If the raw content contains a hyperlink [Name](url), do NOT split it
+        const hasHyperlink = contentRaw.includes("[") && contentRaw.includes("](");
+        const rawNames = hasHyperlink ? [contentRaw] : contentRaw.split(/\s*[\/&|，,]\s*/);
 
-        // Check for markdown link [Name](url)
-        const linkMatch = contentRaw.match(/\[(.*?)\]\((.*?)\)/);
-        if (linkMatch) {
-            name = linkMatch[1];
-            link = linkMatch[2];
-        } else {
-            // Remove bolding if present **Name**
-            name = name.replace(/\*\*/g, "");
-        }
+        rawNames.forEach(rawName => {
+            let name = rawName.trim();
+            let link = "";
 
-        // Clean name further (remove bolding if left)
-        name = name.trim();
-
-        // Extract Description (everything after header)
-        // usually starts with - 说明: or just -
-        let description = item.replace(headerMatch[0], "").trim();
-
-        // IMPROVEMENT: If link is missing in header, look for it in the description
-        // sometimes it's formatted as - **官网**: [Link](url)
-        if (!link) {
-            const descLinkMatch = description.match(/\[(?:官网|链接|website|link|官方网站)\]\((.*?)\)/i);
-            if (descLinkMatch) {
-                link = descLinkMatch[1];
+            // 1. Extract Name/Link from markdown [Name](url)
+            // Improved regex to handle cases where the split rawName might be "[Name](url)"
+            const linkMatch = name.match(/\[(.*?)\]\((.*?)\)/);
+            if (linkMatch) {
+                name = linkMatch[1];
+                link = linkMatch[2];
             } else {
-                // Try to find any URL in the description
-                const urlMatch = description.match(/https?:\/\/[^\s\)]+/);
-                if (urlMatch) {
-                    link = urlMatch[0];
+                // If not a full link, it might be a partial fragment like "[Name]" or "Name]"
+                name = name.replace(/[\[\]]/g, "").replace(/\(https?:\/\/.*?\)/g, "").replace(/\*\*/g, "");
+            }
+
+            // 2. Normalization
+            name = name.replace(/^[-*•:]\s*/, "") // Strip leading markers and colons
+                       .replace(/[:：]\s*$/, "")     // Strip trailing colons
+                       .replace(/[\u{1F300}-\u{1F9FF}]/gu, "") // Strip emojis
+                       .trim();
+            
+            // Skip if name is empty or too short
+            if (name.length < 2) return;
+
+            // 3. Canonical Mapping
+            const lowerName = name.toLowerCase();
+            let finalName = name;
+            
+            // Add specific cases that shouldn't be grouped
+            const extendedCanonical = {
+                ...canonicalNames,
+                "notion calendar": "Notion Calendar",
+                "notion calendar/cron": "Notion Calendar"
+            };
+
+            const sortedKeys = Object.keys(extendedCanonical).sort((a, b) => b.length - a.length);
+            for (const key of sortedKeys) {
+                if (lowerName === key || lowerName.includes(key)) {
+                    finalName = extendedCanonical[key as keyof typeof extendedCanonical];
+                    break;
                 }
             }
-        }
 
-        // HARDCODED FALLBACKS: For high-frequency tools mentioned in the podcast
-        const toolLinks: Record<string, string> = {
-            "coda": "https://coda.io/lenny",
-            "linear": "https://linear.app/lenny",
-            "reforge": "https://www.reforge.com/",
-            "miro": "https://miro.com/",
-            "figma": "https://www.figma.com/",
-            "notion": "https://www.notion.so/",
-            "amplitude": "https://amplitude.com/",
-            "mixpanel": "https://mixpanel.com/",
-            "segment": "https://segment.com/",
-            "pendo": "https://www.pendo.io/",
-            "statsig": "https://www.statsig.com/",
-            "vanta": "https://www.vanta.com/",
-            "loom": "https://www.loom.com/",
-            "slack": "https://slack.com/",
-            "chatgpt": "https://chat.openai.com/",
-            "cursor": "https://www.cursor.com/",
-            "perplexity": "https://www.perplexity.ai/",
-        };
+            // 4. Description Extraction
+            let description = item.replace(headerMatch[0], "").trim();
 
-        const normalizedName = name.toLowerCase();
-        if (!link && toolLinks[normalizedName]) {
-            link = toolLinks[normalizedName];
-        }
-        
-        // VALIDATION: If name is generic like "官网", "链接", "Website", etc.
-        // Try to swap it with Category or find something better
-        const genericNames = ["官网", "链接", "website", "link", "官方网站"];
-        if (genericNames.includes(name.toLowerCase())) {
-            // If name is generic, try to see if the description contains a bolded name at the start
-            // e.g. - **Text-to-SQL**: description...
-            const descBoldMatch = description.match(/-\s*\*\*(.*?)\*\*[:：]?\s*/);
-            if (descBoldMatch) {
-                name = descBoldMatch[1].trim();
-                // Strip the extracted name from description
-                description = description.replace(descBoldMatch[0], "- ").trim();
+            if (!link) {
+                const descLinkMatch = description.match(/\[(?:官网|链接|website|link|官方网站)\]\((.*?)\)/i);
+                if (descLinkMatch) {
+                    link = descLinkMatch[1];
+                } else {
+                    const urlMatch = description.match(/https?:\/\/[^\s\)]+/);
+                    if (urlMatch) link = urlMatch[0];
+                }
             }
-        } else {
-            // Even if not generic, if description starts with the same name, strip it to avoid redundancy
-            const redundantMatch = description.match(new RegExp(`^-\\s*\\*\\*${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\*\\*[:：]?\\s*`, 'i'));
-            if (redundantMatch) {
-                description = description.replace(redundantMatch[0], "- ").trim();
-            }
-        }
 
-        // Clean common prefixes from description
-        description = description.replace(/^-\s*说明[:：]\s*/m, "");
-        description = description.replace(/^-\s*/m, "");
-        
-        // Remove trailing or inline markdown link indicators like [官网] or [链接]
-        description = description.replace(/\[(?:官网|链接|website|link|官方网站)\](\(.*\))?/gi, "").trim();
+            const toolLinks: Record<string, string> = {
+                "coda": "https://coda.io/lenny",
+                "linear": "https://linear.app/lenny",
+                "reforge": "https://www.reforge.com/",
+                "miro": "https://miro.com/",
+                "figma": "https://www.figma.com/",
+                "notion": "https://www.notion.so/",
+                "amplitude": "https://amplitude.com/",
+                "mixpanel": "https://mixpanel.com/",
+                "segment": "https://segment.com/",
+                "pendo": "https://www.pendo.io/",
+                "statsig": "https://www.statsig.com/",
+                "vanta": "https://www.vanta.com/",
+                "loom": "https://www.loom.com/",
+                "slack": "https://slack.com/",
+                "chatgpt": "https://chat.openai.com/",
+                "cursor": "https://www.cursor.com/",
+                "perplexity": "https://www.perplexity.ai/",
+            };
 
-        // Only take the first paragraph/line
-        description = description.split('\n')[0].trim();
-        // Remove trailing punctuation like 。 if it's the only thing left
-        description = description.replace(/[。\.]$/, "").trim();
+            const normLow = finalName.toLowerCase();
+            if (!link && toolLinks[normLow]) link = toolLinks[normLow];
+            
+            // Clean description
+            description = description.replace(/^-\s*说明[:：]\s*/m, "")
+                                     .replace(/^-\s*/m, "")
+                                     .replace(/\[(?:官网|链接|website|link|官方网站)\](\(.*\))?/gi, "")
+                                     .split('\n')[0].trim()
+                                     .replace(/[。\.]$/, "").trim();
 
-        // Key for deduplication: Lowercase name
-        const key = name.toLowerCase();
-
-        if (productMap.has(key)) {
-            const existing = productMap.get(key)!;
-            // Add episode if not present
-            if (!existing.mentionedIn.find(ep => ep.episodeSlug === episode.slug)) {
-                existing.mentionedIn.push({
-                    episodeSlug: episode.slug,
-                    episodeTitle: episode.guest
+            const key = finalName.toLowerCase();
+            if (productMap.has(key)) {
+                const existing = productMap.get(key)!;
+                if (!existing.mentionedIn.find(ep => ep.episodeSlug === episode.slug)) {
+                    existing.mentionedIn.push({
+                        episodeSlug: episode.slug,
+                        episodeTitle: episode.guest
+                    });
+                }
+                // Update description if current is missing or existing is placeholder
+                if (!existing.description && description) {
+                    existing.description = description;
+                }
+            } else {
+                productMap.set(key, {
+                    name: finalName,
+                    category,
+                    description,
+                    link,
+                    mentionedIn: [{
+                        episodeSlug: episode.slug,
+                        episodeTitle: episode.guest
+                    }]
                 });
             }
-        } else {
-            productMap.set(key, {
-                name,
-                category,
-                description,
-                link,
-                mentionedIn: [{
-                    episodeSlug: episode.slug,
-                    episodeTitle: episode.guest
-                }]
-            });
-        }
+        });
     });
   });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { SaveToolButton } from "@/components/save-tool-button";
 import { Episode } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -110,7 +111,7 @@ function ActionSection({ content, slug }: { content: string, slug: string }) {
                                 <li 
                                     className={cn(
                                         "flex items-start mb-2 group cursor-pointer select-none transition-all duration-300",
-                                        isChecked ? "opacity-30" : "opacity-100"
+                                        isChecked ? "opacity-100" : "opacity-100"
                                     )}
                                     onClick={(e) => {
                                         e.preventDefault();
@@ -121,7 +122,7 @@ function ActionSection({ content, slug }: { content: string, slug: string }) {
                                         <div className={cn(
                                             "w-4 h-4 rounded border flex items-center justify-center transition-all duration-300",
                                             isChecked 
-                                                ? "bg-primary border-primary text-primary-foreground scale-110 shadow-sm" 
+                                                ? "bg-green-600 border-green-600 text-white scale-110 shadow-sm" 
                                                 : "border-muted-foreground/20 bg-background group-hover:border-primary/50 group-hover:scale-105"
                                         )}>
                                             {isChecked && <Check className="w-2.5 h-2.5" strokeWidth={5} />}
@@ -282,6 +283,14 @@ function ResourceSection({ content }: { content: string }) {
                                                 </div>
                                             )}
                                         </div>
+                                    </div>
+                                    <div className="shrink-0">
+                                        <SaveToolButton product={{
+                                            name: res.title,
+                                            description: res.description,
+                                            link: res.link,
+                                            category: isBook ? "Book" : "Tool"
+                                        }} />
                                     </div>
                                 </li>
                             );
@@ -602,7 +611,9 @@ export function EpisodeDetailView({
                     <div className="flex gap-3">
                         {episode.twitterUrl && (
                             <a href={episode.twitterUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-muted rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-                                <Twitter className="w-5 h-5" />
+                                <svg viewBox="0 0 24 24" aria-hidden="true" className="w-5 h-5 fill-current">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                                </svg>
                             </a>
                         )}
                         {episode.linkedinUrl && (

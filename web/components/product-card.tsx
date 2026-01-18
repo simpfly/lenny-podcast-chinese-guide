@@ -16,10 +16,19 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const mentionCount = product.mentionedIn.length;
   const [isInStack, setIsInStack] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
 
-  useEffect(() => {
+  const checkIsInStack = () => {
     const stack = JSON.parse(localStorage.getItem("lenny_product_stack") || "[]");
     setIsInStack(stack.some((p: any) => p.name === product.name));
+  };
+
+  useEffect(() => {
+    checkIsInStack();
+    
+    const handleUpdate = () => checkIsInStack();
+    window.addEventListener("checklist-updated", handleUpdate);
+    return () => window.removeEventListener("checklist-updated", handleUpdate);
   }, [product.name]);
 
   const toggleStack = () => {
@@ -34,6 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
         link: product.link,
         description: product.description 
       }];
+      setJustAdded(true);
     }
     localStorage.setItem("lenny_product_stack", JSON.stringify(newStack));
     setIsInStack(!isInStack);
@@ -43,10 +53,18 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card className="flex flex-col h-full transition-all hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 group relative">
+    <Card className={cn(
+      "flex flex-col h-full transition-all hover:shadow-lg hover:-translate-y-1 group relative overflow-hidden",
+      isInStack 
+        ? "border-primary/50 shadow-md ring-1 ring-primary/20 bg-primary/[0.02]" 
+        : "hover:border-primary/50"
+    )}>
       <CardHeader className="flex-none space-y-3">
         <div className="flex items-start justify-between gap-2">
-          <Badge variant="outline" className="font-mono text-[10px] py-0 px-1.5 h-5">
+          <Badge variant="outline" className={cn(
+            "font-mono text-[10px] py-0 px-1.5 h-5",
+            isInStack ? "border-primary/30 text-primary bg-primary/5" : ""
+          )}>
             {product.category}
           </Badge>
           
@@ -56,19 +74,22 @@ export function ProductCard({ product }: ProductCardProps) {
             className={cn(
               "h-7 w-7 rounded-full transition-all opacity-0 group-hover:opacity-100 group/action",
               isInStack 
-                ? "text-primary bg-primary/10 opacity-100 hover:bg-destructive/10 hover:text-destructive" 
-                : "text-muted-foreground hover:text-primary hover:bg-muted"
+                ? (justAdded
+                    ? "text-primary opacity-100"
+                    : "text-primary opacity-100 hover:text-destructive")
+                : "text-muted-foreground hover:text-primary"
             )}
             onClick={(e) => {
               e.preventDefault();
               toggleStack();
             }}
+            onMouseLeave={() => setJustAdded(false)}
             title={isInStack ? "Remove from my stack" : "Add to my tool stack"}
           >
             {isInStack ? (
               <>
-                <Check className="h-4 w-4 group-hover/action:hidden" />
-                <Trash2 className="h-4 w-4 hidden group-hover/action:block" />
+                <Check className={cn("h-4 w-4", justAdded ? "" : "group-hover/action:hidden")} />
+                {!justAdded && <Trash2 className="h-4 w-4 hidden group-hover/action:block" />}
               </>
             ) : (
               <Plus className="h-4 w-4" />
@@ -103,20 +124,59 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
             <div className="flex flex-wrap gap-1.5">
               {product.mentionedIn.map((ep) => (
-                <Link 
-                  key={ep.episodeSlug} 
-                  href={`/episode/${ep.episodeSlug}`}
-                  className="transition-transform hover:scale-105 active:scale-95"
-                >
-                  <Badge variant="secondary" className="px-2 py-0.5 text-[11px] font-medium cursor-pointer bg-muted hover:bg-primary hover:text-primary-foreground transition-colors border-none">
-                    {ep.episodeTitle}
-                  </Badge>
-                </Link>
+                <MentionedEpisodeBadge key={ep.episodeSlug} episode={ep} />
               ))}
             </div>
           </div>
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+function MentionedEpisodeBadge({ episode }: { episode: any }) {
+  const [isEpisodeSaved, setIsEpisodeSaved] = useState(false);
+  
+  const checkSaved = () => {
+    const storageKey = `lenny_actions_${episode.episodeSlug}`;
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      try {
+        const state = JSON.parse(saved);
+        setIsEpisodeSaved(Object.values(state).some(v => v === true));
+      } catch (e) {
+        console.error("Error parsing episode state", e);
+      }
+    } else {
+      setIsEpisodeSaved(false);
+    }
+  };
+
+  useEffect(() => {
+    checkSaved();
+    
+    // Listen for global checklist updates
+    const handleUpdate = () => checkSaved();
+    window.addEventListener("checklist-updated", handleUpdate);
+    return () => window.removeEventListener("checklist-updated", handleUpdate);
+  }, [episode.episodeSlug]);
+
+  return (
+    <Link 
+      href={`/episode/${episode.episodeSlug}`}
+      className="transition-transform hover:scale-105 active:scale-95"
+    >
+      <Badge 
+        variant={isEpisodeSaved ? "default" : "secondary"} 
+        className={cn(
+          "px-2 py-0.5 text-[11px] font-medium cursor-pointer transition-colors border-none",
+          isEpisodeSaved 
+            ? "bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/20" 
+            : "bg-muted hover:bg-primary hover:text-primary-foreground"
+        )}
+      >
+        {episode.episodeTitle}
+      </Badge>
+    </Link>
   );
 }

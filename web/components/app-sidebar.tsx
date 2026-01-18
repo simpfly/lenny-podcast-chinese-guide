@@ -48,7 +48,7 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
           >
             <Package className="h-4 w-4" />
-            Product Wall
+            Products
           </Link>
           <Link
             href="/saved"
@@ -68,7 +68,13 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
           <div className="px-3 py-1 text-xs font-semibold uppercase text-muted-foreground">
             Topics
           </div>
-          {categories.map((category) => (
+          <Link
+            href="/search"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+          >
+            <span className="truncate">All</span>
+          </Link>
+          {categories.slice(0, 15).map((category) => (
             <Link
               key={category.slug}
               href={`/topic/${category.slug}`}
@@ -77,6 +83,28 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
               <span className="truncate">{category.title}</span>
             </Link>
           ))}
+          <div className="my-2 border-t" />
+          <div className="px-3 py-1 text-xs font-semibold uppercase text-muted-foreground">
+            More
+          </div>
+          <Link
+            href="https://refoundai.com/lenny-skills/browse/#product-management"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+          >
+            <History className="h-4 w-4" />
+            Browse Skills | Refound AI
+          </Link>
+          <Link
+            href="https://lennygallery.manus.space/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+          >
+            <History className="h-4 w-4" />
+            Lenny's Podcast Infographic Gallery
+          </Link>
         </nav>
       </ScrollArea>
     </div>

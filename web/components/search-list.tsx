@@ -43,7 +43,7 @@ export function SearchList({ episodes }: { episodes: Episode[] }) {
         <Input
           type="search"
           placeholder="Filter episodes..."
-          className="w-full bg-background pl-8"
+          className="w-full bg-background pl-8 h-11"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           autoFocus
@@ -56,7 +56,10 @@ export function SearchList({ episodes }: { episodes: Episode[] }) {
         </p>
       )}
 
-      <TopicEpisodeList episodes={filteredEpisodes} />
+      <TopicEpisodeList 
+        episodes={filteredEpisodes} 
+        initialViewMode={(searchParams.get("v") as any) || "keypoints"} 
+      />
       
       {filteredEpisodes.length === 0 && (
           <div className="p-8 text-center text-muted-foreground border rounded-lg border-dashed">

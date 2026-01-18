@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SaveToolButton } from "@/components/save-tool-button";
 import { Episode } from "@/lib/data";
 import { parseActions } from "@/lib/action-parser";
 import Link from "next/link";
@@ -20,7 +21,9 @@ import {
   Users,
   Twitter,
   Linkedin,
-  Plus
+  Plus,
+  Copy,
+  Check as CheckIcon
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,6 +31,7 @@ import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BuilderCard } from "@/components/builder-card";
 
 interface ChecklistViewProps {
   episodes: Episode[];
@@ -47,6 +51,8 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
   const [productStack, setProductStack] = useState<any[]>([]);
   const [savedBuilders, setSavedBuilders] = useState<any[]>([]); 
   const [isLoading, setIsLoading] = useState(true);
+  const [copiedTab, setCopiedTab] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
     const loadedActions: CompletedAction[] = [];
@@ -108,6 +114,24 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
 
     setCompletedActions(loadedActions);
     setIsLoading(false);
+
+    // Event listener for syncing changes across tabs/windows or components
+    const handleStorageUpdate = (e: any) => {
+        // Reload builders
+        try {
+             const builders = JSON.parse(localStorage.getItem("lenny_saved_builders") || "[]");
+             setSavedBuilders(builders);
+        } catch (err) {
+            console.error(err);
+        }
+
+        // Reload actions
+        // (For actions, it's more complex as we need to iterate episodes, but the main goal here is builders)
+        // Ideally we refactor state loading into a reusable function
+    };
+
+    window.addEventListener("checklist-updated", handleStorageUpdate);
+    return () => window.removeEventListener("checklist-updated", handleStorageUpdate);
   }, [episodes]);
 
   const removeAction = (episodeSlug: string, actionId: string) => {
@@ -140,15 +164,90 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
     }
   };
 
-  const removeFromBuilders = (slug: string) => {
-    try {
-        const builders = JSON.parse(localStorage.getItem("lenny_saved_builders") || "[]");
-        const newBuilders = builders.filter((b: any) => b.slug !== slug);
-        localStorage.setItem("lenny_saved_builders", JSON.stringify(newBuilders));
-        setSavedBuilders(newBuilders);
-        window.dispatchEvent(new CustomEvent("checklist-updated"));
-    } catch (e) {
-        console.error("Failed to remove from builders", e);
+  // 生成 Builders 的 Markdown
+  const generateBuildersMarkdown = () => {
+    let md = `## Builders\n`;
+    savedBuilders.forEach(builder => {
+      const normalizeSlug = (s: string) => s.replace(/\/$/, "").toLowerCase();
+      const fullEpisode = episodes.find(e => normalizeSlug(e.slug) === normalizeSlug(builder.slug));
+      const guest = builder.guest || fullEpisode?.guest;
+      const intro = fullEpisode?.guestIntro || builder.title || "";
+      md += `- **${guest}**：${intro}\n`;
+      if (fullEpisode?.twitterUrl) md += `  - [X (Twitter)](${fullEpisode.twitterUrl})\n`;
+      if (fullEpisode?.linkedinUrl) md += `  - [LinkedIn](${fullEpisode.linkedinUrl})\n`;
+    });
+    return md.trim() + "\n";
+  };
+
+  // 生成 Tools 的 Markdown
+  const generateToolsMarkdown = () => {
+    let md = `## My Stack\n`;
+    const categories = [...new Set(productStack.map(p => p.category || "Tool"))];
+    categories.forEach(cat => {
+      const items = productStack.filter(p => (p.category || "Tool") === cat);
+      if (items.length > 0) {
+        md += `### ${cat.toLowerCase()}\n`;
+        items.forEach(item => {
+          md += `- [${item.name}](${item.link}): ${item.description}\n`;
+        });
+        md += `\n`;
+      }
+    });
+    return md.trim() + "\n";
+  };
+
+  // 生成 Actions 的 Markdown
+  const generateActionsMarkdown = () => {
+    let md = `## Actions\n`;
+    const categories = ["今天", "本周", "深入"];
+    const categoryMap: Record<string, string> = { "今天": "Do It Today (立即执行)", "本周": "This Week (本周尝试)", "深入": "Deep Dive (深度思考)" };
+    categories.forEach(cat => {
+      const actions = completedActions.filter(a => a.rawCategory === cat);
+      if (actions.length > 0) {
+        md += `### ${categoryMap[cat] || cat}\n`;
+        actions.forEach(action => {
+          md += `- [x] ${action.text} (From: ${action.episodeTitle})\n`;
+        });
+        md += `\n`;
+      }
+    });
+    return md.trim() + "\n";
+  };
+
+  // 复制指定分栏的 Markdown
+  const copyTabMarkdown = (tab: 'all' | 'builders' | 'tools' | 'actions') => {
+    let md = '';
+    switch (tab) {
+      case 'all':
+        md = `# My Lenny's Podcast Collection\n\n`;
+        if (savedBuilders.length > 0) md += generateBuildersMarkdown() + "\n";
+        if (productStack.length > 0) md += generateToolsMarkdown() + "\n";
+        if (completedActions.length > 0) md += generateActionsMarkdown();
+        break;
+      case 'builders':
+        md = generateBuildersMarkdown();
+        break;
+      case 'tools':
+        md = generateToolsMarkdown();
+        break;
+      case 'actions':
+        md = generateActionsMarkdown();
+        break;
+    }
+    navigator.clipboard.writeText(md.trim() + "\n").then(() => {
+      setCopiedTab(tab);
+      setTimeout(() => setCopiedTab(null), 2000);
+    });
+  };
+
+  // 获取复制按钮的文本
+  const getCopyButtonText = (tab: 'all' | 'builders' | 'tools' | 'actions', isCopied: boolean) => {
+    if (!isCopied) return 'Copy as Markdown';
+    switch (tab) {
+      case 'all': return 'Copied All!';
+      case 'builders': return 'Copied Builders!';
+      case 'tools': return 'Copied Tools!';
+      case 'actions': return 'Copied Actions!';
     }
   };
 
@@ -191,64 +290,73 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
   };
 
   return (
-    <div className="space-y-8 pb-12 w-full max-w-6xl mx-auto">
-        {/* Dashboard Header */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <StatsCard 
-                icon={<CheckSquare className="w-5 h-5 text-blue-500" />}
-                label="Action Items"
-                value={completedActions.length}
-                color="bg-blue-500/10 text-blue-600"
-            />
-            <StatsCard 
-                icon={<Package className="w-5 h-5 text-purple-500" />}
-                label="Tools Collected"
-                value={productStack.length}
-                color="bg-purple-500/10 text-purple-600"
-            />
-            <StatsCard 
-                icon={<Users className="w-5 h-5 text-emerald-500" />}
-                label="Builders Saved"
-                value={savedBuilders.length}
-                color="bg-emerald-500/10 text-emerald-600"
-            />
+    <div className="space-y-6 pb-12 w-full">
+        {/* Header with Title and Copy Button */}
+        <div className="space-y-2">
+            <div className="flex items-center justify-between">
+                <h1 className="text-4xl font-black tracking-tight">Saved</h1>
+                <Button 
+                    onClick={() => copyTabMarkdown(activeTab as 'all' | 'builders' | 'tools' | 'actions')} 
+                    variant="outline" 
+                    size="sm"
+                    className={cn(
+                        "gap-2 transition-all duration-300",
+                        copiedTab ? "border-green-500 text-green-600 bg-green-50" : ""
+                    )}
+                >
+                    {copiedTab ? (
+                        <><CheckIcon className="w-4 h-4" /> {getCopyButtonText(copiedTab as 'all' | 'builders' | 'tools' | 'actions', true)}</>
+                    ) : (
+                        <><Copy className="w-4 h-4" /> Copy as Markdown</>
+                    )}
+                </Button>
+            </div>
+            <p className="text-muted-foreground text-lg">
+                Track your progress, manage your tools stack, and review actionable insights from the podcast.
+            </p>
         </div>
 
-        <Tabs defaultValue="all" className="w-full">
+        <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="w-full justify-start h-12 p-1 bg-muted/50 rounded-xl mb-6 overflow-x-auto">
                 <TabsTrigger value="all" className="rounded-lg px-4 gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm">
                     <LayoutDashboard className="w-4 h-4" /> All Items
-                </TabsTrigger>
-                <TabsTrigger value="actions" className="rounded-lg px-4 gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm">
-                    <CheckSquare className="w-4 h-4" /> Actions
-                    <Badge variant="secondary" className="ml-1 h-5 px-1.5 min-w-[1.25rem]">{completedActions.length}</Badge>
-                </TabsTrigger>
-                <TabsTrigger value="tools" className="rounded-lg px-4 gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm">
-                    <Wrench className="w-4 h-4" /> Tools
-                    <Badge variant="secondary" className="ml-1 h-5 px-1.5 min-w-[1.25rem]">{productStack.length}</Badge>
                 </TabsTrigger>
                 <TabsTrigger value="builders" className="rounded-lg px-4 gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm">
                     <Users className="w-4 h-4" /> Builders
                     <Badge variant="secondary" className="ml-1 h-5 px-1.5 min-w-[1.25rem]">{savedBuilders.length}</Badge>
                 </TabsTrigger>
+                <TabsTrigger value="tools" className="rounded-lg px-4 gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                    <Wrench className="w-4 h-4" /> Tools
+                    <Badge variant="secondary" className="ml-1 h-5 px-1.5 min-w-[1.25rem]">{productStack.length}</Badge>
+                </TabsTrigger>
+                <TabsTrigger value="actions" className="rounded-lg px-4 gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                    <CheckSquare className="w-4 h-4" /> Actions
+                    <Badge variant="secondary" className="ml-1 h-5 px-1.5 min-w-[1.25rem]">{completedActions.length}</Badge>
+                </TabsTrigger>
             </TabsList>
 
             <TabsContent value="all" className="space-y-8 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
-                {/* Recent Actions */}
-                {completedActions.length > 0 && (
+                 {/* Recent Builders */}
+                 {savedBuilders.length > 0 && (
                     <section className="space-y-4">
                         <div className="flex items-center justify-between">
                             <h2 className="text-lg font-semibold flex items-center gap-2">
-                                <Rocket className="w-4 h-4 text-primary" /> Recent Actions
+                                <Users className="w-4 h-4 text-primary" /> Saved Builders
                             </h2>
-                            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => document.getElementById('tab-trigger-actions')?.click()}>
-                                View All
-                            </Button>
                         </div>
-                        <div className="grid gap-3">
-                            {completedActions.slice(0, 3).map(action => (
-                                <ActionCard key={`${action.episodeSlug}-${action.id}`} action={action} onRemove={removeAction} />
-                            ))}
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {savedBuilders.slice(0, 3).map(builder => {
+                                // Normalize slugs for comparison
+                                const normalizeSlug = (s: string) => s.replace(/\/$/, "").toLowerCase();
+                                const fullEpisode = episodes.find(e => normalizeSlug(e.slug) === normalizeSlug(builder.slug));
+                                const mergedBuilder = fullEpisode ? { ...builder, ...fullEpisode } : builder;
+
+                                return (
+                                    <div key={builder.slug} className="h-full">
+                                        <BuilderCard episode={mergedBuilder} />
+                                    </div>
+                                );
+                            })}
                         </div>
                     </section>
                 )}
@@ -269,17 +377,20 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
                     </section>
                 )}
 
-                 {/* Recent Builders */}
-                 {savedBuilders.length > 0 && (
+                {/* Recent Actions */}
+                {completedActions.length > 0 && (
                     <section className="space-y-4">
                         <div className="flex items-center justify-between">
                             <h2 className="text-lg font-semibold flex items-center gap-2">
-                                <Users className="w-4 h-4 text-primary" /> Saved Builders
+                                <Rocket className="w-4 h-4 text-primary" /> Recent Actions
                             </h2>
+                            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => (document.querySelector('[data-value="actions"]') as HTMLButtonElement)?.click()}>
+                                View All
+                            </Button>
                         </div>
-                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            {savedBuilders.slice(0, 3).map(builder => (
-                                <BuilderCard key={builder.slug} builder={builder} onRemove={removeFromBuilders} />
+                        <div className="grid gap-3">
+                            {completedActions.slice(0, 3).map(action => (
+                                <ActionCard key={`${action.episodeSlug}-${action.id}`} action={action} onRemove={removeAction} />
                             ))}
                         </div>
                     </section>
@@ -326,7 +437,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
                  {completedActions.length === 0 && <EmptyState tab="Actions" />}
             </TabsContent>
 
-            <TabsContent value="tools" className="animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
+            <TabsContent value="tools" className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
                 {productStack.length > 0 ? (
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {productStack.map(product => (
@@ -336,18 +447,19 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
                 ) : <EmptyState tab="Tools" />}
             </TabsContent>
 
-            <TabsContent value="builders" className="animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
+            <TabsContent value="builders" className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
                 {savedBuilders.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {savedBuilders.map(builder => {
-                            const fullEpisode = episodes.find(e => e.slug === builder.slug);
+                            // Normalize slugs for comparison (handle potential trailing slashes and case)
+                            const normalizeSlug = (s: string) => s.replace(/\/$/, "").toLowerCase();
+                            const fullEpisode = episodes.find(e => normalizeSlug(e.slug) === normalizeSlug(builder.slug));
                             const mergedBuilder = fullEpisode ? { ...builder, ...fullEpisode } : builder;
+                            
                             return (
-                                <BuilderCard 
-                                    key={builder.slug} 
-                                    builder={mergedBuilder} 
-                                    onRemove={removeFromBuilders} 
-                                />
+                                <div key={builder.slug} className="h-full">
+                                    <BuilderCard episode={mergedBuilder} />
+                                </div>
                             );
                         })}
                     </div>
@@ -360,24 +472,10 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
 
 // Sub-components
 
-function StatsCard({ icon, label, value, color }: { icon: React.ReactNode, label: string, value: number, color: string }) {
-    return (
-        <div className="bg-card border rounded-xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-            <div className={cn("p-3 rounded-xl flex items-center justify-center bg-muted", color)}>
-                {icon}
-            </div>
-            <div>
-                <div className="text-2xl font-bold leading-none mb-1">{value}</div>
-                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</div>
-            </div>
-        </div>
-    );
-}
-
 function ActionCard({ action, onRemove }: { action: CompletedAction, onRemove: (slug: string, id: string) => void }) {
     return (
         <div className="group bg-card hover:bg-muted/30 border rounded-xl p-4 flex items-start gap-4 transition-colors relative">
-             <div className="mt-1 w-5 h-5 rounded-full bg-green-500/10 text-green-600 flex items-center justify-center shrink-0 border border-green-500/20">
+             <div className="mt-1 w-5 h-5 rounded-full bg-green-600 border-green-600 text-white flex items-center justify-center shrink-0 border shadow-sm">
                 <Check className="w-3 h-3" strokeWidth={3} />
             </div>
             <div className="flex-1 min-w-0">
@@ -421,16 +519,10 @@ function ToolCard({ product, onRemove }: { product: any, onRemove: (name: string
                     {product.category || "TOOL"}
                 </Badge>
                 <div className="flex items-center gap-1">
-                    <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="h-8 w-8 rounded-full bg-muted hover:bg-destructive/10 hover:text-destructive text-foreground transition-all group/action"
-                        onClick={() => onRemove(product.name)}
-                        title="Remove from stack"
-                    >
-                        <Check className="w-4 h-4 group-hover/action:hidden" />
-                        <Trash2 className="w-4 h-4 hidden group-hover/action:block" />
-                    </Button>
+                    <SaveToolButton 
+                        product={product} 
+                        className="h-8 w-8 rounded-full"
+                    />
                 </div>
             </div>
             <div>
@@ -453,115 +545,6 @@ function ToolCard({ product, onRemove }: { product: any, onRemove: (name: string
                     {product.description}
                 </p>
             </div>
-        </div>
-    );
-}
-
-function BuilderCard({ builder, onRemove }: { builder: any, onRemove: (slug: string) => void }) {
-    return (
-        <div className="group h-full relative">
-            <Card className="h-full transition-all duration-300 hover:shadow-lg hover:border-primary/50 flex flex-col overflow-hidden bg-card/50 hover:bg-card relative">
-                {/* Overlay Link for the entire card */}
-                <Link 
-                    href={`/episode/${builder.slug}`} 
-                    className="absolute inset-0 z-0"
-                    prefetch={false}
-                >
-                    <span className="sr-only">View {builder.guest}'s Episode</span>
-                </Link>
-                
-                <CardHeader className="pb-4 relative z-10 pointer-events-none">
-                    <div className="flex justify-between items-start gap-4">
-                        <div className="flex-1">
-                             <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-1">
-                                {builder.guest}
-                            </CardTitle>
-                        </div>
-                        <div className="flex gap-2 shrink-0 pointer-events-auto">
-                            {builder.twitterUrl && (
-                                <div 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        window.open(builder.twitterUrl, '_blank');
-                                    }}
-                                    className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                                    title="Open Twitter"
-                                >
-                                    <Twitter className="w-4 h-4" />
-                                </div>
-                            )}
-                            {builder.linkedinUrl && (
-                                <div 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        window.open(builder.linkedinUrl, '_blank');
-                                    }}
-                                    className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                                    title="Open LinkedIn"
-                                >
-                                    <Linkedin className="w-4 h-4" />
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardContent className="flex-1 flex flex-col justify-between relative z-10 pointer-events-none">
-                    <div className="space-y-4">
-                         {builder.guestIntro && (
-                            <div className="text-sm text-muted-foreground line-clamp-3 leading-relaxed [&_strong]:font-bold [&_b]:font-bold pointer-events-auto">
-                                <ReactMarkdown components={{
-                                    p: ({children}) => <p className="mb-0 inline">{children}</p>,
-                                    a: ({href, children}) => (
-                                        <a 
-                                            href={href} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer" 
-                                            className="text-primary hover:underline relative z-20"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            {children}
-                                        </a>
-                                    )
-                                }}>
-                                    {builder.guestIntro}
-                                </ReactMarkdown>
-                            </div>
-                         )}
-                         {!builder.guestIntro && (
-                            <div className="text-sm text-muted-foreground/50 italic pointer-events-auto">
-                                No intro available.
-                            </div>
-                         )}
-                    </div>
-                    
-                    <div className="mt-6 pt-4 border-t flex items-center justify-between pointer-events-auto">
-                        {/* Left: View Episode Link */}
-                        <Link 
-                            href={`/episode/${builder.slug}`} 
-                            className="group/link flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
-                        >
-                            View Episode <ExternalLink className="w-3 h-3 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
-                        </Link>
-                        
-                        {/* Right: Remove Button (Check style) */}
-                        <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-all absolute top-2 right-2 z-10 group/action"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                onRemove(builder.slug);
-                            }}
-                        >
-                            <Check className="w-4 h-4 text-primary group-hover/action:hidden" />
-                            <Trash2 className="w-4 h-4 hidden group-hover/action:block" />
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
         </div>
     );
 }

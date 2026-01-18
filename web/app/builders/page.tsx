@@ -1,5 +1,5 @@
 import { getAllEpisodes } from "@/lib/data";
-import { BuilderCard } from "@/components/builder-card";
+import { BuilderList } from "@/components/builder-list";
 
 export const metadata = {
   title: "Builders | Lenny's Podcast",
@@ -16,21 +16,12 @@ export default function BuildersPage() {
   });
 
   return (
-    <div className="container mx-auto py-12 px-4 max-w-7xl">
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">
-          The Builders
-        </h1>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          Meet the product leaders, founders, and experts sharing their hard-won wisdom.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sortedEpisodes.map((episode) => (
-          <BuilderCard key={episode.slug} episode={episode} />
-        ))}
-      </div>
+    <div className="py-4">
+      <BuilderList 
+        initialEpisodes={sortedEpisodes} 
+        title="The Builders"
+        description="Meet the product leaders, founders, and experts sharing their hard-won wisdom."
+      />
     </div>
   );
 }

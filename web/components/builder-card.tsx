@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Twitter, Linkedin, ExternalLink, Plus, Check, Trash2 } from "lucide-react";
+import { Twitter, Linkedin, Plus, Check, Trash2 } from "lucide-react";
 import { Episode } from "@/lib/data";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ interface BuilderCardProps {
 
 export function BuilderCard({ episode }: BuilderCardProps) {
   const [isAdded, setIsAdded] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
 
   useEffect(() => {
     try {
@@ -41,6 +42,7 @@ export function BuilderCard({ episode }: BuilderCardProps) {
           guestIntro: episode.guestIntro,
           date: episode.date // Keep date in storage just in case
         }];
+        setJustAdded(true);
       }
 
       localStorage.setItem("lenny_saved_builders", JSON.stringify(newSaved));
@@ -71,32 +73,29 @@ export function BuilderCard({ episode }: BuilderCardProps) {
               </CardTitle>
             </div>
             <div className="flex gap-2 shrink-0 pointer-events-auto">
-              {episode.twitterUrl && (
-                <div 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.open(episode.twitterUrl, '_blank');
-                  }}
-                  className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                  title="Open Twitter"
-                >
-                  <Twitter className="w-4 h-4" />
-                </div>
-              )}
-              {episode.linkedinUrl && (
-                <div 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.open(episode.linkedinUrl, '_blank');
-                  }}
-                  className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                  title="Open LinkedIn"
-                >
-                  <Linkedin className="w-4 h-4" />
-                </div>
-              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-8 w-8 transition-all opacity-0 group-hover:opacity-100 group/action ${
+                    isAdded 
+                    ? (justAdded 
+                        ? "text-primary hover:bg-transparent" 
+                        : "text-primary hover:text-destructive hover:bg-transparent")
+                    : "text-muted-foreground hover:text-foreground hover:bg-transparent"
+                }`}
+                onClick={toggleChecklist}
+                onMouseLeave={() => setJustAdded(false)}
+                title={isAdded ? "Unsave Builder" : "Save Builder"}
+              >
+                {isAdded ? (
+                  <>
+                     <Check className={`w-4 h-4 ${justAdded ? "" : "group-hover/action:hidden"}`} />
+                     {!justAdded && <Trash2 className="w-4 h-4 hidden group-hover/action:block" />}
+                  </>
+                ) : (
+                  <Plus className="w-4 h-4" />
+                )}
+              </Button>
             </div>
           </div>
         </CardHeader>
@@ -129,36 +128,37 @@ export function BuilderCard({ episode }: BuilderCardProps) {
             )}
           </div>
           
-          <div className="mt-6 pt-4 border-t flex items-center justify-between pointer-events-auto">
-              {/* Left: View Episode Link */}
-              <Link 
-                href={`/episode/${episode.slug}`} 
-                className="group/link flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
-              >
-                  View Episode <ExternalLink className="w-3 h-3 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
-              </Link>
-              
-              {/* Right: Add to Checklist Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className={`h-8 w-8 transition-colors group/action ${
-                    isAdded 
-                    ? "text-primary hover:text-destructive hover:bg-destructive/10" 
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-                onClick={toggleChecklist}
-                title={isAdded ? "Unsave Builder" : "Save Builder"}
-              >
-                {isAdded ? (
-                  <>
-                     <Check className="w-4 h-4 group-hover/action:hidden" />
-                     <Trash2 className="w-4 h-4 hidden group-hover/action:block" />
-                  </>
-                ) : (
-                  <Plus className="w-4 h-4" />
-                )}
-              </Button>
+          <div className="mt-6 pt-4 border-t flex items-center justify-between pointer-events-auto min-h-[3rem]">
+              <div className="flex gap-2 shrink-0">
+              {episode.twitterUrl && (
+                <div 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(episode.twitterUrl, '_blank');
+                  }}
+                  className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  title="Open X (Twitter)"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true" className="w-4 h-4 fill-current">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                  </svg>
+                </div>
+              )}
+              {episode.linkedinUrl && (
+                <div 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(episode.linkedinUrl, '_blank');
+                  }}
+                  className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  title="Open LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </div>
+              )}
+              </div>
           </div>
         </CardContent>
       </Card>

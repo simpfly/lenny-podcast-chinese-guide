@@ -1,6 +1,5 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { ExternalLink, Tag } from "lucide-react";
 import Link from "next/link";
 import { Product } from "@/lib/data";
@@ -25,8 +24,20 @@ export function ProductCard({ product }: ProductCardProps) {
             </Badge>
           )}
         </div>
-        <CardTitle className="text-xl font-bold line-clamp-1 group-hover:text-primary transition-colors">
-          {product.name}
+        <CardTitle className="text-xl font-bold line-clamp-1 transition-colors">
+          {product.link ? (
+            <a 
+              href={product.link} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-primary hover:underline underline-offset-4 decoration-primary/30 inline-flex items-center gap-1.5"
+            >
+              {product.name}
+              <ExternalLink className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </a>
+          ) : (
+            product.name
+          )}
         </CardTitle>
         <CardDescription className="line-clamp-2 min-h-[40px] text-sm leading-relaxed">
           {product.description || "No description provided."}
@@ -55,20 +66,6 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex-none pt-4 border-t bg-muted/30">
-        {product.link ? (
-          <Button variant="default" size="sm" className="w-full gap-2 shadow-sm" asChild>
-            <a href={product.link} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="h-4 w-4" />
-              Visit Website
-            </a>
-          </Button>
-        ) : (
-          <Button variant="outline" size="sm" className="w-full gap-2 opacity-50 cursor-not-allowed" disabled>
-            No Link Available
-          </Button>
-        )}
-      </CardFooter>
     </Card>
   );
 }

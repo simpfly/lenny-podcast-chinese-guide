@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { getAllCategories } from "@/lib/data";
+import { getAllCategories, getAllChecklistItemsCount } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Home, BookOpen, Tag, History, CheckSquare, Package } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export function AppSidebar() {
   const categories = getAllCategories();
+  const checklistCount = getAllChecklistItemsCount();
 
   return (
     <div className="flex h-full w-full flex-col border-r bg-sidebar text-sidebar-foreground">
@@ -40,10 +42,17 @@ export function AppSidebar() {
           </Link>
           <Link
             href="/checklist"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+            className="flex items-center justify-between rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
           >
-            <CheckSquare className="h-4 w-4" />
-            Checklist
+            <div className="flex items-center gap-3">
+              <CheckSquare className="h-4 w-4" />
+              Checklist
+            </div>
+            {checklistCount > 0 && (
+              <Badge variant="secondary" className="px-1.5 py-0 h-4 min-w-[1.2rem] flex justify-center text-[10px] font-bold">
+                {checklistCount}
+              </Badge>
+            )}
           </Link>
           <Link
             href="/products"

@@ -319,6 +319,18 @@ export function getAllProducts(): Product[] {
         // Clean name further (remove bolding if left)
         name = name.trim();
 
+        // VALIDATION: If name is generic like "官网", "链接", "Website", etc.
+        // Try to swap it with Category or find something better
+        const genericNames = ["官网", "链接", "website", "link", "官方网站"];
+        if (genericNames.includes(name.toLowerCase())) {
+            // If name is generic, try to see if the description contains a bolded name at the start
+            // e.g. - **Text-to-SQL**: description...
+            const descBoldMatch = item.match(/-\s*\*\*(.*?)\*\*/);
+            if (descBoldMatch) {
+                name = descBoldMatch[1];
+            }
+        }
+
         // Extract Description (everything after header)
         // usually starts with - 说明: or just -
         let description = item.replace(headerMatch[0], "").trim();
@@ -357,6 +369,26 @@ export function getAllProducts(): Product[] {
 
   return Array.from(productMap.values()).sort((a, b) => b.mentionedIn.length - a.mentionedIn.length);
 }
+
+
+export function getAllChecklistItemsCount(): number {
+  const episodes = getAllEpisodes();
+  let count = 0;
+
+  episodes.forEach((episode) => {
+    if (!episode.actions) return;
+
+    // Count lines starting with - [ ] or - [x] or - [/]
+    // Uses a regex that matches the common markdown checkbox pattern
+    const items = episode.actions.match(/-\s*\[[\s/xX]\]/g);
+    if (items) {
+      count += items.length;
+    }
+  });
+
+  return count;
+}
+
 
 export function getAllTopicsWithCounts(): { topic: string; count: number }[] {
   const episodes = getAllEpisodes();

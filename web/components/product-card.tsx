@@ -1,8 +1,13 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Tag } from "lucide-react";
+import { ExternalLink, Tag, Plus, Check } from "lucide-react";
 import Link from "next/link";
 import { Product } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -10,14 +15,56 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const mentionCount = product.mentionedIn.length;
+  const [isInStack, setIsInStack] = useState(false);
+
+  useEffect(() => {
+    const stack = JSON.parse(localStorage.getItem("lenny_product_stack") || "[]");
+    setIsInStack(stack.some((p: any) => p.name === product.name));
+  }, [product.name]);
+
+  const toggleStack = () => {
+    const stack = JSON.parse(localStorage.getItem("lenny_product_stack") || "[]");
+    let newStack;
+    if (isInStack) {
+      newStack = stack.filter((p: any) => p.name !== product.name);
+    } else {
+      newStack = [...stack, { 
+        name: product.name, 
+        category: product.category, 
+        link: product.link,
+        description: product.description 
+      }];
+    }
+    localStorage.setItem("lenny_product_stack", JSON.stringify(newStack));
+    setIsInStack(!isInStack);
+    
+    // Trigger count update in sidebar
+    window.dispatchEvent(new CustomEvent("checklist-updated"));
+  };
 
   return (
-    <Card className="flex flex-col h-full transition-all hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 group">
+    <Card className="flex flex-col h-full transition-all hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 group relative">
       <CardHeader className="flex-none space-y-3">
         <div className="flex items-start justify-between gap-2">
           <Badge variant="outline" className="font-mono text-[10px] py-0 px-1.5 h-5">
             {product.category}
           </Badge>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn(
+              "h-7 w-7 rounded-full transition-all opacity-0 group-hover:opacity-100",
+              isInStack ? "text-primary bg-primary/10 opacity-100" : "text-muted-foreground hover:text-primary hover:bg-muted"
+            )}
+            onClick={(e) => {
+              e.preventDefault();
+              toggleStack();
+            }}
+            title={isInStack ? "Remove from my stack" : "Add to my tool stack"}
+          >
+            {isInStack ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+          </Button>
         </div>
         <CardTitle className="text-xl font-bold line-clamp-1 transition-colors">
           {product.link ? (

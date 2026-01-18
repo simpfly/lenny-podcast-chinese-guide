@@ -9,6 +9,8 @@ export function useChecklistCount(episodes: Episode[]) {
   useEffect(() => {
     const calculateCount = () => {
       let total = 0;
+      
+      // Count completed episode actions
       episodes.forEach((episode) => {
         const storageKey = `lenny_actions_${episode.slug}`;
         const saved = localStorage.getItem(storageKey);
@@ -21,6 +23,15 @@ export function useChecklistCount(episodes: Episode[]) {
           }
         }
       });
+
+      // Count items in product stack
+      try {
+        const stack = JSON.parse(localStorage.getItem("lenny_product_stack") || "[]");
+        total += stack.length;
+      } catch (e) {
+        console.error("Failed to parse product stack count", e);
+      }
+
       setCount(total);
     };
 

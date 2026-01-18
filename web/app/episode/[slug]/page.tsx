@@ -6,8 +6,44 @@ import Link from "next/link";
 import { ArrowLeft, Download } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
+import { Metadata } from "next";
+
 interface PageProps {
     params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const data = getEpisodeContent(slug);
+
+  if (!data) {
+    return {
+      title: "Episode Not Found",
+    };
+  }
+
+  const { data: frontmatter } = data;
+  
+  // Logic to extract title and guest similar to the component
+  const guest = frontmatter.guest || slug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+  const title = `${guest} on Lenny's Podcast`;
+  const description = frontmatter.summary || `Deep dive analysis of the episode with ${guest}.`;
+
+  return {
+    title: `${title} - Analysis`,
+    description: description.slice(0, 160), // SEO optimal length
+    openGraph: {
+      title: `${title} - Analysis`,
+      description: description.slice(0, 200),
+      type: "article",
+      authors: ["Lenny Rachitsky", guest],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} - Analysis`,
+      description: description.slice(0, 200),
+    }
+  };
 }
 
 export default async function EpisodePage({ params }: PageProps) {

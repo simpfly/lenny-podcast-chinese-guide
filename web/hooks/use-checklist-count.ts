@@ -32,6 +32,14 @@ export function useChecklistCount(episodes: Episode[]) {
         console.error("Failed to parse product stack count", e);
       }
 
+      // Count saved builders
+      try {
+        const builders = JSON.parse(localStorage.getItem("lenny_saved_builders") || "[]");
+        total += builders.length;
+      } catch (e) {
+        console.error("Failed to parse saved builders count", e);
+      }
+
       setCount(total);
     };
 

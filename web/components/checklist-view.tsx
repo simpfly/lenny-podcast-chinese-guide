@@ -26,6 +26,8 @@ interface CompletedAction {
 export function ChecklistView({ episodes }: ChecklistViewProps) {
   const [completedActions, setCompletedActions] = useState<CompletedAction[]>([]);
   const [productStack, setProductStack] = useState<any[]>([]);
+  // Use `any` for simplicity for now, but ideally interface Builder { slug: string, guest: string, guestIntro?: string }
+  const [savedBuilders, setSavedBuilders] = useState<any[]>([]); 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -72,6 +74,14 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
       console.error("Failed to parse product stack", e);
     }
 
+    // Load saved builders
+    try {
+        const builders = JSON.parse(localStorage.getItem("lenny_saved_builders") || "[]");
+        setSavedBuilders(builders);
+    } catch (e) {
+        console.error("Failed to parse saved builders", e);
+    }
+
     setCompletedActions(loadedActions);
     setIsLoading(false);
   }, [episodes]);
@@ -88,6 +98,18 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
     }
   };
 
+  const removeFromBuilders = (slug: string) => {
+    try {
+        const builders = JSON.parse(localStorage.getItem("lenny_saved_builders") || "[]");
+        const newBuilders = builders.filter((b: any) => b.slug !== slug);
+        localStorage.setItem("lenny_saved_builders", JSON.stringify(newBuilders));
+        setSavedBuilders(newBuilders);
+        window.dispatchEvent(new CustomEvent("checklist-updated"));
+    } catch (e) {
+        console.error("Failed to remove from builders", e);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
@@ -96,7 +118,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
     );
   }
 
-  if (completedActions.length === 0 && productStack.length === 0) {
+  if (completedActions.length === 0 && productStack.length === 0 && savedBuilders.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg bg-muted/10 border-dashed">
         <h3 className="text-lg font-medium text-muted-foreground">No completed actions or tools yet</h3>
@@ -159,7 +181,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
     );
   }
 
-  const totalCount = completedActions.length + productStack.length;
+  const totalCount = completedActions.length + productStack.length + savedBuilders.length;
 
   return (
     <div className="space-y-10 pb-12">
@@ -206,6 +228,48 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
                     {product.description}
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Saved Builders Section */}
+        {savedBuilders.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              <span>👷</span> Saved Builders
+              <span className="text-sm font-normal text-muted-foreground ml-2">({savedBuilders.length})</span>
+            </h2>
+             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {savedBuilders.map((builder) => (
+                <Link key={builder.slug} href={`/episode/${builder.slug}`} className="group block h-full">
+                    <Card className="h-full border hover:border-primary/50 transition-colors p-4 flex flex-col justify-between">
+                        <div>
+                             <div className="flex items-center justify-between mb-2">
+                                <h3 className="font-bold group-hover:text-primary transition-colors">{builder.guest}</h3>
+                                <Button 
+                                    variant="ghost" 
+                                    size="icon" 
+                                    className="h-6 w-6 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity -mr-2"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        removeFromBuilders(builder.slug);
+                                    }}
+                                >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                </Button>
+                             </div>
+                             {builder.guestIntro && (
+                                <div className="text-xs text-muted-foreground line-clamp-2 mb-3">
+                                    {builder.guestIntro}
+                                </div>
+                             )}
+                        </div>
+                         <div className="text-[10px] text-muted-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
+                            View Profile <ArrowRight className="w-3 h-3" />
+                         </div>
+                    </Card>
+                </Link>
               ))}
             </div>
           </div>

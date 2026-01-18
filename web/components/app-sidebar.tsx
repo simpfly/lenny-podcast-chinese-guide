@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Episode, Category } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Home, BookOpen, Tag, History, CheckSquare, Package } from "lucide-react";
+import { Home, BookOpen, Tag, History, CheckSquare, Package, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useChecklistCount } from "@/hooks/use-checklist-count";
 import { useEffect, useState } from "react";
@@ -33,6 +33,13 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
           >
             <Home className="h-4 w-4" />
             Home
+          </Link>
+          <Link
+            href="/builders"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+          >
+            <Users className="h-4 w-4" />
+            Builders
           </Link>
           <Link
             href="/topics"

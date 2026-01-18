@@ -1,13 +1,20 @@
 import Link from "next/link";
-import { getAllCategories, getAllChecklistItemsCount } from "@/lib/data";
+import { getAllCategories, Episode } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Home, BookOpen, Tag, History, CheckSquare, Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useChecklistCount } from "@/hooks/use-checklist-count";
+import { useEffect, useState } from "react";
 
-export function AppSidebar() {
+export function AppSidebar({ episodes = [] }: { episodes?: Episode[] }) {
   const categories = getAllCategories();
-  const checklistCount = getAllChecklistItemsCount();
+  const [mounted, setMounted] = useState(false);
+  const checklistCount = useChecklistCount(episodes);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <div className="flex h-full w-full flex-col border-r bg-sidebar text-sidebar-foreground">
@@ -48,7 +55,7 @@ export function AppSidebar() {
               <CheckSquare className="h-4 w-4" />
               Checklist
             </div>
-            {checklistCount > 0 && (
+            {mounted && checklistCount > 0 && (
               <Badge variant="secondary" className="px-1.5 py-0 h-4 min-w-[1.2rem] flex justify-center text-[10px] font-bold">
                 {checklistCount}
               </Badge>

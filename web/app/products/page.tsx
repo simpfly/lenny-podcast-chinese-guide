@@ -1,5 +1,5 @@
 import { getAllProducts } from "@/lib/data";
-import { ProductCard } from "@/components/product-card";
+import { ProductList } from "@/components/product-list";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,17 +21,8 @@ export default function ProductsPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard key={product.name} product={product} />
-        ))}
-      </div>
-
-      {products.length === 0 && (
-        <div className="py-20 text-center border rounded-lg bg-muted/20">
-          <p className="text-muted-foreground">No products found. Add more episode analysis files to populate the wall.</p>
-        </div>
-      )}
+      <ProductList initialProducts={products} />
     </div>
   );
 }
+

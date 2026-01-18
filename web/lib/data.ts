@@ -434,9 +434,9 @@ export function getAllChecklistItemsCount(): number {
   episodes.forEach((episode) => {
     if (!episode.actions) return;
 
-    // Count lines starting with - [ ] or - [x] or - [/]
-    // Uses a regex that matches the common markdown checkbox pattern
-    const items = episode.actions.match(/-\s*\[[\s/xX]\]/g);
+    // Count lines starting with - [x] or - [X] (completed items)
+    // Uses a regex that matches the markdown completed checkbox pattern
+    const items = episode.actions.match(/-\s*\[[xX]\]/g);
     if (items) {
       count += items.length;
     }

@@ -44,7 +44,7 @@ export default function Home() {
           </Badge>
           <h1 className="text-4xl font-black tracking-tight md:text-5xl lg:text-5xl leading-[1.2]">
             Hunt <br />
-            <span className="text-primary italic">Builders, Actions, Product, Insight</span>
+            <span className="text-primary italic">Builders, Actions, Products</span>
           </h1>
           <p className="text-muted-foreground text-xl md:text-2xl leading-relaxed">
             Deep dive analysis transcripts from <span className="text-foreground font-semibold">Lenny's Podcast</span>. 

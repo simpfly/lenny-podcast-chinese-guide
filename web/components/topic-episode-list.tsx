@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Episode } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -207,7 +207,8 @@ function createResourceItem(category: string, name: string, url: string, descrip
 function ResponsiveTopicTags({ topics }: { topics: string[] }) {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const ghostRef = React.useRef<HTMLDivElement>(null);
-    const [visibleCount, setVisibleCount] = useState(topics.length);
+    const uniqueTopics = useMemo(() => Array.from(new Set(topics)), [topics]);
+    const [visibleCount, setVisibleCount] = useState(uniqueTopics.length);
 
     useEffect(() => {
         const calculateVisible = () => {
@@ -234,7 +235,7 @@ function ResponsiveTopicTags({ topics }: { topics: string[] }) {
             // Adjust for counter space if truncated
             // If we are truncating, we generally need space for the "+N" badge.
             // A simple heuristic is to remove one more item to be safe.
-            if (newVisibleCount < topics.length) {
+            if (newVisibleCount < uniqueTopics.length) {
                 newVisibleCount = Math.max(1, newVisibleCount - 1);
             }
 
@@ -256,7 +257,7 @@ function ResponsiveTopicTags({ topics }: { topics: string[] }) {
         calculateVisible();
 
         return () => observer.disconnect();
-    }, [topics]);
+    }, [uniqueTopics]);
 
     return (
         <div className="relative w-full">
@@ -266,7 +267,7 @@ function ResponsiveTopicTags({ topics }: { topics: string[] }) {
                 className="flex flex-wrap gap-2 w-full overflow-hidden"
                 style={{ maxHeight: '24px' }}
             >
-                {topics.map((t, i) => {
+                {uniqueTopics.map((t, i) => {
                     if (i < visibleCount) {
                          return (
                             <Badge key={t} variant="secondary" className="text-xs font-normal whitespace-nowrap">
@@ -274,10 +275,10 @@ function ResponsiveTopicTags({ topics }: { topics: string[] }) {
                             </Badge>
                         );
                     }
-                    if (i === visibleCount && visibleCount < topics.length) {
+                    if (i === visibleCount && visibleCount < uniqueTopics.length) {
                          return (
                              <span key="more" className="text-xs text-muted-foreground self-center whitespace-nowrap pl-1">
-                                +{topics.length - visibleCount} more
+                                +{uniqueTopics.length - visibleCount} more
                              </span>
                          );
                     }
@@ -292,7 +293,7 @@ function ResponsiveTopicTags({ topics }: { topics: string[] }) {
                 style={{ visibility: 'hidden' }} 
                 aria-hidden="true"
             >
-                 {topics.map((t) => (
+                 {uniqueTopics.map((t) => (
                     <Badge key={t} variant="secondary" className="text-xs font-normal whitespace-nowrap">
                         {t}
                     </Badge>

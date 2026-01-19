@@ -21,6 +21,7 @@ export function ClientLayoutWrapper({
   categories,
 }: ClientLayoutWrapperProps) {
   const [open, setOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
 
   // Close sidebar on navigation
@@ -29,10 +30,19 @@ export function ClientLayoutWrapper({
   }, [pathname]);
 
   return (
-    <div className="grid h-screen overflow-hidden w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className={`grid h-screen overflow-hidden w-full transition-all duration-300 ${
+      isCollapsed 
+        ? "md:grid-cols-[60px_1fr] lg:grid-cols-[60px_1fr]" 
+        : "md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
+    }`}>
       {/* Desktop Sidebar */}
-      <div className="hidden border-r bg-muted/40 md:block">
-        <AppSidebar episodes={episodes} categories={categories} />
+      <div className="hidden border-r bg-muted/40 md:block relative group">
+        <AppSidebar 
+          episodes={episodes} 
+          categories={categories} 
+          isCollapsed={isCollapsed}
+          toggleCollapse={() => setIsCollapsed(!isCollapsed)}
+        />
       </div>
 
       <div className="flex flex-col h-full overflow-hidden">

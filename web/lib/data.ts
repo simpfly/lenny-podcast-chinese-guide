@@ -33,6 +33,7 @@ export type Episode = {
   resources?: string;
   content?: string;
   coreArguments?: string[];
+  transcriptUrl?: string;
 };
 
 export type Category = {
@@ -244,6 +245,10 @@ export function getEpisodeMetadata(slug: string): Episode | null {
       }
   }
 
+  // Check for Transcript PDF
+  const pdfPath = path.join(CONTENT_DIR, "pdf-bilingual", `${slug}.pdf`);
+  const transcriptUrl = fs.existsSync(pdfPath) ? `/api/pdf/${slug}` : undefined;
+
   return {
     slug,
     title,
@@ -258,7 +263,8 @@ export function getEpisodeMetadata(slug: string): Episode | null {
     actions,
     resources,
     coreArguments,
-    content: markdownBody
+    content: markdownBody,
+    transcriptUrl
   };
 }
 

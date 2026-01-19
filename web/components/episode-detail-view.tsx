@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { SaveToolButton } from "@/components/save-tool-button";
 import { Episode } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Check,
@@ -646,7 +647,20 @@ export function EpisodeDetailView({
                             <MarkdownRenderer content={sections.find(s => {
                                 const h = getHeader(s);
                                 return h.includes("内容概要") || h.includes("Content Summary");
-                            })?.replace(/^## .*?\n/, "") || ""} />
+                            })?.replace(/^## .*?\n/, "").replace(/\n---\n*$/, "") || ""} />
+                            
+                            {episode.transcriptUrl && (
+                                <div className="mt-8 flex justify-center lg:justify-start">
+                                    <a href={episode.transcriptUrl} target="_blank" rel="noopener noreferrer">
+                                        <Button variant="outline" className="gap-2 h-10 px-6 border-primary/20 hover:border-primary/50 hover:bg-primary/5 text-primary hover:text-primary font-bold transition-all shadow-sm">
+                                            <FileText className="w-4 h-4" />
+                                            查看逐字稿 (PDF)
+                                        </Button>
+                                    </a>
+                                </div>
+                            )}
+                            
+                            <hr className="my-8 border-muted" />
                         </div>
                     )}
 

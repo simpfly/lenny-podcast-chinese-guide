@@ -26,6 +26,7 @@ import { HomeClientSection } from "@/components/home-client-section";
 import { TopicEpisodeList } from "@/components/topic-episode-list";
 import { cn } from "@/lib/utils";
 import { SurpriseMe } from "@/components/surprise-me";
+import { PrismIcon } from "@/components/prism-icon";
 
 export default function Home() {
   const categories = getAllCategories();
@@ -40,23 +41,24 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-16 pb-20 w-full px-4 lg:px-6">
       {/* Hero Section */}
+      {/* Hero Section */}
       <section className="relative pt-8 pb-4">
-        <div className="flex flex-col md:flex-row gap-8 items-stretch md:items-end justify-between">
-          <div className="flex flex-col gap-6 text-center md:text-left flex-1 min-w-0">
-            <Badge className="w-fit self-center md:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
+        <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-center xl:items-end justify-between">
+          <div className="flex flex-col gap-6 text-center xl:text-left flex-1 min-w-0 max-w-2xl xl:max-w-none mx-auto xl:mx-0">
+            <Badge className="w-fit self-center xl:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
               <Sparkles className="w-3.5 h-3.5 mr-2" />
-              从硅谷顶尖创造者的实战经验中学习
+              硅谷顶尖创造者的实战经验
             </Badge>
-            <h1 className="text-4xl font-black tracking-tight md:text-5xl lg:text-5xl leading-[1.2]">
+            <h1 className="text-4xl font-black tracking-tight lg:text-5xl leading-[1.2]">
               Find <br />
               <span className="text-primary italic">Builders, Actions, Products</span>
             </h1>
-            <p className="text-muted-foreground text-xl md:text-2xl leading-relaxed">
+            <p className="text-muted-foreground text-xl lg:text-2xl leading-relaxed">
               Deep dive analysis transcripts from <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="font-semibold bg-[rgb(245,142,36)] text-white px-1.5 py-0.5 rounded-md transition-all hover:opacity-80">Lenny's&nbsp;Podcast</a>
             </p>
-            <div className="mt-4">
+            <div className="mt-4 w-full max-w-md mx-auto xl:mx-0">
                 <SearchInput />
-                <div className="mt-4 flex flex-wrap items-center gap-2 justify-center md:justify-start">
+                <div className="mt-4 flex flex-wrap items-center gap-2 justify-center xl:justify-start">
                   <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mr-2">Popular:</span>
                   {["Growth", "AI", "Marketplace"].map(tag => (
                       <Link key={tag} href={`/search?q=${tag.toLowerCase()}`}>
@@ -67,7 +69,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full md:w-[320px] lg:w-[380px] shrink-0 min-h-[200px]">
+          <div className="w-full max-w-[380px] shrink-0 min-h-[200px] mt-4 xl:mt-0">
              <SurpriseMe actions={allActions} />
           </div>
         </div>
@@ -88,7 +90,7 @@ export default function Home() {
       <section>
         <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-black tracking-tight flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-primary" />
+                <PrismIcon className="w-6 h-6 text-primary" />
                 深度分析
             </h2>
             <Link href="/search" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">

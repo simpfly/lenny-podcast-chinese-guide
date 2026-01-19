@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { normalizeTopic } from "./topic-mapping";
 import { getOfficialDate } from "./episode-date-map";
+import { parseActions } from "./action-parser";
 
 const CONTENT_DIR = path.join(process.cwd(), "content"); // Inside web/content
 const EPISODES_DIR = path.join(CONTENT_DIR, "episodes");
@@ -767,6 +768,39 @@ export function getTotalActionsCount(): number {
     });
   
     return count;
+}
+
+export interface ActionContext {
+  id: string; 
+  originalId: string;
+  text: string;
+  category: string;
+  episodeSlug: string;
+  episodeTitle: string;
+}
+
+export function getAllActions(): ActionContext[] {
+    const episodes = getAllEpisodes();
+    const allActions: ActionContext[] = [];
+
+    episodes.forEach(episode => {
+        if (!episode.actions) return;
+        const categories = parseActions(episode.actions);
+        categories.forEach(cat => {
+            cat.items.forEach(item => {
+                 allActions.push({
+                     id: `${episode.slug}-${item.id}`,
+                     originalId: item.id,
+                     text: item.text,
+                     category: cat.label,
+                     episodeSlug: episode.slug,
+                     episodeTitle: episode.guest
+                 });
+            });
+        });
+    });
+
+    return allActions;
 }
 
 export function getLatestEpisodes(limit: number = 3): Episode[] {

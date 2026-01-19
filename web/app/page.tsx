@@ -3,7 +3,8 @@ import {
   getLatestEpisodes, 
   getTotalActionsCount, 
   getAllEpisodes, 
-  getAllProducts 
+  getAllProducts,
+  getAllActions
 } from "@/lib/data";
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -24,12 +25,14 @@ import {
 import { HomeClientSection } from "@/components/home-client-section";
 import { TopicEpisodeList } from "@/components/topic-episode-list";
 import { cn } from "@/lib/utils";
+import { SurpriseMe } from "@/components/surprise-me";
 
 export default function Home() {
   const categories = getAllCategories();
   const latestEpisodes = getLatestEpisodes(2);
   const totalEpisodes = getAllEpisodes().length;
   const totalActions = getTotalActionsCount();
+  const allActions = getAllActions();
   const allProducts = getAllProducts();
   const totalTools = allProducts.filter(p => p.category === "Tool").length;
   const totalBooks = allProducts.filter(p => p.category === "Book").length;
@@ -38,28 +41,34 @@ export default function Home() {
     <div className="flex flex-col gap-16 pb-20 w-full px-4 lg:px-6">
       {/* Hero Section */}
       <section className="relative pt-8 pb-4">
-        <div className="flex flex-col gap-6 text-center md:text-left">
-          <Badge className="w-fit self-center md:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
-            <Sparkles className="w-3.5 h-3.5 mr-2" />
-            Learn From the Best
-          </Badge>
-          <h1 className="text-4xl font-black tracking-tight md:text-5xl lg:text-5xl leading-[1.2]">
-            Find <br />
-            <span className="text-primary italic">Builders, Actions, Products</span>
-          </h1>
-          <p className="text-muted-foreground text-xl md:text-2xl leading-relaxed">
-            Deep dive analysis transcripts from <span className="text-foreground font-semibold">Lenny's Podcast</span>. 
-          </p>
-          <div className="mt-4">
-              <SearchInput />
-              <div className="mt-4 flex flex-wrap items-center gap-2 justify-center md:justify-start">
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mr-2">Popular:</span>
-                {["Growth", "AI", "Marketplace", "Leadership"].map(tag => (
-                   <Link key={tag} href={`/search?q=${tag.toLowerCase()}`}>
-                    <Badge variant="outline" className="cursor-pointer hover:bg-primary/5 hover:text-primary transition-colors">#{tag}</Badge>
-                   </Link>
-                ))}
-              </div>
+        <div className="flex flex-col md:flex-row gap-8 items-stretch md:items-start justify-between">
+          <div className="flex flex-col gap-6 text-center md:text-left flex-1 min-w-0">
+            <Badge className="w-fit self-center md:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
+              <Sparkles className="w-3.5 h-3.5 mr-2" />
+              Learn From the Best
+            </Badge>
+            <h1 className="text-4xl font-black tracking-tight md:text-5xl lg:text-5xl leading-[1.2]">
+              Find <br />
+              <span className="text-primary italic">Builders, Actions, Products</span>
+            </h1>
+            <p className="text-muted-foreground text-xl md:text-2xl leading-relaxed">
+              Deep dive analysis transcripts from <span className="text-foreground font-semibold">Lenny's Podcast</span>. 
+            </p>
+            <div className="mt-4">
+                <SearchInput />
+                <div className="mt-4 flex flex-wrap items-center gap-2 justify-center md:justify-start">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mr-2">Popular:</span>
+                  {["Growth", "AI", "Marketplace", "Leadership"].map(tag => (
+                      <Link key={tag} href={`/search?q=${tag.toLowerCase()}`}>
+                      <Badge variant="outline" className="cursor-pointer hover:bg-primary/5 hover:text-primary transition-colors">#{tag}</Badge>
+                      </Link>
+                  ))}
+                </div>
+            </div>
+          </div>
+
+          <div className="w-full md:w-[320px] lg:w-[380px] shrink-0 self-stretch min-h-[260px]">
+             <SurpriseMe actions={allActions} />
           </div>
         </div>
 
@@ -67,8 +76,8 @@ export default function Home() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 w-full">
             <StatItem icon={<Calendar />} label="Episodes" value={totalEpisodes} href="/search" />
             <StatItem icon={<CheckCircle2 />} label="Actions" value={totalActions} href="/search?v=actions" />
-            <StatItem icon={<Wrench />} label="Tools" value={totalTools} href="/products" />
-            <StatItem icon={<BookOpen />} label="Books" value={totalBooks} href="/products" />
+            <StatItem icon={<Wrench />} label="Tools" value={totalTools} href="/products?category=Tool" />
+            <StatItem icon={<BookOpen />} label="Books" value={totalBooks} href="/products?category=Book" />
         </div>
       </section>
 

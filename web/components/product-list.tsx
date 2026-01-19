@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Product } from "@/lib/data";
 import { ProductCard } from "@/components/product-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LayoutGrid, Wrench, Book, Search as SearchIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 interface ProductListProps {
   initialProducts: Product[];
@@ -14,8 +15,16 @@ interface ProductListProps {
 }
 
 export function ProductList({ initialProducts, title, description }: ProductListProps) {
+  const searchParams = useSearchParams();
   const [filter, setFilter] = useState<string>("All");
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (categoryParam && ["Tool", "Book"].includes(categoryParam)) {
+        setFilter(categoryParam);
+    }
+  }, [searchParams]);
 
   const filteredProducts = useMemo(() => {
     return initialProducts.filter(p => {

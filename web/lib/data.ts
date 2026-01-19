@@ -497,6 +497,12 @@ export function getAllProducts(): Product[] {
                 }
             }
 
+            // Hardcoded overrides for categories
+            let itemCategory = baseCategory;
+            if (finalName.toLowerCase() === "reforge") {
+                itemCategory = "Tool";
+            }
+
             // 4. Description Extraction
             let description = "";
             const lines = restOfItem.split('\n');
@@ -564,7 +570,7 @@ export function getAllProducts(): Product[] {
             } else {
                 productMap.set(key, {
                     name: finalName,
-                    category: baseCategory,
+                    category: itemCategory,
                     description,
                     link,
                     mentionedIn: [{

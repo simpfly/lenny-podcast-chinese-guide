@@ -41,7 +41,7 @@ export default function Home() {
     <div className="flex flex-col gap-16 pb-20 w-full px-4 lg:px-6">
       {/* Hero Section */}
       <section className="relative pt-8 pb-4">
-        <div className="flex flex-col md:flex-row gap-8 items-stretch md:items-start justify-between">
+        <div className="flex flex-col md:flex-row gap-8 items-stretch md:items-end justify-between">
           <div className="flex flex-col gap-6 text-center md:text-left flex-1 min-w-0">
             <Badge className="w-fit self-center md:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
               <Sparkles className="w-3.5 h-3.5 mr-2" />

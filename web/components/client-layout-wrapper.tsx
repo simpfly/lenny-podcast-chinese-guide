@@ -53,7 +53,7 @@ export function ClientLayoutWrapper({
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
-            <h1 className="text-lg font-semibold">Lenny's Archive</h1>
+            <h1 className="text-lg font-semibold">Builder's Archive</h1>
           </div>
         </header>
 

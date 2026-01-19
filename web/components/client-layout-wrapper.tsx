@@ -61,6 +61,12 @@ export function ClientLayoutWrapper({
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           {children}
         </main>
+        
+        <footer className="border-t py-6 px-4 lg:px-6">
+          <div className="flex justify-center text-sm text-muted-foreground">
+             Crafted by <a href="https://simpfly.info" target="_blank" rel="noopener noreferrer" className="ml-1 font-medium hover:text-primary transition-colors">Simpfly</a>
+          </div>
+        </footer>
       </div>
     </div>
   );

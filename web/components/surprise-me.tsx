@@ -95,7 +95,7 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
     <div className={cn(
         "w-full h-[260px] border rounded-3xl p-5 flex flex-col items-center justify-center relative overflow-hidden shadow-sm hover:shadow-md transition-all duration-500",
         isCompleted 
-            ? "bg-green-50/50 border-green-200" 
+            ? "bg-green-500/10 border-green-500/20" 
             : "bg-gradient-to-br from-primary/5 via-background to-primary/5 border-primary/10"
     )}>
        {/* Background decoration */}
@@ -153,7 +153,7 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
                    
                    <div className={cn(
                        "text-base md:text-lg font-medium leading-relaxed line-clamp-5 select-text mb-2 transition-colors",
-                       isCompleted ? "text-muted-foreground line-through decoration-green-500/30" : "text-foreground/90"
+                       isCompleted ? "text-foreground/60 line-through decoration-green-500/30" : "text-foreground/90"
                    )}>
                        <ReactMarkdown components={{
                            p: ({children}) => <span className="inline">{children}</span>,

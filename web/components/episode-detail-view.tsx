@@ -23,8 +23,9 @@ import {
   BookOpen,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { cn } from "@/lib/utils";
+import { cn, getLinkTarget } from "@/lib/utils";
 import { MarkdownRenderer } from "./markdown-renderer";
+
 import { parseActions } from "@/lib/action-parser";
 
 import remarkGfm from 'remark-gfm';
@@ -262,6 +263,7 @@ function ResourceSection({ content }: { content: string }) {
                         {resources.map((res, i) => {
                             const isBook = res.title.includes("《") || res.title.toLowerCase().includes("book") || res.title.includes("阅读");
                             const Icon = isBook ? BookOpen : Wrench;
+                            const target = getLinkTarget(res.link);
 
                             return (
                                 <li key={i} className="flex gap-4 items-start group">
@@ -273,8 +275,8 @@ function ResourceSection({ content }: { content: string }) {
                                             {res.link ? (
                                                 <a 
                                                     href={res.link} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer"
+                                                    target={target}
+                                                    rel={target === "_blank" ? "noopener noreferrer" : undefined}
                                                     className="font-bold text-foreground hover:text-primary transition-colors decoration-primary/30 underline-offset-4 hover:underline block"
                                                 >
                                                     {res.title}

@@ -45,7 +45,7 @@ export default function Home() {
           <div className="flex flex-col gap-6 text-center md:text-left flex-1 min-w-0">
             <Badge className="w-fit self-center md:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
               <Sparkles className="w-3.5 h-3.5 mr-2" />
-              Learn From the ACE
+              从硅谷顶尖创造者的实战经验中学习
             </Badge>
             <h1 className="text-4xl font-black tracking-tight md:text-5xl lg:text-5xl leading-[1.2]">
               Find <br />

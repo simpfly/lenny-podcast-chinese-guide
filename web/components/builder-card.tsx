@@ -7,7 +7,8 @@ import { Twitter, Linkedin, Plus, Check, Trash2 } from "lucide-react";
 import { Episode } from "@/lib/data";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, getLinkTarget } from "@/lib/utils";
+
 
 interface BuilderCardProps {
   episode: Episode;
@@ -103,17 +104,20 @@ export function BuilderCard({ episode }: BuilderCardProps) {
               <div className="text-sm text-muted-foreground line-clamp-3 leading-relaxed [&_strong]:font-bold [&_b]:font-bold pointer-events-auto">
                 <ReactMarkdown components={{
                     p: ({children}) => <p className="mb-0 inline">{children}</p>,
-                    a: ({href, children}) => (
+                    a: ({href, children}) => {
+                      const target = getLinkTarget(href);
+                      return (
                       <a 
                         href={href} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                        target={target} 
+                        rel={target === "_blank" ? "noopener noreferrer" : undefined} 
                         className="text-primary hover:underline relative z-20"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {children}
                       </a>
-                    )
+                    )}
+
                 }}>
                     {episode.guestIntro}
                 </ReactMarkdown>

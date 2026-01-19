@@ -28,7 +28,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
-import { cn } from "@/lib/utils";
+import { cn, getLinkTarget } from "@/lib/utils";
+
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BuilderCard } from "@/components/builder-card";
@@ -530,8 +531,8 @@ function ToolCard({ product, onRemove }: { product: any, onRemove: (name: string
                     {product.link ? (
                         <a 
                             href={product.link} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                            target={getLinkTarget(product.link)} 
+                            rel={getLinkTarget(product.link) === "_blank" ? "noopener noreferrer" : undefined}
                             className="group/link hover:text-primary transition-colors flex items-center gap-2"
                         >
                             <span className="group-hover/link:underline decoration-2 decoration-primary/30 underline-offset-4">{product.name}</span>

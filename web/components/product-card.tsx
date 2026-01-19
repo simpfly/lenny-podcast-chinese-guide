@@ -7,7 +7,8 @@ import { ExternalLink, Tag, Plus, Check, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Product } from "@/lib/data";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, getLinkTarget } from "@/lib/utils";
+
 
 interface ProductCardProps {
   product: Product;
@@ -92,12 +93,13 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
           </Button>
         </div>
+
         <CardTitle className="text-xl font-bold line-clamp-1 transition-colors">
           {product.link ? (
             <a 
               href={product.link} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+              target={getLinkTarget(product.link)} 
+              rel={getLinkTarget(product.link) === "_blank" ? "noopener noreferrer" : undefined}
               className="hover:text-primary hover:underline underline-offset-4 decoration-primary/30 inline-flex items-center gap-1.5"
             >
               {product.name}

@@ -29,13 +29,13 @@ export function ClientLayoutWrapper({
   }, [pathname]);
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid h-screen overflow-hidden w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       {/* Desktop Sidebar */}
       <div className="hidden border-r bg-muted/40 md:block">
         <AppSidebar episodes={episodes} categories={categories} />
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col h-full overflow-hidden">
         {/* Mobile Header */}
         <header className="sticky top-0 z-50 flex h-14 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 lg:h-[60px] lg:px-6 md:hidden">
           <Sheet open={open} onOpenChange={setOpen}>
@@ -59,23 +59,27 @@ export function ClientLayoutWrapper({
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto">
-          {children}
+        <main className="flex-1 overflow-auto flex flex-col">
+          <div className="flex-1 w-full pt-6 md:pt-12 px-4 md:px-8">
+            {children}
+          </div>
+          
+          <footer className="w-full py-6 mt-auto border-t bg-background/50 backdrop-blur-sm">
+              <div className="container px-4 md:px-6 mx-auto flex justify-center text-sm text-muted-foreground font-medium items-center gap-1.5 hover:text-foreground transition-colors">
+                  <span>Crafted by</span>
+                  <a 
+                      href="https://simpfly.info" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-secondary/50 hover:bg-secondary transition-all"
+                  >
+                    Simpfly
+                  </a>
+              </div>
+          </footer>
         </main>
         
-        <footer className="w-full py-6 mt-auto border-t bg-background/50 backdrop-blur-sm">
-            <div className="container px-4 md:px-6 mx-auto flex justify-center text-sm text-muted-foreground font-medium items-center gap-1.5 hover:text-foreground transition-colors">
-                <span>Crafted by</span>
-                <a 
-                    href="https://simpfly.info" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-secondary/50 hover:bg-secondary transition-all"
-                >
-                  Simpfly
-                </a>
-            </div>
-        </footer>
+
       </div>
       
       {/* Structural Data for SEO */}

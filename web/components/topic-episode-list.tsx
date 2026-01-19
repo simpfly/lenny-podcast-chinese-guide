@@ -9,7 +9,8 @@ import { SaveToolButton } from "@/components/save-tool-button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Tag, LayoutList, Zap, Wrench, Check, ArrowRight, Linkedin, LinkIcon, BookOpen, Lightbulb } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { cn } from "@/lib/utils";
+import { cn, getLinkTarget } from "@/lib/utils";
+
 
 type ViewMode = "keypoints" | "actions" | "resources";
 
@@ -76,14 +77,18 @@ function ActionList({ content, slug }: { content: string, slug: string }) {
                                                 // Ensure links inside are clickable and don't toggle the checkbox if clicked directly? 
                                                 // Actually strict check: prevent checkbox toggle if clicking link?
                                                 // Simplify: Just let it toggle.
-                                                a: ({node, ...props}) => (
+                                                a: ({node, ...props}) => {
+                                                    const target = getLinkTarget(props.href);
+                                                    return (
                                                     <a 
                                                         className="text-primary hover:underline relative z-30" 
-                                                        target="_blank" 
+                                                        target={target} 
+                                                        rel={target === "_blank" ? "noopener noreferrer" : undefined}
                                                         onClick={(e) => e.stopPropagation()} 
                                                         {...props} 
                                                     />
-                                                ) 
+                                                )} 
+
                                             }}
                                         >
                                             {item.text}
@@ -390,7 +395,10 @@ export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Epis
                              <ReactMarkdown 
                                 components={{
                                     p: ({children}) => <p className="mb-1 leading-relaxed">{children}</p>,
-                                    a: ({node, ...props}) => <a className="text-primary hover:underline relative z-10" target="_blank" {...props} />
+                                    a: ({node, ...props}) => {
+                                        const target = getLinkTarget(props.href);
+                                        return <a className="text-primary hover:underline relative z-10" target={target} rel={target === "_blank" ? "noopener noreferrer" : undefined} {...props} />
+                                    }
                                 }}
                              >
                                 {episode.guestIntro}
@@ -466,8 +474,8 @@ export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Epis
                                              <div>
                                                  <a 
                                                      href={item.url}
-                                                     target="_blank"
-                                                     rel="noopener noreferrer"
+                                                     target={getLinkTarget(item.url)}
+                                                     rel={getLinkTarget(item.url) === "_blank" ? "noopener noreferrer" : undefined}
                                                      className="text-primary hover:underline font-semibold relative z-30 mr-1"
                                                      onClick={(e) => e.stopPropagation()}
                                                  >
@@ -499,7 +507,10 @@ export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Epis
                                          <ReactMarkdown 
                                             components={{
                                                 p: ({children}) => <p className="mb-1 leading-relaxed">{children}</p>,
-                                                a: ({node, ...props}) => <a className="text-primary hover:underline relative z-10" target="_blank" {...props} />
+                                                a: ({node, ...props}) => {
+                                                    const target = getLinkTarget(props.href);
+                                                    return <a className="text-primary hover:underline relative z-10" target={target} rel={target === "_blank" ? "noopener noreferrer" : undefined} {...props} />
+                                                }
                                             }}
                                          >
                                             {episode.resources}

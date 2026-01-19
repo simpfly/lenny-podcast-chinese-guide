@@ -28,13 +28,12 @@ export function RandomEpisodeButton({ allSlugs, currentSlug }: RandomEpisodeButt
     return (
         <Button 
             variant="outline" 
-            size="sm" 
-            className="gap-2" 
+            className="gap-2 h-9 px-4 rounded-full" 
             onClick={handleRandom}
             disabled={isLoading}
         >
-            <Shuffle className="w-4 h-4" />
-            <span className="hidden sm:inline">Random Episode</span>
+            <Shuffle className="w-4 h-4 text-muted-foreground" />
+            <span className="hidden sm:inline font-medium">Random Episode</span>
             <span className="sm:hidden">Random</span>
         </Button>
     );

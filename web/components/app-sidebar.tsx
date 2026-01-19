@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Episode, Category } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Home, BookOpen, Folder, History, CheckSquare, Package, Users } from "lucide-react";
+import { Home, BookOpen, Folder, History, CheckSquare, Package, Users, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useChecklistCount } from "@/hooks/use-checklist-count";
 import { useEffect, useState } from "react";
@@ -64,6 +64,13 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
               </Badge>
             )}
           </Link>
+          <Link
+            href="/about"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+          >
+            <Info className="h-4 w-4" />
+            About
+          </Link>
           <div className="my-2 border-t" />
           <div className="px-3 py-1 text-xs font-semibold uppercase text-muted-foreground">
             Topics
@@ -83,10 +90,14 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
               <span className="truncate">{category.title}</span>
             </Link>
           ))}
+
+
           <div className="my-2 border-t" />
           <div className="px-3 py-1 text-xs font-semibold uppercase text-muted-foreground">
             More
           </div>
+
+
           <Link
             href="https://refoundai.com/lenny-skills/browse/#product-management"
             target="_blank"
@@ -105,6 +116,7 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
           </Link>
         </nav>
       </ScrollArea>
+
     </div>
   );
 }

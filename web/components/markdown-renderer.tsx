@@ -5,6 +5,10 @@ interface MarkdownRendererProps {
   content: string;
 }
 
+import { getLinkTarget } from "@/lib/utils";
+
+// ... existing code ...
+
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   // Fix for bold text adjacent to quotes/punctuation in CJK context
   // Ensures (**"...) or (...**) parses correctly by adding spaces where CommonMark requires them
@@ -14,7 +18,21 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
   return (
     <div className="prose prose-stone dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-a:text-primary hover:prose-a:underline">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{processedContent}</ReactMarkdown>
+      <ReactMarkdown 
+        remarkPlugins={[remarkGfm]}
+        components={{
+          a: ({node, ...props}) => {
+            const target = getLinkTarget(props.href);
+            return (
+              <a 
+                {...props} 
+                target={target}
+                rel={target === "_blank" ? "noopener noreferrer" : undefined}
+              />
+            );
+          }
+        }}
+      >{processedContent}</ReactMarkdown>
     </div>
   );
 }

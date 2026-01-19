@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { EpisodeDetailView } from "@/components/episode-detail-view";
 import { RandomEpisodeButton } from "@/components/random-episode-button";
-import { SaveBuilderButton } from "@/components/save-builder-button";
 import { JsonLd } from "@/components/json-ld";
 
 import { Metadata } from "next";
@@ -64,9 +63,9 @@ export default async function EpisodePage({ params }: PageProps) {
 
   return (
     <div className="max-w-5xl mx-auto w-full px-2 sm:px-4">
-      <div className="mb-6">
-        <div className="flex items-center justify-between">
-            <Button variant="ghost" className="pl-0 gap-2 hover:bg-transparent" asChild>
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-8">
+            <Button variant="ghost" className="pl-0 gap-2 hover:bg-transparent -ml-2 text-muted-foreground hover:text-foreground" asChild>
                 <Link href="/">
                     <ArrowLeft className="h-4 w-4" />
                     Back to Archive
@@ -75,17 +74,16 @@ export default async function EpisodePage({ params }: PageProps) {
             <RandomEpisodeButton allSlugs={allSlugs} currentSlug={slug} />
         </div>
         
-        <div className="mt-4 flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
             <div className="flex items-center gap-4 group w-fit">
-                <h1 className="text-3xl font-black tracking-tighter sm:text-5xl text-balance">
+                <h1 className="text-4xl font-black tracking-tighter sm:text-6xl text-balance">
                     {metadata.guest}
                 </h1>
-                <SaveBuilderButton episode={metadata} />
             </div>
-            <p className="text-muted-foreground text-sm flex items-center gap-2">
+            <p className="text-muted-foreground text-sm flex items-center gap-2 font-medium">
                 <span>Detailed Analysis & Action Guide</span>
-                {metadata.date && <span className="opacity-50">/</span>}
-                {metadata.date && <span className="font-mono">{metadata.date}</span>}
+                {metadata.date && <span className="text-muted-foreground/30">/</span>}
+                {metadata.date && <span className="">{metadata.date}</span>}
             </p>
         </div>
       </div>

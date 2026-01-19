@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { ThemeProvider } from "@/components/theme-provider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,9 +42,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased min-h-screen bg-background text-foreground">
-        <ClientLayoutWrapper episodes={episodes} categories={categories}>
-          {children}
-        </ClientLayoutWrapper>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+          <ClientLayoutWrapper episodes={episodes} categories={categories}>
+            {children}
+          </ClientLayoutWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -52,7 +52,7 @@ export default function Home() {
               <span className="text-primary italic">Builders, Actions, Products</span>
             </h1>
             <p className="text-muted-foreground text-xl md:text-2xl leading-relaxed">
-              Deep dive analysis transcripts from <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="font-semibold bg-[rgb(245,142,36)] text-white px-1.5 py-0.5 rounded-md transition-all hover:opacity-80">Lenny's&nbsp;Podcast</a>. 
+              Deep dive analysis transcripts from <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="font-semibold bg-[rgb(245,142,36)] text-white px-1.5 py-0.5 rounded-md transition-all hover:opacity-80">Lenny's&nbsp;Podcast</a>
             </p>
             <div className="mt-4">
                 <SearchInput />

@@ -381,10 +381,10 @@ export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Epis
 
 
               </CardHeader>
-              <CardContent className="flex-1 min-h-[160px]">
-                <div className="text-sm text-muted-foreground line-clamp-4 mb-4 text-xs h-[80px]">
+              <CardContent className="flex-1 min-h-[160px] flex flex-col">
+                <div className="text-sm text-muted-foreground line-clamp-2 mb-3 h-[2.8rem]">
                     {episode.guestIntro ? (
-                        <div className="prose prose-xs dark:prose-invert max-w-none">
+                        <div className="prose prose-sm dark:prose-invert max-w-none">
                              <ReactMarkdown 
                                 components={{
                                     p: ({children}) => <p className="mb-1 leading-relaxed">{children}</p>,
@@ -401,9 +401,9 @@ export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Epis
                 
                 
                 {viewMode === "keypoints" && (
-                    <div className="mt-4 pt-4 border-t">
+                    <div className="mt-3 pt-3 border-t flex-1">
                         {episode.coreArguments && episode.coreArguments.length > 0 ? (
-                            <ol className="list-decimal list-outside pl-4 space-y-2.5 text-xs text-muted-foreground font-medium">
+                            <ol className="list-decimal list-outside pl-4 space-y-2.5 text-sm text-muted-foreground font-medium">
                                 {episode.coreArguments.map((arg, i) => (
                                     <li key={i} className="pl-1 leading-relaxed">
                                         <span className="text-foreground/90">{arg}</span>
@@ -439,7 +439,7 @@ export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Epis
                 )}
 
                 {viewMode === "actions" && (
-                    <div className="mt-4 pt-4 border-t text-xs relative">
+                    <div className="mt-3 pt-3 border-t text-sm relative flex-1">
                          {episode.actions ? (
                              <ActionList content={episode.actions} slug={episode.slug} />
                          ) : (
@@ -450,7 +450,7 @@ export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Epis
 
 
                 {viewMode === "resources" && (
-                     <div className="mt-4 pt-4 border-t text-sm relative">
+                     <div className="mt-3 pt-3 border-t text-sm relative flex-1">
                          {episode.resources ? (
                              <div className="space-y-3">
                                  {parseResources(episode.resources).length > 0 ? (

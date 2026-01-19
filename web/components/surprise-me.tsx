@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, RefreshCw, ArrowRight, Quote, Check, CheckCircle2 } from "lucide-react";
+import { Sparkles, RefreshCw, ArrowRight, Check, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -93,7 +93,7 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
 
   return (
     <div className={cn(
-        "w-full h-full min-h-[240px] border rounded-3xl p-6 flex flex-col items-center justify-center relative overflow-hidden shadow-sm hover:shadow-md transition-all duration-500",
+        "w-full h-[260px] border rounded-3xl p-5 flex flex-col items-center justify-center relative overflow-hidden shadow-sm hover:shadow-md transition-all duration-500",
         isCompleted 
             ? "bg-green-50/50 border-green-200" 
             : "bg-gradient-to-br from-primary/5 via-background to-primary/5 border-primary/10"
@@ -141,8 +141,7 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
        ) : (
            <div className={cn("flex flex-col h-full w-full z-10 transition-all duration-300", isAnimating ? "opacity-0 scale-95 blur-sm" : "opacity-100 scale-100 blur-0")}>
                <div className="flex-1 flex flex-col justify-center"> 
-                   <div className="mb-3 flex justify-between items-start h-8"> 
-                       {/* Fixed height header to prevent shifts, Badge + Space for Checkbox */}
+                   <div className="mb-3 flex items-center h-8"> 
                        <Badge variant="secondary" className={cn(
                            "transition-colors",
                            isCompleted ? "bg-green-100 text-green-700 hover:bg-green-200" : "bg-primary/10 text-primary hover:bg-primary/20 border-primary/20"
@@ -150,7 +149,6 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
                            {categoryMap[currentAction.category] || currentAction.category}
                            {isCompleted && <span className="ml-1 flex items-center gap-1">• Done</span>}
                        </Badge>
-                        <Quote className="w-6 h-6 text-primary/20 rotate-180 opacity-50 mr-8" />
                    </div>
                    
                    <div className={cn(

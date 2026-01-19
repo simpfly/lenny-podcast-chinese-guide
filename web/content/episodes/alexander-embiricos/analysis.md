@@ -25,6 +25,7 @@
 
 **Alexander Embiricos**
 
+- **身份**: OpenAI Codex 产品负责人。
 - **职业经历**:
   - **OpenAI**: Codex 产品负责人（现任）。
   - **Remotion**: 创始人兼 CEO（被 OpenAI 收购）。Remotion 是一款专注于远程协作的视频沟通工具。

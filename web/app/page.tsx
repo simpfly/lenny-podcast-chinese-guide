@@ -67,7 +67,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full md:w-[320px] lg:w-[380px] shrink-0 self-stretch min-h-[260px]">
+          <div className="w-full md:w-[320px] lg:w-[380px] shrink-0 min-h-[200px]">
              <SurpriseMe actions={allActions} />
           </div>
         </div>

@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { EpisodeDetailView } from "@/components/episode-detail-view";
 import { RandomEpisodeButton } from "@/components/random-episode-button";
 import { SaveBuilderButton } from "@/components/save-builder-button";
+import { JsonLd } from "@/components/json-ld";
 
 import { Metadata } from "next";
 
@@ -90,6 +91,25 @@ export default async function EpisodePage({ params }: PageProps) {
       </div>
 
       <EpisodeDetailView episode={metadata} content={contentWithoutTitle} />
+      
+      {/* Structural Data for SEO */}
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "PodcastEpisode",
+        "name": `${metadata.guest} on Lenny's Podcast`,
+        "description": metadata.summary,
+        "datePublished": metadata.date,
+        "url": `https://builders.simpfly.info/episode/${metadata.slug}`,
+        "partOfSeries": {
+            "@type": "PodcastSeries",
+            "name": "Lenny's Podcast",
+            "url": "https://www.lennysnewsletter.com/podcast"
+        },
+        "director": {
+            "@type": "Person",
+            "name": "Lenny Rachitsky"
+        }
+      }} />
     </div>
   );
 }

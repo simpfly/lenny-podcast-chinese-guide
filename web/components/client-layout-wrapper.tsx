@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
+import { JsonLd } from "@/components/json-ld";
 import { Episode, Category } from "@/lib/data";
 
 interface ClientLayoutWrapperProps {
@@ -58,16 +59,40 @@ export function ClientLayoutWrapper({
         </header>
 
         {/* Main Content Area */}
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex-1 overflow-auto">
           {children}
         </main>
         
-        <footer className="border-t py-6 px-4 lg:px-6">
-          <div className="flex justify-center text-sm text-muted-foreground">
-             Crafted by <a href="https://simpfly.info" target="_blank" rel="noopener noreferrer" className="ml-1 font-medium hover:text-primary transition-colors">Simpfly</a>
-          </div>
+        <footer className="w-full py-6 mt-auto border-t bg-background/50 backdrop-blur-sm">
+            <div className="container px-4 md:px-6 mx-auto flex justify-center text-sm text-muted-foreground font-medium items-center gap-1.5 hover:text-foreground transition-colors">
+                <span>Crafted by</span>
+                <a 
+                    href="https://simpfly.info" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-secondary/50 hover:bg-secondary transition-all"
+                >
+                  Simpfly
+                </a>
+            </div>
         </footer>
       </div>
+      
+      {/* Structural Data for SEO */}
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Lenny's Podcast 知识库 (Builder's Archive)",
+        "url": "https://builders.simpfly.info/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://builders.simpfly.info/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }} />
     </div>
   );
 }

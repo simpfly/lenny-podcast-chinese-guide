@@ -45,14 +45,14 @@ export default function Home() {
           <div className="flex flex-col gap-6 text-center md:text-left flex-1 min-w-0">
             <Badge className="w-fit self-center md:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
               <Sparkles className="w-3.5 h-3.5 mr-2" />
-              Learn From the Best
+              Learn From the ACE
             </Badge>
             <h1 className="text-4xl font-black tracking-tight md:text-5xl lg:text-5xl leading-[1.2]">
               Find <br />
               <span className="text-primary italic">Builders, Actions, Products</span>
             </h1>
             <p className="text-muted-foreground text-xl md:text-2xl leading-relaxed">
-              Deep dive analysis transcripts from <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="text-foreground font-semibold underline decoration-wavy decoration-primary decoration-2 underline-offset-4 decoration-skip-ink-none transition-all">Lenny's Podcast</a>. 
+              Deep dive analysis transcripts from <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="text-foreground font-semibold underline decoration-wavy decoration-primary decoration-2 underline-offset-4 decoration-skip-ink-none transition-all">Lenny's&nbsp;Podcast</a>. 
             </p>
             <div className="mt-4">
                 <SearchInput />

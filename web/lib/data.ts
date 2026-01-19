@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { normalizeTopic } from "./topic-mapping";
 import { getOfficialDate } from "./episode-date-map";
 import { parseActions } from "./action-parser";
+import { canonicalNames, toolLinks } from "./constants";
 
 const CONTENT_DIR = path.join(process.cwd(), "content"); // Inside web/content
 const EPISODES_DIR = path.join(CONTENT_DIR, "episodes");
@@ -305,135 +306,7 @@ export function getAllProducts(): Product[] {
   const productMap = new Map<string, Product>();
 
   // Canonical names for high-frequency tools to ensure perfect deduplication
-  const canonicalNames: Record<string, string> = {
-    "cursor": "Cursor",
-    "windsurf": "Windsurf",
-    "chatgpt": "ChatGPT",
-    "rewind": "Rewind",
-    "replit": "Replit",
-    "v0": "v0.dev",
-    "linear": "Linear",
-    "slack": "Slack",
-    "notion": "Notion",
-    "figma": "Figma",
-    "arc": "Arc Browser",
-    "raycast": "Raycast",
-    "copilot": "GitHub Copilot",
-    "claude": "Claude",
-    "perplexity": "Perplexity",
-    "coda": "Coda",
-    "reforge": "Reforge",
-    "miro": "Miro",
-    "text-to-sql": "Text-to-SQL",
-    "statsig": "Statsig",
-    "usertesting": "UserTesting",
-    "usertesting.com": "UserTesting",
-    // Good Strategy Bad Strategy variations
-    "good strategy bad strategy": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "good strategy/bad strategy": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "good strategy, bad strategy": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "《好战略，坏战略》(good strategy bad strategy)": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "《good strategy, bad strategy》": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "《good strategy bad strategy》": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "《good strategy/bad strategy》": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "《good strategy/bad strategy》(richard rumelt)": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "《good strategy bad strategy》(richard rumelt)": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    "- 《good strategy bad strategy》": "《好战略，坏战略》(Good Strategy Bad Strategy)",
-    // High Output Management variations
-    "high output management": "《High Output Management》(高产出管理)",
-    "《high output management》（高产出管理）": "《High Output Management》(高产出管理)",
-    "《high output management》 (安迪·格鲁夫)": "《High Output Management》(高产出管理)",
-    "《high output management》 - andy grove": "《High Output Management》(高产出管理)",
-    "《high output management》 (andy grove)": "《High Output Management》(高产出管理)",
-    "《high output management》 (格鲁夫)": "《High Output Management》(高产出管理)",
-    "《high output management》 (高产出管理)": "《High Output Management》(高产出管理)",
-    "《high output management》 (andrew grove)": "《High Output Management》(高产出管理)",
-    // Scaling People variations
-    "scaling people": "《Scaling People》",
-    "《scaling people》": "《Scaling People》",
-    "《scaling people》 (claire hughes johnson)": "《Scaling People》",
-    "《scaling people》 (claire hughes johnson 著)": "《Scaling People》",
-    // Innovator's Dilemma variations
-    "innovator's dilemma": "《创新者的窘境》(The Innovator's Dilemma)",
-    "the innovator's dilemma": "《创新者的窘境》(The Innovator's Dilemma)",
-    "《innovator's dilemma》": "《创新者的窘境》(The Innovator's Dilemma)",
-    "《the innovator's dilemma》": "《创新者的窘境》(The Innovator's Dilemma)",
-    "《the innovator's dilemma》 (创新者的窘境)": "《创新者的窘境》(The Innovator's Dilemma)",
-    "《创新者的窘境》(the innovator's dilemma)": "《创新者的窘境》(The Innovator's Dilemma)",
-    // Playing to Win variations  
-    "playing to win": "《Playing to Win》(赢在战略)",
-    "play to win": "《Playing to Win》(赢在战略)",
-    "《play to win》": "《Playing to Win》(赢在战略)",
-    "《playing to win》": "《Playing to Win》(赢在战略)",
-    "《playing to win》(赢在战略)": "《Playing to Win》(赢在战略)",
-    "《赢在战略》(playing to win)": "《Playing to Win》(赢在战略)",
-    // Culture series variations
-    "《the culture》系列": "《Culture》系列 (Iain M. Banks)",
-    "《文明》(culture)系列": "《Culture》系列 (Iain M. Banks)",
-    "《culture》系列": "《Culture》系列 (Iain M. Banks)",
-    // Working Backwards variations
-    "working backwards": "《Working Backwards》(逆向工作法)",
-    "《working backwards》": "《Working Backwards》(逆向工作法)",
-    "《working backwards》（逆向工作法）": "《Working Backwards》(逆向工作法)",
-    "《逆向工作法》（working backwards）": "《Working Backwards》(逆向工作法)",
-    "《逆向工作法》(working backwards)": "《Working Backwards》(逆向工作法)",
-    "\"working backwards: insights, secrets, and methods from inside amazon\" by colin bryar and bill carr": "《Working Backwards》(逆向工作法)",
-    // No Rules Rules variations
-    "no rules rules": "《No Rules Rules》(不拘一格)",
-    "《no rules rules》": "《No Rules Rules》(不拘一格)",
-    "《no rules rules》（不拘一格）": "《No Rules Rules》(不拘一格)",
-    "《no rules rules》(不拘一格)": "《No Rules Rules》(不拘一格)",
-    "《no rules rules》 (reed hastings)": "《No Rules Rules》(不拘一格)",
-    // Zero to One variations
-    "zero to one": "《从 0 到 1》(Zero to One)",
-    "《zero to one》": "《从 0 到 1》(Zero to One)",
-    "《zero to one》 (从 0 到 1)": "《从 0 到 1》(Zero to One)",
-    "《从 0 到 1》(zero to one)": "《从 0 到 1》(Zero to One)",
-    // Crossing the Chasm variations
-    "crossing the chasm": "《跨越鸿沟》(Crossing the Chasm)",
-    "《crossing the chasm》": "《跨越鸿沟》(Crossing the Chasm)",
-    "《crossing the chasm》（跨越鸿沟）": "《跨越鸿沟》(Crossing the Chasm)",
-    "《跨越鸿沟》（crossing the chasm）": "《跨越鸿沟》(Crossing the Chasm)",
-    // Inspired variations
-    "inspired": "《Inspired》(启示录)",
-    "《inspired》": "《Inspired》(启示录)",
-    "《inspired》(marty cagan)": "《Inspired》(启示录)",
-    "《inspired》 (marty cagan)": "《Inspired》(启示录)",
-    "《inspired》 - marty cagan": "《Inspired》(启示录)",
-    "《inspired》- marty cagan": "《Inspired》(启示录)",
-    // Three-Body Problem variations
-    "the three-body problem": "《三体》(The Three-Body Problem)",
-    "《三体》": "《三体》(The Three-Body Problem)",
-    "《三体》(the three-body problem)": "《三体》(The Three-Body Problem)",
-    "《三体》 (the three-body problem)": "《三体》(The Three-Body Problem)",
-    // The Timeless Way of Building variations
-    "the timeless way of building": "《建筑的永恒之道》(The Timeless Way of Building)",
-    "《the timeless way of building》": "《建筑的永恒之道》(The Timeless Way of Building)",
-    "《the timeless way of building》(christopher alexander)": "《建筑的永恒之道》(The Timeless Way of Building)",
-    "《the timeless way of building》（建筑的永恒之道）": "《建筑的永恒之道》(The Timeless Way of Building)",
-    "《建筑的永恒之道》 (the timeless way of building)": "《建筑的永恒之道》(The Timeless Way of Building)",
-    "《建筑的永恒之道》（the timeless way of building）": "《建筑的永恒之道》(The Timeless Way of Building)",
-    "《the timeless way of building》 (christopher alexander)": "《建筑的永恒之道》(The Timeless Way of Building)",
-    "the timeless way of building (christopher alexander)": "《建筑的永恒之道》(The Timeless Way of Building)",
-    // Build (Tony Fadell) variations
-    "build": "《Build》(创造) - Tony Fadell",
-    "《build》": "《Build》(创造) - Tony Fadell",
-    "《build》 - tony fadell": "《Build》(创造) - Tony Fadell",
-    "《build》- tony fadell": "《Build》(创造) - Tony Fadell",
-    "《build》 (创造)": "《Build》(创造) - Tony Fadell",
-    "《build》(创造)": "《Build》(创造) - Tony Fadell",
-    "《build》 (tony fadell)": "《Build》(创造) - Tony Fadell",
-    // Connect variations
-    "connect": "《Connect》(深度沟通)",
-    "《connect》": "《Connect》(深度沟通)",
-    "《connect》 (深度沟通)": "《Connect》(深度沟通)",
-    "《connect》（深度沟通）": "《Connect》(深度沟通)",
-    "《connect》(深度沟通)": "《Connect》(深度沟通)",
-    "《connect: building exceptional relationships with family, friends, and colleagues》": "《Connect》(深度沟通)",
-    "connect: building exceptional relationships with family, friends, and colleagues": "《Connect》(深度沟通)",
-    "《connect》 (carole robin)": "《Connect》(深度沟通)",
-    "《connect》(carole robin)": "《Connect》(深度沟通)",
-  };
+  // Imported from ./constants.ts
 
   episodes.forEach((episode) => {
     if (!episode.resources) return;
@@ -616,16 +489,10 @@ export function getAllProducts(): Product[] {
             const lowerName = name.toLowerCase();
             let finalName = name;
             
-            const extendedCanonical = {
-                ...canonicalNames,
-                "notion calendar": "Notion Calendar",
-                "notion calendar/cron": "Notion Calendar"
-            };
-
-            const sortedKeys = Object.keys(extendedCanonical).sort((a, b) => b.length - a.length);
+            const sortedKeys = Object.keys(canonicalNames).sort((a, b) => b.length - a.length);
             for (const key of sortedKeys) {
                 if (lowerName === key || lowerName.includes(key)) {
-                    finalName = extendedCanonical[key as keyof typeof extendedCanonical];
+                    finalName = canonicalNames[key];
                     break;
                 }
             }
@@ -671,30 +538,7 @@ export function getAllProducts(): Product[] {
                 }
             }
 
-            const toolLinks: Record<string, string> = {
-                "coda": "https://coda.io/lenny",
-                "linear": "https://linear.app/lenny",
-                "reforge": "https://www.reforge.com/",
-                "miro": "https://miro.com/",
-                "figma": "https://www.figma.com/",
-                "notion": "https://www.notion.so/",
-                "amplitude": "https://amplitude.com/",
-                "mixpanel": "https://mixpanel.com/",
-                "segment": "https://segment.com/",
-                "pendo": "https://www.pendo.io/",
-                "statsig": "https://www.statsig.com/",
-                "vanta": "https://www.vanta.com/",
-                "loom": "https://www.loom.com/",
-                "slack": "https://slack.com/",
-                "chatgpt": "https://chat.openai.com/",
-                "cursor": "https://www.cursor.com/",
-                "perplexity": "https://www.perplexity.ai/",
-                "《working backwards》(逆向工作法)": "https://www.amazon.com/Working-Backwards-PB/dp/1529033845",
-                "《inspired》(启示录)": "https://www.amazon.com/INSPIRED-Create-Tech-Products-Customers/dp/1119387507",
-                "《三体》(the three-body problem)": "https://www.amazon.com/Three-Body-Problem-Cixin-Liu/dp/0765382032",
-                "wispr flow": "https://wisprflow.ai/",
-                "flow": "https://wisprflow.ai/",
-            };
+
 
             const normLow = finalName.toLowerCase();
             if (!link && toolLinks[normLow]) link = toolLinks[normLow];

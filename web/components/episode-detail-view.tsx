@@ -157,10 +157,15 @@ function parseResources(body: string) {
     let current: { title: string; description?: string; link?: string } | null = null;
 
     lines.forEach(line => {
+        // 跳过"推荐阅读"、"工具类"等标题行本身，但继续解析后续的条目
+        if (line.match(/^\*{0,2}(推荐阅读|工具类|阅读类|书籍|工具|资源|工具\/资源|工具\/书籍|Tools?|Books?|Resources?)\*{0,2}\s*[:：]?\s*$/i)) {
+            return;
+        }
+        
         // More robust matching:
-        // Handle variations: "**工具 1**: Name", "[工具 1](url): Name", "推荐阅读: Name"
+        // Handle variations: "**工具 1**: Name", "[工具 1](url): Name", "**推荐阅读 1**: **《书名》**", "**书籍**: 《Name》"
         // Pattern: Starts with list marker? Optional ** or [. Then Keyword. Optional space+number. Optional ** or ]. Optional (url). Then mandatory/optional colon. Then the Title.
-        const headerMatch = line.match(/^(?:[-*]\s*)?(?:\*\*|\[)?(?:工具|资源|推荐阅读)\s*\d*(?:\*\*|\])?(?:\((.*?)\))?\s*[:：]\s*(.*)/i);
+        const headerMatch = line.match(/^(?:[-*]\s*)?(?:\*\*|\[)?(?:工具|资源|推荐阅读|书籍|概念|产品|工具\/书籍)\s*\d*(?:\*\*|\])?(?:\((.*?)\))?\s*[:：]\s*(.*)/i);
         const boldMatch = line.match(/^(?:[-*]\s*)?\*\*(.*?)\*\*/);
 
         // Ignore separator lines
@@ -181,14 +186,14 @@ function parseResources(body: string) {
             
             if (capturedTitle) {
                 current = { 
-                    title: capturedTitle.replace(/^\*\*(.*?)\*\*$/, "$1").replace(/\s*[:：]\s*$/, ""),
+                    title: capturedTitle.replace(/\*\*/g, "").replace(/\s*[:：]\s*$/, "").trim(),
                     link: finalLink
                 };
             } else {
                 // Label only line, maybe name is next? Or label is name if nothing else.
                 current = { title: line.replace(/^(?:[-*]\s*)?/, "") };
             }
-        } else if (boldMatch && !line.includes("说明") && !line.includes("链接")) {
+        } else if (boldMatch && !line.includes("说明") && !line.includes("链接") && !line.includes("推荐阅读")) {
             if (current) resources.push(current);
             current = { title: boldMatch[1].trim() };
         } else {
@@ -225,7 +230,7 @@ function parseResources(body: string) {
     
     return resources.filter(res => res.title.length > 0).map(res => {
         let cleanTitle = res.title
-            .replace(/^(?:工具|资源|推荐阅读)\s*\d+[:：]\s*/i, "")
+            .replace(/^(?:工具|资源)\s*\d+[:：]\s*/i, "")
             .replace(/^\*\*(.*?)\*\*$/, "$1")
             .trim();
         
@@ -375,49 +380,42 @@ function TableOfContents({ items }: { items: Array<{ id: string; title: string; 
 
 
 function ClassificationSection({ content }: { content: string }) {
-    const quadrants = content.split(/###\s+/).slice(1); // Skip preamble before first ###
+    const quadrants = content.split(/###\s+/).slice(1);
 
     return (
         <div className="my-10 pt-8 border-t border-dashed">
-             <h2 className="text-2xl font-black mb-8 flex items-center gap-2">
+            <h2 className="text-2xl font-black mb-8 flex items-center gap-2">
                 <Target className="w-7 h-7 text-primary" /> 四维分类评估
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {quadrants.map((quadrant, idx) => {
                     const lines = quadrant.split('\n');
                     const titleLine = lines[0].trim();
                     const body = lines.slice(1).join('\n').trim();
                     
-                    // Basic color mapping based on index or content keywords
-                    // 0: Green (highly correct), 1: Blue (actionable), 2: Yellow (questionable), 3: Red (warning)
-                    let borderColor = "border-l-4 border-l-slate-200";
-                    let bgColor = "bg-slate-50 dark:bg-slate-900/50";
+                    // 简化的颜色指示器
+                    let dotColor = "bg-slate-400";
                     
                     if (titleLine.includes("高度正确") || titleLine.includes("Highly Correct")) {
-                        borderColor = "border-l-4 border-l-emerald-500";
-                        bgColor = "bg-emerald-50/50 dark:bg-emerald-900/10";
+                        dotColor = "bg-emerald-500";
                     } else if (titleLine.includes("当下可执行") || titleLine.includes("Actionable")) {
-                        borderColor = "border-l-4 border-l-blue-500";
-                        bgColor = "bg-blue-50/50 dark:bg-blue-900/10";
+                        dotColor = "bg-blue-500";
                     } else if (titleLine.includes("理智质疑") || titleLine.includes("Questionable")) {
-                        borderColor = "border-l-4 border-l-amber-500";
-                        bgColor = "bg-amber-50/50 dark:bg-amber-900/10";
+                        dotColor = "bg-amber-500";
                     } else if (titleLine.includes("需警惕") || titleLine.includes("Warning")) {
-                        borderColor = "border-l-4 border-l-red-500";
-                        bgColor = "bg-red-50/50 dark:bg-red-900/10";
+                        dotColor = "bg-red-500";
                     }
 
                     return (
-                         <Card key={idx} className={`shadow-sm ${bgColor} ${borderColor} border-y-0 border-r-0 rounded-r-lg rounded-l-none`}>
-                            <CardContent className="p-4">
-                                <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
-                                   {titleLine}
-                                </h3>
-                                <div className="text-sm text-muted-foreground prose prose-sm dark:prose-invert max-w-none">
-                                     <MarkdownRenderer content={body} />
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <div key={idx} className="space-y-3">
+                            <h3 className="font-bold text-base flex items-center gap-2">
+                                <span className={`w-2.5 h-2.5 rounded-full ${dotColor} shrink-0`} />
+                                {titleLine}
+                            </h3>
+                            <div className="text-sm text-muted-foreground pl-[18px] prose prose-sm dark:prose-invert max-w-none">
+                                <MarkdownRenderer content={body} />
+                            </div>
+                        </div>
                     );
                 })}
             </div>

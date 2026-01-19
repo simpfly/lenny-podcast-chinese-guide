@@ -53,22 +53,17 @@ export function SaveToolButton({ product, className = "" }: SaveToolButtonProps)
     <Button
       variant="ghost"
       size="icon"
-      className={`h-6 w-6 transition-all opacity-0 group-hover:opacity-100 group/action ${
-          isInStack 
-          ? (justAdded
-              ? "text-primary hover:bg-transparent"
-              : "text-primary hover:text-destructive hover:bg-transparent")
-          : "text-muted-foreground hover:text-foreground hover:bg-transparent"
-      } ${className}`}
+      className={`h-6 w-6 transition-all 
+          opacity-60 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100
+          ${isInStack 
+            ? "text-primary !opacity-100"
+            : "text-muted-foreground hover:text-foreground hover:bg-transparent"
+          } ${className}`}
       onClick={toggleStack}
-      onMouseLeave={() => setJustAdded(false)}
       title={isInStack ? "Remove from my stack" : "Add to my tool stack"}
     >
       {isInStack ? (
-        <>
-          <Check className={`h-4 w-4 ${justAdded ? "" : "group-hover/action:hidden"}`} />
-          {!justAdded && <Trash2 className="h-4 w-4 hidden group-hover/action:block" />}
-        </>
+        <Check className="h-4 w-4" />
       ) : (
         <Plus className="h-4 w-4" />
       )}

@@ -72,25 +72,21 @@ export function ProductCard({ product }: ProductCardProps) {
             variant="ghost"
             size="icon"
             className={cn(
-              "h-7 w-7 rounded-full transition-all opacity-0 group-hover:opacity-100 group/action",
+              "h-7 w-7 rounded-full transition-all",
+              // 触屏设备始终可见，桌面端 hover 显示
+              "opacity-60 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100",
               isInStack 
-                ? (justAdded
-                    ? "text-primary opacity-100"
-                    : "text-primary opacity-100 hover:text-destructive")
+                ? "text-primary !opacity-100"
                 : "text-muted-foreground hover:text-primary"
             )}
             onClick={(e) => {
               e.preventDefault();
               toggleStack();
             }}
-            onMouseLeave={() => setJustAdded(false)}
             title={isInStack ? "Remove from my stack" : "Add to my tool stack"}
           >
             {isInStack ? (
-              <>
-                <Check className={cn("h-4 w-4", justAdded ? "" : "group-hover/action:hidden")} />
-                {!justAdded && <Trash2 className="h-4 w-4 hidden group-hover/action:block" />}
-              </>
+              <Check className="h-4 w-4" />
             ) : (
               <Plus className="h-4 w-4" />
             )}
@@ -112,7 +108,11 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </CardTitle>
         <CardDescription className="line-clamp-2 min-h-[40px] text-sm leading-relaxed">
-          {product.description || "No description provided."}
+          {product.description ? (
+            <span dangerouslySetInnerHTML={{ 
+              __html: product.description.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+            }} />
+          ) : "No description provided."}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pt-0">

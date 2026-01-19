@@ -32,6 +32,7 @@ export default function Home() {
   const totalActions = getTotalActionsCount();
   const allProducts = getAllProducts();
   const totalTools = allProducts.filter(p => p.category === "Tool").length;
+  const totalBooks = allProducts.filter(p => p.category === "Book").length;
 
   return (
     <div className="flex flex-col gap-16 pb-20 w-full px-4 lg:px-6">
@@ -40,15 +41,14 @@ export default function Home() {
         <div className="flex flex-col gap-6 text-center md:text-left">
           <Badge className="w-fit self-center md:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
             <Sparkles className="w-3.5 h-3.5 mr-2" />
-            AI-Powered Product Knowledge Base
+            Learn From the Best
           </Badge>
           <h1 className="text-4xl font-black tracking-tight md:text-5xl lg:text-5xl leading-[1.2]">
-            Hunt <br />
+            Find <br />
             <span className="text-primary italic">Builders, Actions, Products</span>
           </h1>
           <p className="text-muted-foreground text-xl md:text-2xl leading-relaxed">
             Deep dive analysis transcripts from <span className="text-foreground font-semibold">Lenny's Podcast</span>. 
-            Practical wisdom, synthesized for growth-minded builders.
           </p>
           <div className="mt-4">
               <SearchInput />
@@ -66,9 +66,9 @@ export default function Home() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 w-full">
             <StatItem icon={<Calendar />} label="Episodes" value={totalEpisodes} href="/search" />
-            <StatItem icon={<CheckCircle2 />} label="Guide Actions" value={totalActions} href="/search?v=actions" />
-            <StatItem icon={<Wrench />} label="Tools Found" value={totalTools} href="/products" />
-            <StatItem icon={<TrendingUp />} label="Topics" value={categories.length} href="#topics" />
+            <StatItem icon={<CheckCircle2 />} label="Actions" value={totalActions} href="/search?v=actions" />
+            <StatItem icon={<Wrench />} label="Tools" value={totalTools} href="/products" />
+            <StatItem icon={<BookOpen />} label="Books" value={totalBooks} href="/products" />
         </div>
       </section>
 
@@ -78,9 +78,9 @@ export default function Home() {
       {/* Latest Insights Section */}
       <section>
         <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-black tracking-tight flex items-center gap-2">
+            <h2 className="text-xl font-black tracking-tight flex items-center gap-2">
                 <Sparkles className="w-6 h-6 text-primary" />
-                最新深度分析
+                深度分析
             </h2>
             <Link href="/search" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">
                 查看更多
@@ -93,12 +93,12 @@ export default function Home() {
       {/* Featured Tools Teaser */}
       <section>
         <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-black tracking-tight flex items-center gap-2">
+              <h2 className="text-xl font-black tracking-tight flex items-center gap-2">
                   <Wrench className="w-6 h-6 text-primary" />
-                  精选生产力工具
+                  工具推荐
               </h2>
               <Link href="/products" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">
-                  前往工具墙
+                  查看更多
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
           </div>
@@ -124,7 +124,7 @@ export default function Home() {
       {/* Browse Topics Grid */}
       <section id="topics">
         <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-black tracking-tight flex items-center gap-2">
+            <h2 className="text-xl font-black tracking-tight flex items-center gap-2">
                 <BookOpen className="w-6 h-6 text-primary" />
                 按主题检索
             </h2>
@@ -146,7 +146,7 @@ export default function Home() {
 
 function StatItem({ icon, label, value, href }: { icon: React.ReactNode, label: string, value: number, href?: string }) {
     const Content = (
-        <div className={cn("flex flex-col items-center md:items-start p-4 hover:bg-background rounded-2xl transition-colors group", href && "cursor-pointer")}>
+        <div className={cn("flex flex-col items-center p-4 hover:bg-background rounded-2xl transition-colors group", href && "cursor-pointer")}>
             <div className="p-2 bg-primary/10 rounded-lg text-primary mb-3 group-hover:scale-110 transition-transform">
                 {icon}
             </div>

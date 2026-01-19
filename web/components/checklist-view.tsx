@@ -502,7 +502,7 @@ function ActionCard({ action, onRemove }: { action: CompletedAction, onRemove: (
             <Button 
                 variant="ghost" 
                 size="icon" 
-                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-all absolute top-2 right-2"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-60 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 transition-all absolute top-2 right-2"
                 onClick={() => onRemove(action.episodeSlug, action.id)}
             >
                 <Trash2 className="w-4 h-4" />

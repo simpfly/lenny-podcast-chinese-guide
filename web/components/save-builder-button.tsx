@@ -54,22 +54,17 @@ export function SaveBuilderButton({ episode }: SaveBuilderButtonProps) {
     <Button
       variant="ghost"
       size="icon"
-      className={`h-8 w-8 transition-all opacity-0 group-hover:opacity-100 group/action ${
-          isAdded 
-          ? (justAdded 
-              ? "text-primary hover:bg-transparent" 
-              : "text-primary hover:text-destructive hover:bg-transparent")
-          : "text-muted-foreground hover:text-foreground hover:bg-transparent"
-      }`}
+      className={`h-8 w-8 transition-all 
+          opacity-60 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100
+          ${isAdded 
+            ? "text-primary !opacity-100"
+            : "text-muted-foreground hover:text-foreground hover:bg-transparent"
+          }`}
       onClick={toggleChecklist}
-      onMouseLeave={() => setJustAdded(false)}
       title={isAdded ? "Unsave Builder" : "Save Builder"}
     >
       {isAdded ? (
-        <>
-            <Check className={`w-5 h-5 ${justAdded ? "" : "group-hover/action:hidden"}`} />
-            {!justAdded && <Trash2 className="w-5 h-5 hidden group-hover/action:block" />}
-        </>
+        <Check className="w-5 h-5" />
       ) : (
         <Plus className="w-5 h-5" />
       )}

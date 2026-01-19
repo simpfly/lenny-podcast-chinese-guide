@@ -44,7 +44,7 @@ export function HomeClientSection({ totalActions, episodes }: { totalActions: nu
     return (
         <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-3xl font-black tracking-tight flex items-center gap-2">
+                <h2 className="text-xl font-black tracking-tight flex items-center gap-2">
                     <LayoutDashboard className="w-6 h-6 text-primary" />
                     知识罗盘
                 </h2>

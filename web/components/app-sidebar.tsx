@@ -93,8 +93,7 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
             rel="noopener noreferrer"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
           >
-            <History className="h-4 w-4" />
-            Browse Skills | Refound AI
+            Skills
           </Link>
           <Link
             href="https://lennygallery.manus.space/"
@@ -102,8 +101,7 @@ export function AppSidebar({ episodes = [], categories = [] }: { episodes?: Epis
             rel="noopener noreferrer"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
           >
-            <History className="h-4 w-4" />
-            Lenny's Podcast Infographic Gallery
+            Infographic Gallery
           </Link>
         </nav>
       </ScrollArea>

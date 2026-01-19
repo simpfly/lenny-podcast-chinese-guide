@@ -51,20 +51,21 @@ function ActionList({ content, slug }: { content: string, slug: string }) {
                                 <li 
                                     key={item.id} 
                                     className={cn(
-                                        "flex items-start gap-2.5 group cursor-pointer select-none transition-all duration-200",
+                                        "flex items-start gap-2.5 group transition-all duration-200",
                                         isChecked ? "opacity-100" : "opacity-100"
                                     )}
-                                    onClick={(e) => {
-                                        e.preventDefault(); // Prevent card click
-                                        e.stopPropagation();
-                                        toggleItem(item.id);
-                                    }}
                                 >
-                                    <div className={cn(
-                                        "mt-1 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors pointer-events-auto relative z-20", // pointer-events-auto just in case
+                                    <div 
+                                        onClick={(e) => {
+                                            e.preventDefault(); 
+                                            e.stopPropagation();
+                                            toggleItem(item.id);
+                                        }}
+                                        className={cn(
+                                        "mt-1 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors relative z-20 cursor-pointer", 
                                         isChecked 
                                             ? "bg-green-600 border-green-600 text-white" 
-                                            : "border-muted-foreground/30 bg-background group-hover:border-primary/50"
+                                            : "border-muted-foreground/30 bg-background hover:border-primary/50"
                                     )}>
                                         {isChecked && <Check className="w-2.5 h-2.5" strokeWidth={3} />}
                                     </div>

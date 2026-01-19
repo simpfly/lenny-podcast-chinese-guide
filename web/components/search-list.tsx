@@ -24,7 +24,8 @@ export function SearchList({ episodes }: { episodes: Episode[] }) {
             ep.title.toLowerCase().includes(lowerQuery) ||
             ep.guest.toLowerCase().includes(lowerQuery) ||
             ep.summary.toLowerCase().includes(lowerQuery) ||
-            (ep.guestIntro && ep.guestIntro.toLowerCase().includes(lowerQuery));
+            (ep.guestIntro && ep.guestIntro.toLowerCase().includes(lowerQuery)) ||
+            (ep.content && ep.content.toLowerCase().includes(lowerQuery));
 
         // 2. Semantic Topic Search
         // Check if ANY of the expanded search terms match ANY of the episode topics

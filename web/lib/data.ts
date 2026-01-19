@@ -30,6 +30,7 @@ export type Episode = {
   score?: Score;
   actions?: string;
   resources?: string;
+  content?: string;
   coreArguments?: string[];
 };
 
@@ -255,7 +256,8 @@ export function getEpisodeMetadata(slug: string): Episode | null {
     score,
     actions,
     resources,
-    coreArguments
+    coreArguments,
+    content: markdownBody
   };
 }
 

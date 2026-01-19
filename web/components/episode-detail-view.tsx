@@ -110,20 +110,21 @@ function ActionSection({ content, slug }: { content: string, slug: string }) {
                             return (
                                 <li 
                                     className={cn(
-                                        "flex items-start mb-2 group cursor-pointer select-none transition-all duration-300",
+                                        "flex items-start mb-2 group transition-all duration-300",
                                         isChecked ? "opacity-100" : "opacity-100"
                                     )}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleCheckChange(id, !isChecked);
-                                    }}
                                 >
                                     <div className="pt-[0.45rem] shrink-0 mr-3">
-                                        <div className={cn(
-                                            "w-4 h-4 rounded border flex items-center justify-center transition-all duration-300",
+                                        <div 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleCheckChange(id, !isChecked);
+                                            }}
+                                            className={cn(
+                                            "w-4 h-4 rounded border flex items-center justify-center transition-all duration-300 cursor-pointer",
                                             isChecked 
                                                 ? "bg-green-600 border-green-600 text-white scale-110 shadow-sm" 
-                                                : "border-muted-foreground/20 bg-background group-hover:border-primary/50 group-hover:scale-105"
+                                                : "border-muted-foreground/20 bg-background hover:border-primary/50 hover:scale-105"
                                         )}>
                                             {isChecked && <Check className="w-2.5 h-2.5" strokeWidth={5} />}
                                         </div>

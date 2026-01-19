@@ -58,7 +58,7 @@ export default function Home() {
                 <SearchInput />
                 <div className="mt-4 flex flex-wrap items-center gap-2 justify-center md:justify-start">
                   <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mr-2">Popular:</span>
-                  {["Growth", "AI", "Marketplace", "Leadership"].map(tag => (
+                  {["Growth", "AI", "Marketplace"].map(tag => (
                       <Link key={tag} href={`/search?q=${tag.toLowerCase()}`}>
                       <Badge variant="outline" className="cursor-pointer hover:bg-primary/5 hover:text-primary transition-colors">#{tag}</Badge>
                       </Link>

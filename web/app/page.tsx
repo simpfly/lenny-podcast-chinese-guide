@@ -63,7 +63,7 @@ export default function Home() {
               Find <br />
               <span className="text-primary italic">Builders, Actions, Products</span>
             </h1>
-            <p className="text-muted-foreground text-xl lg:text-2xl leading-relaxed flex items-center gap-2">
+            <p className="text-muted-foreground text-xl lg:text-2xl leading-relaxed flex items-center gap-2 justify-center xl:justify-start">
               Inspired by <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline flex items-center gap-2 text-foreground">
               <NextImage src="/lennynewsletter.png" alt="Lenny's Podcast" width={20} height={20} className="rounded-sm" />
               Lenny's Podcast

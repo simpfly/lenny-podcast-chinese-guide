@@ -27,6 +27,10 @@ export const metadata: Metadata = {
     description: "Lenny's Podcast 深度中文知识库，精选硅谷一线产品经理、增长黑客的实战经验。",
     creator: "@lennysan",
   },
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
 };
 
 import { ThemeProvider } from "@/components/theme-provider";

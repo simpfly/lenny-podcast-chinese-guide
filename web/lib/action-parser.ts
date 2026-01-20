@@ -31,6 +31,7 @@ export function parseActions(markdown: string): ActionCategory[] {
         
         if (!label) return; // Skip unknown sections or intro text
 
+        const seenIds = new Set<string>();
         const items: ActionItem[] = [];
         contentLines.forEach(line => {
             const trimmed = line.trim();
@@ -41,8 +42,20 @@ export function parseActions(markdown: string): ActionCategory[] {
                 
                 // IGNORE noise like "--" or single punctuation
                 if (cleanText && cleanText.length > 2) {
+                    let id = btoa(unescape(encodeURIComponent(label + cleanText))).slice(0, 32);
+                    
+                    // Collision detection for duplicate text in same category
+                    if (seenIds.has(id)) {
+                        let suffix = 1;
+                        while (seenIds.has(`${id}_${suffix}`)) {
+                            suffix++;
+                        }
+                        id = `${id}_${suffix}`;
+                    }
+                    seenIds.add(id);
+
                     items.push({
-                        id: btoa(unescape(encodeURIComponent(cleanText))).slice(0, 16), // Simple hash for ID
+                        id: id,
                         text: cleanText,
                         originalText: cleanText 
                     });

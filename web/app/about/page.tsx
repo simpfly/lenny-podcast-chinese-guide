@@ -22,7 +22,7 @@ export default function AboutPage() {
 
       {/* Overview Section */}
       <section className="py-4 md:grid md:grid-cols-4 md:gap-8 items-start">
-        <h2 className="text-2xl font-black tracking-tight mb-6 md:mb-0 md:col-span-1 md:text-right text-center md:order-last md:pt-1">项目介绍</h2>
+        <h2 className="text-2xl font-black tracking-tight mb-6 md:mb-0 md:col-span-1 md:text-left text-center">项目介绍</h2>
         <div className="space-y-6 text-foreground/80 leading-loose tracking-wide md:col-span-3 text-center md:text-left">
           <p>
             <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习 AI 的绝佳内容源。
@@ -112,7 +112,7 @@ export default function AboutPage() {
             <div className="space-y-1">
               <h3 className="font-bold text-base">关键词检索</h3>
               <p className="text-sm text-muted-foreground leading-loose tracking-wide">
-                搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong> 等，直达一线实战洞察
+                搜索你感兴趣的关键词，直达一线实战洞察
               </p>
             </div>
           </div>
@@ -142,42 +142,44 @@ export default function AboutPage() {
       </section>
 
       {/* Credits Section */}
-      <section className="space-y-12 text-center pb-20">
-        <h2 className="text-2xl font-black tracking-tight">内容制作</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-12 max-w-4xl mx-auto px-4">
-          <div className="flex flex-col items-center gap-4 text-center group">
-            <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
-              <Image src="/lenny.jpg" alt="Lenny Rachitsky" fill className="object-cover" />
+      <section className="md:grid md:grid-cols-4 md:gap-8 items-start pb-20">
+        <h2 className="text-2xl font-black tracking-tight mb-8 md:mb-0 md:col-span-1 md:text-left text-center md:pt-4">内容制作</h2>
+        <div className="md:col-span-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-12 max-w-4xl mx-auto px-4">
+            <div className="flex flex-col items-center gap-4 text-center group">
+              <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
+                <Image src="/lenny.jpg" alt="Lenny Rachitsky" fill className="object-cover" />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <a href="https://x.com/lennysan" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
+                  @Lenny Rachitsky
+                </a>
+                <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">播客文稿</span>
+              </div>
             </div>
-            <div className="flex flex-col items-center gap-2">
-              <a href="https://x.com/lennysan" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
-                @Lenny Rachitsky
-              </a>
-              <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">播客文稿</span>
-            </div>
-          </div>
 
-          <div className="flex flex-col items-center gap-4 text-center group">
-            <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
-              <Image src="/penny.jpeg" alt="Penny" fill className="object-cover" />
+            <div className="flex flex-col items-center gap-4 text-center group">
+              <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
+                <Image src="/penny.jpeg" alt="Penny" fill className="object-cover" />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <a href="https://github.com/Penny777btc/lenny-podcast-chinese" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
+                  @Penny777btc
+                </a>
+                <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">中文深度解析</span>
+              </div>
             </div>
-            <div className="flex flex-col items-center gap-2">
-              <a href="https://github.com/Penny777btc/lenny-podcast-chinese" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
-                @Penny777btc
-              </a>
-              <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">中文深度解析</span>
-            </div>
-          </div>
 
-          <div className="flex flex-col items-center gap-4 text-center group">
-            <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
-              <Image src="/simpfly.png" alt="simpfly" fill className="object-cover" />
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
-                @simpfly
-              </a>
-              <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">知识库制作</span>
+            <div className="flex flex-col items-center gap-4 text-center group">
+              <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
+                <Image src="/simpfly.png" alt="simpfly" fill className="object-cover" />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
+                  @simpfly
+                </a>
+                <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">知识库制作</span>
+              </div>
             </div>
           </div>
         </div>

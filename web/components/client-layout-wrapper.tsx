@@ -81,7 +81,16 @@ export function ClientLayoutWrapper({
           </div>
           
           <footer className="w-full py-8 mt-auto border-t bg-background/50 backdrop-blur-sm">
-              <div className="container px-4 md:px-6 mx-auto flex flex-col items-center gap-4 text-sm text-muted-foreground font-medium">
+              <div className="container px-4 md:px-6 mx-auto flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-muted-foreground font-medium">
+                  <a 
+                      href="https://github.com/simpfly/lenny-podcast-chinese-guide" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="hover:text-primary transition-colors hover:underline underline-offset-4"
+                  >
+                        项目开源 欢迎 Star
+                  </a>
+                  <span className="text-muted-foreground/30 hidden md:inline">•</span>
                   <div className="flex items-center gap-1.5 hover:text-foreground transition-colors">
                       <span>Crafted by</span>
                       <a 
@@ -93,14 +102,6 @@ export function ClientLayoutWrapper({
                         simpfly
                       </a>
                   </div>
-                  <a 
-                      href="https://github.com/simpfly/lenny-podcast-chinese-guide" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 hover:text-primary transition-colors bg-muted/30 px-3 py-1.5 rounded-full border border-primary/5 hover:border-primary/20"
-                  >
-                        本项目开源，欢迎 star
-                  </a>
               </div>
           </footer>
         </main>

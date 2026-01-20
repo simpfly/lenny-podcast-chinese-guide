@@ -84,7 +84,7 @@ export function ClientLayoutWrapper({
               <div className="container px-4 md:px-6 mx-auto flex justify-center text-sm text-muted-foreground font-medium items-center gap-1.5 hover:text-foreground transition-colors">
                   <span>Crafted by</span>
                   <a 
-                      href="https://simpfly.info" 
+                      href="https://www.simpfly.info/about" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-secondary/50 hover:bg-secondary transition-all"

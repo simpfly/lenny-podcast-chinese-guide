@@ -57,7 +57,7 @@ export default function Home() {
             </p>
             <div className="mt-4 w-full max-w-md mx-auto xl:mx-0">
                 <SearchInput />
-                <div className="mt-4 flex flex-wrap items-center gap-2 justify-center xl:justify-start">
+                <div className="mt-4 flex flex-wrap items-center gap-2 justify-start">
                   <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mr-2">Popular:</span>
                   {["Growth", "AI", "Marketplace"].map(tag => (
                       <Link key={tag} href={`/search?q=${tag.toLowerCase()}`}>

@@ -17,7 +17,7 @@ export function SearchInput() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="relative w-full max-w-sm">
+    <form onSubmit={handleSearch} className="relative w-full">
       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         type="search"

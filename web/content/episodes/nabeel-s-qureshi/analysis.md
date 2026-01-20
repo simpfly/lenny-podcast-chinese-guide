@@ -11,6 +11,7 @@
 ## 🎙️ 主持人介绍
 
 **Lenny Rachitsky**
+
 - **身份**: 硅谷顶级产品专家，前 Airbnb 产品负责人。
 - **背景**: 在 Airbnb 早期负责供应端增长，见证了公司从初创到 IPO 的全过程。
 - **现状**: 运营全球排名第一的产品类 Newsletter《Lenny's Newsletter》和同名播客，是产品经理（PM）社区的意见领袖。
@@ -23,6 +24,7 @@
 ## 🎤 嘉宾介绍
 
 **Nabeel S. Qureshi**
+
 - **身份**: 连续创业者、研究员、软件工程师。
 - **职业经历**:
   - **Palantir Technologies**: 效力近 8 年，担任前线部署工程师（Forward Deployed Engineer），负责公共卫生、国防及 AI 药物研发项目。
@@ -80,18 +82,21 @@
 ## ✅ 数据验证结果
 
 **验证项 1**: Palantir 离职 PM 的创业比例。
+
 - 原文声称: "30% 的 PM 离开 Palantir 后会创办公司，排名全球第一。"
 - 验证结果: ✅ 确认。
 - 来源: Lenny Rachitsky 针对 LinkedIn 数据的专项研究报告（2024）。
 - 可信度: ⭐⭐⭐
 
 **验证项 2**: Palantir 的市场估值。
+
 - 原文声称: "目前市值约 2000 亿美元。"
 - 验证结果: ⚠️ 存疑。
 - 来源: [Yahoo Finance (PLTR)](https://finance.yahoo.com/quote/PLTR/)。截至 2024 年底，Palantir 市值在 1300 亿至 1600 亿美元之间波动，2000 亿属于乐观预测或特定峰值。
 - 可信度: ⭐⭐⭐
 
 **验证项 3**: YC 创始人来源统计。
+
 - 原文声称: "Palantir 出身的 YC 创始人数量超过了规模大得多的 Google。"
 - 验证结果: ✅ 确认。
 - 来源: Y Combinator 官方校友统计数据及 Nabeel 的个人研究。
@@ -104,27 +109,33 @@
 ### 🟢 高度正确（已验证/权威来源）
 
 **观点 1**: 面对面（In-person）沟通在处理复杂企业级交易中具有不可替代的价值。
+
 - 验证依据: 销售心理学及 Palantir 长期以来的高客单价（Multi-million dollar deals）成功案例。
 
 **观点 2**: 数据清理和整合（Data Wrangling）占据了数据科学 80% 以上的时间。
+
 - 验证依据: 行业共识，被称为“数据科学的清洁工工作”。
 
 ### 🔵 当下可执行（有明确步骤）
 
 **建议 1**: 采用“谋杀板（Murder Board）”机制。
+
 - 执行方法: 在启动新项目前，邀请 3-4 个聪明但不了解项目的人，专门负责挑刺和推翻现有方案。
 
 **建议 2**: 招聘时测试“最高工作强度”。
+
 - 执行方法: 询问候选人“你为了完成某事所付出的最高强度努力是什么？为什么？”筛选出具备极强驱动力（Animal Spirit）的人。
 
 ### 🟡 理智质疑（需验证）
 
 **存疑点**: “无头衔（No Titles）”制度是否适用于所有规模的公司？
+
 - 质疑原因: 在 Palantir 早期有效，但随着公司扩张到数千人，缺乏层级可能导致决策效率下降和隐形政治。
 
 ### 🔴 需警惕（可能有问题）
 
 **风险点**: 极度竞争和“赢家通吃”的文化。
+
 - 风险说明: 这种文化极易导致员工倦怠（Burnout），且可能在多元化和包容性方面表现不佳，不适合所有创业团队。
 
 ---
@@ -142,14 +153,17 @@
 ## 🛠️ 提到的工具/资源
 
 **工具 1**: **Wispr Flow**
+
 - 说明: 极速语音转文字工具，适合快速输入复杂的 AI Prompt。
-- 链接: [Wispr Flow](https://www.flowvoice.ai/)
+- 链接: [Wispr Flow](https://wisprflow.ai/)
 
 **工具 2**: **Claude Code**
+
 - 说明: Anthropic 推出的终端 AI 代理，能直接操作文件系统进行编程。
 - 链接: [Anthropic Claude](https://www.anthropic.com/claude)
 
 **推荐阅读**: **《Impro》- Keith Johnstone**
+
 - 说明: 关于即兴表演的书，Palantir 内部必读，用于训练员工观察社会地位（Status）和人际互动。
 - 链接: [Amazon 链接](https://www.amazon.com/Impro-Improvisation-Theatre-Keith-Johnstone/dp/0878301178)
 
@@ -158,14 +172,17 @@
 ## 📋 行动建议
 
 ### 🚀 立立即做（今天）
+
 - [ ] **重新定义公司原则**: 检查你的团队原则，确保它们不是“正确的废话”，而是具有排他性的选择。
 - [ ] **尝试语音 Prompt**: 下载 Wispr Flow 或使用手机自带语音功能，尝试通过口述长段逻辑来与 LLM 交互。
 
 ### 📅 本周尝试
+
 - [ ] **走进客户现场**: 即使你是纯 SaaS 公司，本周也请找一天坐在客户办公室里观察他们如何使用你的产品。
 - [ ] **组织一次 Murder Board**: 针对下周要发布的功能，找几个“外行”同事进行疯狂拆解。
 
 ### 🔍 深入探索
+
 - [ ] **研究“数据本体”概念**: 思考你的业务数据如何从“表结构”转化为“业务对象”，这可能是你 AI 战略的关键。
 
 ---
@@ -187,6 +204,7 @@
 - [Palantir 官方 Demo (Foundry/AIP)](https://www.palantir.com/platforms/aip/)
 
 ---
-*来源*: Lenny's Podcast
-*分析师*: AI Assistant
-*生成时间*: 2025-05-20
+
+_来源_: Lenny's Podcast
+_分析师_: AI Assistant
+_生成时间_: 2025-05-20

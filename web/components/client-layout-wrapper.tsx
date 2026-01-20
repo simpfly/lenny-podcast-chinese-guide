@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Github, Globe } from "lucide-react";
+import { Menu, Github } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { JsonLd } from "@/components/json-ld";
 import { Episode, Category } from "@/lib/data";
@@ -100,7 +101,9 @@ export function ClientLayoutWrapper({
                           rel="noopener noreferrer"
                           className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-secondary/50 hover:bg-secondary transition-all"
                       >
-                        <Globe className="w-3.5 h-3.5" />
+                        <div className="w-5 h-5 relative rounded-full overflow-hidden border border-primary/10">
+                          <Image src="/simpfly.png" alt="simpfly" fill className="object-cover" />
+                        </div>
                         simpfly
                       </a>
                   </div>

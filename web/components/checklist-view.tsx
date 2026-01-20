@@ -494,7 +494,7 @@ function ActionCard({ action, onRemove }: { action: CompletedAction, onRemove: (
                      <Badge variant="outline" className="text-[10px] h-5 px-1.5 text-muted-foreground font-normal border-muted-foreground/20">
                         {action.category}
                      </Badge>
-                     <Link href={`/episode/${action.episodeSlug}`} className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors truncate">
+                     <Link href={`/episodes/${action.episodeSlug}`} className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors truncate">
                         <span className="truncate">From: {action.episodeTitle}</span>
                         <ArrowRight className="w-3 h-3 shrink-0" />
                     </Link>

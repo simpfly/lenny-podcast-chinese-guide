@@ -24,6 +24,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 import { cn, getLinkTarget } from "@/lib/utils";
 import { MarkdownRenderer } from "./markdown-renderer";
 
@@ -651,20 +652,21 @@ export function EpisodeDetailView({
                             
                             <div className="mt-8 flex flex-wrap gap-4 justify-center lg:justify-start">
                                 {episode.transcriptUrl && (
-                                    <a href={episode.transcriptUrl} target="_blank" rel="noopener noreferrer">
-                                        <Button variant="outline" className="gap-2 h-10 px-6 border-primary/20 hover:border-primary/50 hover:bg-primary/5 text-primary hover:text-primary font-bold transition-all shadow-sm">
+                                    <Button variant="outline" className="gap-2 h-10 bg-card hover:bg-accent/50 transition-colors shadow-sm border-muted/40 hover:border-primary/20" asChild>
+                                        <Link href={episode.transcriptUrl} className="no-underline">
                                             <FileText className="w-4 h-4" />
-                                            查看逐字稿
-                                        </Button>
-                                    </a>
+                                            逐字稿
+                                        </Link>
+                                    </Button>
                                 )}
+
                                 {episode.transcriptPdfUrl && (
-                                    <a href={episode.transcriptPdfUrl} target="_blank" rel="noopener noreferrer">
-                                        <Button variant="outline" className="gap-2 h-10 px-6 border-primary/20 hover:border-primary/50 hover:bg-primary/5 text-primary hover:text-primary font-bold transition-all shadow-sm">
+                                    <Button variant="outline" className="gap-2 h-10 bg-card hover:bg-accent/50 transition-colors shadow-sm border-muted/40 hover:border-primary/20" asChild>
+                                       <a href={episode.transcriptPdfUrl} target="_blank" rel="noopener noreferrer" className="no-underline">
                                             <FileText className="w-4 h-4" />
-                                            查看双语 PDF
-                                        </Button>
-                                    </a>
+                                            双语 PDF
+                                        </a>
+                                    </Button>
                                 )}
                             </div>
                             

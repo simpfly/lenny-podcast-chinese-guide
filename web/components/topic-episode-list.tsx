@@ -351,7 +351,7 @@ export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Epis
             <Card key={episode.slug} className="h-full group/card relative hover:bg-muted/50 transition-colors flex flex-col">
               <CardHeader>
                 <CardTitle className="leading-tight text-xl mb-1">
-                   <Link href={`/episode/${episode.slug}`} className="after:absolute after:inset-0 focus:outline-none">
+                   <Link href={`/episodes/${episode.slug}`} className="after:absolute after:inset-0 focus:outline-none">
                         {episode.guest}
                    </Link>
                 </CardTitle>

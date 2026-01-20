@@ -26,7 +26,6 @@ import { HomeClientSection } from "@/components/home-client-section";
 import { TopicEpisodeList } from "@/components/topic-episode-list";
 import { cn } from "@/lib/utils";
 import { SurpriseMe } from "@/components/surprise-me";
-import { PrismIcon } from "@/components/prism-icon";
 
 export default function Home() {
   const categories = getAllCategories();
@@ -90,7 +89,7 @@ export default function Home() {
       <section>
         <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-black tracking-tight flex items-center gap-2">
-                <PrismIcon className="w-6 h-6 text-primary" />
+                <Sparkles className="w-5 h-5 text-primary" />
                 深度分析
             </h2>
             <Link href="/search" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">

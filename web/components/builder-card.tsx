@@ -60,7 +60,7 @@ export function BuilderCard({ episode }: BuilderCardProps) {
       <Card className="h-full transition-all duration-300 hover:shadow-lg hover:border-primary/50 flex flex-col overflow-hidden bg-card/50 hover:bg-card relative">
         {/* Overlay Link for the entire card */}
         <Link 
-          href={`/episode/${episode.slug}`} 
+          href={`/episodes/${episode.slug}`} 
           className="absolute inset-0 z-0"
           prefetch={false}
         >

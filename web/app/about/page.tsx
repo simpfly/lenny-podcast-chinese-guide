@@ -1,91 +1,167 @@
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, FileText, Search, Users } from "lucide-react";
+import { Sparkles, FileText, Search, Users, Package, CheckCircle2, ArrowRight, ArrowDown, PlusCircle } from "lucide-react";
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col gap-16 pb-20 w-full px-4 lg:px-6 max-w-4xl mx-auto pt-8">
       {/* Header */}
-      <section className="text-center space-y-4">
-        <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+      <section className="text-center space-y-4 flex flex-col items-center">
+        <Image src="/prism.png" alt="Prism" width={200} height={200} className="w-40 h-40 object-cover rounded-full mb-4 shadow-xl shadow-primary/5" />
+        <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors w-fit">
           关于本站
         </Badge>
-        <h1 className="text-4xl font-black tracking-tight sm:text-5xl">
-          Lenny's Podcast <span className="text-primary">中文深度解析 Archive</span>
+        <h1 className="text-4xl font-black tracking-tight sm:text-5xl text-balance">
+        <span className="text-primary inline-block">Builder's </span>
         </h1>
-        <p className="text-muted-foreground text-xl leading-relaxed max-w-2xl mx-auto">
-          297 期 Lenny's Podcast 访谈的深度分析报告 + 双语逐字稿。学习世界级产品思维。
+        <p className="text-muted-foreground text-xl leading-relaxed max-w-3xl mx-auto text-balance">
+          Lenny's Podcast 知识库：产品经理与增长黑客的实战笔记
         </p>
       </section>
 
       {/* Overview Section */}
-      <section className="space-y-6">
+      <section className="space-y-6 text-center">
         <h2 className="text-2xl font-bold tracking-tight">项目介绍</h2>
-        <Card className="bg-muted/30">
-          <CardContent className="pt-6 text-muted-foreground leading-relaxed">
-            <p>
-              这是一份针对 <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的中文深度解析档案库。
-              我们对每期节目进行了深度加工，提取结构化洞察，旨在帮助产品经理、创业者和构建者高效获取核心价值，而无需每次都听完完整的音频。
-            </p>
-          </CardContent>
-        </Card>
+        <div className="text-muted-foreground leading-relaxed">
+          <p className="text-balance max-w-3xl mx-auto">
+            这是一个针对 <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的中文深度解析档案库。
+            我们致力于将海量高质量访谈转化为<strong>可落地的行动单元 (Actionable Insights)</strong>，帮助产品构建者高效获取实战洞察并付诸实践。
+          </p>
+        </div>
         
-        <div className="grid md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <FileText className="w-4 h-4 text-primary" />
-                深度分析报告
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              包含核心观点提炼、框架拆解、金句摘录以及可落地的行动清单，助你快速掌握精华。
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
+        <div className="flex flex-col items-center relative text-center">
+          {/* Stage 1: Source */}
+          <div className="w-full max-w-lg mx-auto relative z-10 group py-8">
+            <div className="bg-primary/5 p-2.5 rounded-full w-fit mx-auto mb-4">
+              <FileText className="w-5 h-5 text-primary/40" />
+            </div>
+            <h3 className="text-xl font-bold tracking-tight mb-3">双语逐字稿</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed px-10">
+            200+ 小时英文访谈文稿 & 中文翻译
+            </p>
+          </div>
+
+          {/* Evolution Connector (Enhanced Flow with Glow) */}
+          <div className="flex flex-col items-center relative h-36 w-full justify-center">
+            {/* Base Line */}
+            <div className="w-[1px] h-full bg-primary/20 relative overflow-hidden">
+              {/* Flowing Light Effect (with glow) */}
+              <div className="absolute top-0 left-[-1px] w-[3px] h-24 bg-primary/40 blur-[2px] animate-liquid-flow" />
+              <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-transparent via-primary/80 to-transparent animate-liquid-flow" />
+            </div>
+            
+            <style dangerouslySetInnerHTML={{ __html: `
+              @keyframes liquid-flow {
+                0% { transform: translateY(-120%); opacity: 0; }
+                20% { opacity: 1; }
+                80% { opacity: 1; }
+                100% { transform: translateY(300%); opacity: 0; }
+              }
+              .animate-liquid-flow {
+                animation: liquid-flow 3s ease-in-out infinite;
+              }
+            `}} />
+
+            {/* The Process Badge (Minimalist) */}
+            <div className="absolute top-1/2 -translate-y-1/2 z-20">
+              <div className="bg-background border border-primary/20 px-6 py-2.5 rounded-full shadow-lg shadow-primary/5 flex items-center gap-3 hover:border-primary/40 transition-all duration-300">
                 <Sparkles className="w-4 h-4 text-primary" />
-                双语逐字稿
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              提供完整的英文原文与段落对应的中文翻译，既是获取信息的源头，也是学习专业英语的绝佳素材。
-            </CardContent>
-          </Card>
+                <span className="text-sm font-bold tracking-tight">AI 结构化深度解析</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Stage 3: Output */}
+          <div className="w-full relative z-10 pt-12">
+            <div className="grid md:grid-cols-3 gap-12">
+              {[
+                { icon: CheckCircle2, title: "Action", desc: "将洞察解构为 Checklist，化想法为行动" },
+                { icon: Package, title: "Product", desc: "快速了解访谈中提到的产品和书籍，搭建自己的工具箱" },
+                { icon: Users, title: "Builder", desc: "收录访谈嘉宾的简介和社交账号，关注一手实战信源" }
+              ].map((item, idx) => (
+                <div key={idx} className="flex flex-col items-center group">
+                  <div className="bg-primary/5 w-fit p-3 rounded-2xl mb-4 group-hover:bg-primary/10 transition-colors">
+                    <item.icon className="w-6 h-6 text-primary/70" />
+                  </div>
+                  <h4 className="text-lg font-bold mb-2">{item.title}</h4>
+                  <p className="text-sm text-muted-foreground/80 leading-relaxed px-4">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Usage Section */}
-      <section className="space-y-6">
+      <section className="space-y-8 text-center">
         <h2 className="text-2xl font-bold tracking-tight">如何使用</h2>
-        <div className="grid gap-6 md:grid-cols-3">
-          <div className="space-y-2">
-            <h3 className="font-bold flex items-center gap-2">
-              <Search className="w-4 h-4 text-primary" />
-              检索话题
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              搜索 "PLG"、"Growth" 或 "Hiring" 等关键词，快速查找 200+ 期节目中各路专家的相关观点。
-            </p>
+        <div className="flex flex-col gap-4 max-w-3xl mx-auto px-4">
+          <div className="flex items-center gap-4 text-left p-3 rounded-xl hover:bg-muted/30 transition-colors group">
+            <div className="flex-shrink-0 bg-primary/5 p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+              <Search className="w-5 h-5 text-primary" />
+            </div>
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h3 className="font-bold whitespace-nowrap">关键词检索</h3>
+              <p className="text-sm text-muted-foreground">
+                搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong> 等核心词，直达专家实战见解。
+              </p>
+            </div>
           </div>
-          <div className="space-y-2">
-            <h3 className="font-bold flex items-center gap-2">
-              <Users className="w-4 h-4 text-primary" />
-              深度学习
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              深入研究 Airbnb, Figma, Notion 等顶级公司领导者的实战经验和决策细节。
-            </p>
+          <div className="flex items-center gap-4 text-left p-3 rounded-xl hover:bg-muted/30 transition-colors group">
+            <div className="flex-shrink-0 bg-primary/5 p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+              <PlusCircle className="w-5 h-5 text-primary" />
+            </div>
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h3 className="font-bold whitespace-nowrap">收藏实战锦囊</h3>
+              <p className="text-sm text-muted-foreground">
+                点击 "+" 号收藏工具和构建者，在侧边栏分类管理你的个人资料库。
+              </p>
+            </div>
           </div>
-          <div className="space-y-2">
-            <h3 className="font-bold flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-primary" />
-              AI 知识库
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              利用结构化的 Markdown 文件构建你自己的私人 RAG 知识库，辅助思考与创作。
-            </p>
+        </div>
+      </section>
+
+      {/* Credits Section */}
+      <section className="space-y-12 text-center pb-20">
+        <h2 className="text-2xl font-bold tracking-tight">内容制作</h2>
+        <div className="flex flex-col md:flex-row justify-center gap-12 max-w-4xl mx-auto px-4">
+          <div className="flex flex-col items-center gap-4 text-center group">
+            <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
+              <Image src="/lenny.jpg" alt="Lenny Rachitsky" fill className="object-cover" />
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <a href="https://x.com/lennysan" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
+                @Lenny Rachitsky
+              </a>
+              <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">播客文稿</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-4 text-center group">
+            <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
+              <Image src="/penny.jpeg" alt="Penny" fill className="object-cover" />
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <a href="https://github.com/Penny777btc/lenny-podcast-chinese" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
+                @Penny777btc
+              </a>
+              <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">中文深度解析</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-4 text-center group">
+            <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
+              <Image src="/simpfly.png" alt="simpfly" fill className="object-cover" />
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:text-primary transition-colors">
+                @simpfly
+              </a>
+              <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">知识库制作</span>
+            </div>
           </div>
         </div>
       </section>

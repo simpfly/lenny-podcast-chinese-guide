@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Sparkles, RefreshCw, ArrowRight, Check, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
 
@@ -100,7 +102,13 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
     )}>
        {/* Background decoration */}
        <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none">
-          <Sparkles className="w-32 h-32" />
+          <Image 
+              src="/prism.png" 
+              width={128} 
+              height={128} 
+              alt="" 
+              className="w-32 h-32 object-contain"
+          />
        </div>
 
        {/* Checkbox (Absolute, Top Right) */}
@@ -123,9 +131,13 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
 
        {!currentAction ? (
            <div className="flex flex-col items-center gap-4 z-10 text-center animate-in fade-in zoom-in-95 duration-500">
-              <div className="p-4 bg-background rounded-full shadow-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 border border-primary/10">
-                  <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-              </div>
+                  <Image 
+                      src="/prism.png" 
+                      width={64} 
+                      height={64} 
+                      alt="Surprise Me" 
+                      className="w-16 h-16 object-cover rounded-full shadow-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-500"
+                  />
               <div className="space-y-1">
                   <h3 className="text-xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">Surprise Me</h3>
                   <p className="text-sm text-muted-foreground font-medium">Get a random actionable insight</p>
@@ -157,7 +169,7 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
                    )}>
                        <ReactMarkdown components={{
                            p: ({children}) => <span className="inline">{children}</span>,
-                           a: ({node, ...props}) => <span className="text-primary font-semibold underline decoration-dotted hover:opacity-80 cursor-default">{props.children}</span>,
+                           a: ({node, ...props}) => <a href={props.href} target="_blank" rel="noopener noreferrer" className="text-primary font-semibold underline decoration-dotted hover:opacity-80 cursor-pointer" onClick={(e) => e.stopPropagation()}>{props.children}</a>,
                            strong: ({children}) => <span className="text-primary font-bold">{children}</span>
                        }}>
                            {currentAction.text}
@@ -166,7 +178,7 @@ export function SurpriseMe({ actions }: SurpriseMeProps) {
                </div>
                
                <div className="mt-auto pt-4 border-t border-primary/10 flex items-center justify-between gap-4">
-                    <Link href={`/episode/${currentAction.episodeSlug}`} className="text-xs font-bold text-muted-foreground/70 hover:text-primary grid gap-0.5 transition-colors max-w-[70%] group/link text-left">
+                    <Link href={`/episodes/${currentAction.episodeSlug}`} className="text-xs font-bold text-muted-foreground/70 hover:text-primary grid gap-0.5 transition-colors max-w-[70%] group/link text-left">
                         <span className="truncate">FROM EPISODE</span>
                         <div className="flex items-center gap-1">
                             <span className="truncate text-foreground group-hover/link:text-primary transition-colors">{currentAction.episodeTitle}</span>

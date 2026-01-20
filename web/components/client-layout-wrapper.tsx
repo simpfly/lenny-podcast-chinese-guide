@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
@@ -60,6 +60,12 @@ export function ClientLayoutWrapper({
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col p-0 w-[240px]">
+              <SheetHeader className="sr-only">
+                <SheetTitle>导航菜单</SheetTitle>
+                <SheetDescription>
+                  浏览所有播客集数和分类
+                </SheetDescription>
+              </SheetHeader>
               <AppSidebar episodes={episodes} categories={categories} />
             </SheetContent>
           </Sheet>

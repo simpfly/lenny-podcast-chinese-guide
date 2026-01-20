@@ -22,7 +22,7 @@ export function RandomEpisodeButton({ allSlugs, currentSlug }: RandomEpisodeButt
         if (availableSlugs.length === 0) return;
 
         const randomSlug = availableSlugs[Math.floor(Math.random() * availableSlugs.length)];
-        router.push(`/episode/${randomSlug}`);
+        router.push(`/episodes/${randomSlug}`);
     };
 
     return (

@@ -165,7 +165,7 @@ function MentionedEpisodeBadge({ episode }: { episode: any }) {
 
   return (
     <Link 
-      href={`/episode/${episode.episodeSlug}`}
+      href={`/episodes/${episode.episodeSlug}`}
       className="transition-transform hover:scale-105 active:scale-95"
     >
       <Badge 

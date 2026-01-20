@@ -1,4 +1,4 @@
-# Builder's Archive | Lenny 知识库
+# Builder's | Lenny 知识库
 
 > 将 Lenny's Podcast 的深度洞察转化为**最小可做的行动 (Actionable Insights)**。
 

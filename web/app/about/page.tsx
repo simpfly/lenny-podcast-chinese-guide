@@ -25,12 +25,12 @@ export default function AboutPage() {
         <h2 className="text-2xl font-black tracking-tight">项目介绍</h2>
         <div className="space-y-6 text-foreground/80 leading-loose tracking-wide max-w-3xl mx-auto">
           <p>
-            <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习产品与增长的绝佳内容源。
-            <a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4 ml-1">simpfly</a> 尝试直接利用 AI 进行高效阅读，但因缺乏清晰有效的结构，初始尝试的效果并不理想。
+            <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习 AI 的绝佳内容源。
+            <a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4 ml-1">simpfly</a>（我）尝试直接用 AI 来阅读，但因缺乏简明有效的结构，效果不理想。
           </p>
           <p>
-            把想法付诸实践始终是一个渐进的过程。通过不断迭代，我为这些深度内容设计了全新的交互方式，
-            将庞杂的信息转化为 <strong>可落地的行动单元 (Actionable Insights)</strong>，帮助每一位 Builder 真正消化这些顶级智慧。
+            把想法付诸实践，始终是渐进的过程。通过不断迭代，我为其设计了交互，
+            将信息转化为 <strong>可落地的行动单元 (Actionable Insights)</strong>。
           </p>
         </div>
         
@@ -42,7 +42,7 @@ export default function AboutPage() {
             </div>
             <h3 className="text-xl font-black tracking-tight mb-3">双语逐字稿</h3>
             <p className="text-sm text-muted-foreground leading-relaxed px-10 tracking-wide">
-              200+ 小时英文访谈文稿 & 精确翻译
+              200+ 小时英文访谈文稿 & 中文翻译
             </p>
           </div>
 
@@ -112,7 +112,7 @@ export default function AboutPage() {
             <div className="space-y-1">
               <h3 className="font-bold text-base">关键词检索</h3>
               <p className="text-sm text-muted-foreground leading-loose tracking-wide">
-                支持搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong>、<strong>"AI"</strong> 等关键词，直达硅谷一线大咖的实战洞察。
+                搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong> 等，直达一线实战洞察
               </p>
             </div>
           </div>
@@ -121,9 +121,9 @@ export default function AboutPage() {
               <PlusCircle className="w-5 h-5 text-primary" />
             </div>
             <div className="space-y-1">
-              <h3 className="font-bold text-base">构建个人知识库</h3>
+              <h3 className="font-bold text-base">当下可实践</h3>
               <p className="text-sm text-muted-foreground leading-loose tracking-wide">
-                将心仪的实践建议、工具或书籍保存在 <a href="/saved" className="font-semibold text-primary hover:underline underline-offset-4">Saved</a> 中。我们支持一键复制 Markdown 格式，方便你整理至自己的笔记软件。
+                从自身出发，将实践，产品，书籍，人物，保存在 <a href="/saved" className="font-semibold text-primary hover:underline underline-offset-4">Saved</a> 中。支持复制 Markdown 
               </p>
             </div>
           </div>
@@ -132,9 +132,9 @@ export default function AboutPage() {
               <MessageSquare className="w-5 h-5 text-primary" />
             </div>
             <div className="space-y-1">
-              <h3 className="font-bold text-base">与内容深度对话</h3>
+              <h3 className="font-bold text-base">与内容对话</h3>
               <p className="text-sm text-muted-foreground leading-loose tracking-wide">
-                推荐配合 <strong>Dia</strong> 或 <strong>ChatGPT Atlas</strong> 阅读原文。在理解 AI 深度解析的基础上，直接与内容本身进行交互对话。
+                推荐配合 <strong>Dia / ChatGPT Atlas</strong> 阅读原文，与内容对话
               </p>
             </div>
           </div>

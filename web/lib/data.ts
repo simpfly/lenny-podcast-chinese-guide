@@ -257,18 +257,13 @@ export function getEpisodeMetadata(slug: string): Episode | null {
     hasTranscriptMd = fs.existsSync(transcriptMdPath);
   }
 
-  // Check for Transcript PDF in public folder
-  const publicPdfPath = path.join(process.cwd(), "public", "pdf-bilingual", `${slug}.pdf`);
-  const hasTranscriptPdf = fs.existsSync(publicPdfPath);
+  // Optimization: Do NOT use fs.existsSync on the large public/pdf-bilingual folder
+  // 297 episodes matching 297 PDFs. Bundling them into serverless functions causes size limit errors.
+  const transcriptPdfUrl = `/pdf-bilingual/${slug}.pdf`;
   
   let transcriptUrl: string | undefined;
   if (hasTranscriptMd) {
       transcriptUrl = `/episodes/${slug}/transcript`;
-  }
-  
-  let transcriptPdfUrl: string | undefined;
-  if (hasTranscriptPdf) {
-      transcriptPdfUrl = `/pdf-bilingual/${slug}.pdf`;
   }
 
   return {

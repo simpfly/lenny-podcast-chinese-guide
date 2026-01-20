@@ -112,7 +112,7 @@ export default function AboutPage() {
             <div className="space-y-1">
               <h3 className="font-bold text-base">关键词检索</h3>
               <p className="text-sm text-muted-foreground leading-loose tracking-wide">
-                搜索你感兴趣的关键词，直达一线实战洞察
+                搜索你感兴趣的关键词<br/>直达一线实战洞察
               </p>
             </div>
           </div>
@@ -134,7 +134,7 @@ export default function AboutPage() {
             <div className="space-y-1">
               <h3 className="font-bold text-base">与内容对话</h3>
               <p className="text-sm text-muted-foreground leading-loose tracking-wide">
-                推荐配合 <strong>Dia / ChatGPT Atlas</strong> 阅读原文，与内容对话
+                推荐配合 <strong>Dia / ChatGPT Atlas</strong> 阅读原文<br/>与内容对话
               </p>
             </div>
           </div>

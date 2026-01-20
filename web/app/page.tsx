@@ -20,7 +20,8 @@ import {
   BookOpen,
   Calendar,
   Rocket,
-  Lightbulb
+  Lightbulb,
+  HelpCircle
 } from "lucide-react";
 import { HomeClientSection } from "@/components/home-client-section";
 import { TopicEpisodeList } from "@/components/topic-episode-list";
@@ -44,10 +45,19 @@ export default function Home() {
       <section className="relative pt-8 pb-4">
         <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-center xl:items-end justify-between">
           <div className="flex flex-col gap-6 text-center xl:text-left flex-1 min-w-0 max-w-2xl xl:max-w-none mx-auto xl:mx-0">
-            <Badge className="w-fit self-center xl:self-start mb-2 py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
-              <Sparkles className="w-3.5 h-3.5 mr-2" />
-              硅谷顶尖创造者的实战经验
-            </Badge>
+            <div className="flex items-center gap-4 self-center xl:self-start mb-2">
+              <Badge className="py-1 px-3 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" variant="secondary">
+                <Sparkles className="w-3.5 h-3.5 mr-2" />
+                硅谷顶尖创造者的实战经验
+              </Badge>
+              <Link 
+                href="/about" 
+                className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5"
+              >
+                <HelpCircle className="w-3.5 h-3.5" />
+                如何使用？
+              </Link>
+            </div>
             <h1 className="text-4xl font-black tracking-tight lg:text-5xl leading-[1.2]">
               Find <br />
               <span className="text-primary italic">Builders, Actions, Products</span>

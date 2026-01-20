@@ -7,6 +7,7 @@ import {
   getAllActions
 } from "@/lib/data";
 import Link from "next/link";
+import NextImage from "next/image";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { SearchInput } from "@/components/search-input";
 import { Badge } from "@/components/ui/badge";
@@ -63,7 +64,10 @@ export default function Home() {
               <span className="text-primary italic">Builders, Actions, Products</span>
             </h1>
             <p className="text-muted-foreground text-xl lg:text-2xl leading-relaxed">
-              Inspired by <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="font-semibold bg-[rgb(245,142,36)] text-white px-1.5 py-0.5 rounded-md transition-all hover:opacity-80">Lenny's Podcast</a> 
+              Inspired by <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="font-semibold bg-[rgb(245,142,36)] text-white px-2 py-0.5 rounded-md transition-all hover:opacity-80 inline-flex items-center gap-2 align-text-bottom transform translate-y-0.5">
+              <NextImage src="/lennynewsletter.png" alt="Lenny's Podcast" width={20} height={20} className="rounded-sm" />
+              Lenny's Podcast
+            </a> 
             </p>
             <div className="mt-4 w-full max-w-md mx-auto xl:mx-0">
                 <SearchInput />

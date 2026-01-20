@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Github } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { JsonLd } from "@/components/json-ld";
 import { Episode, Category } from "@/lib/data";
@@ -86,8 +86,9 @@ export function ClientLayoutWrapper({
                       href="https://github.com/simpfly/lenny-podcast-chinese-guide" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="hover:text-primary transition-colors hover:underline underline-offset-4"
+                      className="flex items-center gap-1.5 hover:text-primary transition-colors hover:underline underline-offset-4"
                   >
+                        <Github className="w-4 h-4" />
                         项目开源 欢迎 Star
                   </a>
                   <span className="text-muted-foreground/30 hidden md:inline">•</span>

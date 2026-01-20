@@ -13,7 +13,7 @@ export default function AboutPage() {
           关于本站
         </Badge>
         <h1 className="text-4xl font-black tracking-tight sm:text-5xl text-balance">
-        <span className="text-primary inline-block">Builder's </span>
+        <span className="text-primary inline-block font-jost">Builder's </span>
         </h1>
         <p className="text-muted-foreground text-xl leading-relaxed max-w-3xl mx-auto text-balance">
           可以交互的 Lenny 知识库：产品经理与增长黑客的行动仪表盘

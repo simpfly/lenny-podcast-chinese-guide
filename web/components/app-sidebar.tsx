@@ -61,7 +61,7 @@ export function AppSidebar({
           <>
             <Link href="/" className="flex items-center gap-2 font-semibold overflow-hidden">
               <PrismIcon className="h-6 w-6 shrink-0" />
-              <span className="truncate">Builder's</span>
+              <span className="truncate font-jost font-semibold">Builder's</span>
             </Link>
             {toggleCollapse && (
                 <Button variant="ghost" size="icon" className="ml-auto h-8 w-8 text-muted-foreground" onClick={toggleCollapse}>

@@ -71,7 +71,7 @@ export function ClientLayoutWrapper({
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
-            <h1 className="text-lg font-semibold">Builder's Archive</h1>
+            <h1 className="text-lg font-semibold font-jost">Builder's</h1>
           </div>
         </header>
 
@@ -118,7 +118,7 @@ export function ClientLayoutWrapper({
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "Lenny's Podcast 知识库 (Builder's Archive)",
+        "name": "Lenny's Podcast 知识库 (Builder's)",
         "url": "https://builders.simpfly.info/",
         "potentialAction": {
           "@type": "SearchAction",

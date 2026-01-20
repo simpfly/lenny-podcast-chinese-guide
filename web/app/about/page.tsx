@@ -34,7 +34,7 @@ export default function AboutPage() {
           </p>
         </div>
         
-        <div className="flex flex-col items-center relative text-center">
+        <div className="flex flex-col items-center relative text-center md:col-span-4 pt-12">
           {/* Stage 1: Source */}
           <div className="w-full max-w-lg mx-auto relative z-10 group py-8">
             <div className="bg-primary/5 p-2.5 rounded-full w-fit mx-auto mb-4">

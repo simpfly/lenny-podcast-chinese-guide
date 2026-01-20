@@ -64,7 +64,7 @@ export default function Home() {
               <span className="text-primary italic">Builders, Actions, Products</span>
             </h1>
             <p className="text-muted-foreground text-xl lg:text-2xl leading-relaxed">
-              Inspired by <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="font-semibold bg-black text-white px-2 py-0.5 rounded-md transition-all hover:opacity-80 inline-flex items-center gap-2 align-text-bottom transform translate-y-0.5">
+              Inspired by <a href="https://www.lennysnewsletter.com/podcast" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline inline-flex items-center gap-2 align-text-bottom transform translate-y-0.5 text-foreground">
               <NextImage src="/lennynewsletter.png" alt="Lenny's Podcast" width={20} height={20} className="rounded-sm" />
               Lenny's Podcast
             </a> 

@@ -20,6 +20,48 @@
 
 ---
 
+## 📸 交互设计
+
+### 首页与单集分析
+
+<p align="center">
+  <img src="web/public/screenshots/homepage.png" alt="首页" width="48%">
+  <img src="web/public/screenshots/episode-detail.png" alt="单集详情" width="48%">
+</p>
+
+- **首页**：搜索框 + 热门话题标签 + 知识罗盘（行动进度/我的工具栈）。
+- **单集详情**：内容概要、工具/书籍提取、行动建议清单，支持逐字稿阅读与 AI 对话。
+
+### 多维度搜索与筛选
+
+<p align="center">
+  <img src="web/public/screenshots/search-archive.png" alt="关键词搜索" width="32%">
+  <img src="web/public/screenshots/search-actions.png" alt="Actions 筛选" width="32%">
+  <img src="web/public/screenshots/search-tools.png" alt="Tools 筛选" width="32%">
+</p>
+
+- 支持 **Keypoints / Actions / Tools** 三种筛选模式，快速定位感兴趣的内容。
+
+### Products & Builders
+
+<p align="center">
+  <img src="web/public/screenshots/products.png" alt="Products" width="48%">
+  <img src="web/public/screenshots/builders.png" alt="Builders" width="48%">
+</p>
+
+- **Products**：汇总嘉宾推荐的工具与书籍，按提及次数排序。
+- **Builders**：搜索嘉宾，查看其背景、社交账号与相关访谈。
+
+### Saved 收藏夹
+
+<p align="center">
+  <img src="web/public/screenshots/saved.png" alt="Saved" width="70%">
+</p>
+
+- 将感兴趣的 Builders / Tools / Actions 保存到个人收藏夹，支持一键复制 Markdown。
+
+---
+
 ## 🚀 快速开始
 
 ### Web UI (推荐)

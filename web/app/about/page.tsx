@@ -29,8 +29,8 @@ export default function AboutPage() {
             <a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4 ml-1">simpfly</a>（我）尝试直接用 AI 来阅读，但因缺乏简明有效的结构，效果不理想。
           </p>
           <p>
-            把想法付诸实践，始终是渐进的过程。我为其设计了交互，
-            将信息转化为 <strong>可落地的行动单元 (Actionable Insights)</strong>。
+            把想法付诸实践，始终是渐进的过程。
+            我为其设计了交互，将信息转化为<strong>最小可做的行动 (Actionable Insights)</strong>。
           </p>
         </div>
         

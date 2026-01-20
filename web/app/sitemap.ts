@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const categories = getAllCategories();
 
   const episodeUrls = episodes.map((episode) => ({
-    url: `${baseUrl}/episode/${episode.slug}`,
+    url: `${baseUrl}/episodes/${episode.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.8,

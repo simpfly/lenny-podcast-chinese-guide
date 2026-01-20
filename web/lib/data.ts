@@ -34,6 +34,7 @@ export type Episode = {
   content?: string;
   coreArguments?: string[];
   transcriptUrl?: string;
+  transcriptPdfUrl?: string;
 };
 
 export type Category = {
@@ -245,9 +246,30 @@ export function getEpisodeMetadata(slug: string): Episode | null {
       }
   }
 
+  // Check for Transcript Markdown
+  // Prioritize new flattened path: content/episodes/[slug]/transcript.md
+  let transcriptMdPath = path.join(EPISODES_DIR, slug, "transcript.md");
+  let hasTranscriptMd = fs.existsSync(transcriptMdPath);
+  
+  // Fallback to old path: content/episodes/[slug]/transcripts/transcript.md
+  if (!hasTranscriptMd) {
+    transcriptMdPath = path.join(EPISODES_DIR, slug, "transcripts", "transcript.md");
+    hasTranscriptMd = fs.existsSync(transcriptMdPath);
+  }
+
   // Check for Transcript PDF
   const pdfPath = path.join(CONTENT_DIR, "pdf-bilingual", `${slug}.pdf`);
-  const transcriptUrl = fs.existsSync(pdfPath) ? `/api/pdf/${slug}` : undefined;
+  const hasTranscriptPdf = fs.existsSync(pdfPath);
+  
+  let transcriptUrl: string | undefined;
+  if (hasTranscriptMd) {
+      transcriptUrl = `/episodes/${slug}/transcript`;
+  }
+  
+  let transcriptPdfUrl: string | undefined;
+  if (hasTranscriptPdf) {
+      transcriptPdfUrl = `/episodes/${slug}/pdf`;
+  }
 
   return {
     slug,
@@ -264,8 +286,25 @@ export function getEpisodeMetadata(slug: string): Episode | null {
     resources,
     coreArguments,
     content: markdownBody,
-    transcriptUrl
+    transcriptUrl,
+    transcriptPdfUrl
   };
+}
+
+export function getTranscriptContent(slug: string): string | null {
+  // Try new flattened path first
+  const flatPath = path.join(EPISODES_DIR, slug, "transcript.md");
+  if (fs.existsSync(flatPath)) {
+    return fs.readFileSync(flatPath, "utf8");
+  }
+
+  // Fallback to nested path
+  const nestedPath = path.join(EPISODES_DIR, slug, "transcripts", "transcript.md");
+  if (fs.existsSync(nestedPath)) {
+    return fs.readFileSync(nestedPath, "utf8");
+  }
+  
+  return null;
 }
 
 export function getAllEpisodes(): Episode[] {

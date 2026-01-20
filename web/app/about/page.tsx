@@ -143,7 +143,7 @@ export default function AboutPage() {
       {/* Credits Section */}
       <section className="space-y-12 text-center pb-20">
         <h2 className="text-2xl font-bold tracking-tight">内容制作</h2>
-        <div className="flex flex-col md:flex-row justify-center gap-12 max-w-4xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-12 max-w-4xl mx-auto px-4">
           <div className="flex flex-col items-center gap-4 text-center group">
             <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">
               <Image src="/lenny.jpg" alt="Lenny Rachitsky" fill className="object-cover" />

@@ -257,9 +257,9 @@ export function getEpisodeMetadata(slug: string): Episode | null {
     hasTranscriptMd = fs.existsSync(transcriptMdPath);
   }
 
-  // Check for Transcript PDF
-  const pdfPath = path.join(CONTENT_DIR, "pdf-bilingual", `${slug}.pdf`);
-  const hasTranscriptPdf = fs.existsSync(pdfPath);
+  // Check for Transcript PDF in public folder
+  const publicPdfPath = path.join(process.cwd(), "public", "pdf-bilingual", `${slug}.pdf`);
+  const hasTranscriptPdf = fs.existsSync(publicPdfPath);
   
   let transcriptUrl: string | undefined;
   if (hasTranscriptMd) {
@@ -268,7 +268,7 @@ export function getEpisodeMetadata(slug: string): Episode | null {
   
   let transcriptPdfUrl: string | undefined;
   if (hasTranscriptPdf) {
-      transcriptPdfUrl = `/episodes/${slug}/pdf`;
+      transcriptPdfUrl = `/pdf-bilingual/${slug}.pdf`;
   }
 
   return {

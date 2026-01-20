@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, FileText, Search, Users, Package, CheckCircle2, ArrowRight, ArrowDown, PlusCircle } from "lucide-react";
+import { Sparkles, FileText, Search, Users, Package, CheckCircle2, ArrowRight, ArrowDown, PlusCircle, MessageSquare, Globe } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -25,8 +25,11 @@ export default function AboutPage() {
         <h2 className="text-2xl font-bold tracking-tight">项目介绍</h2>
         <div className="text-muted-foreground leading-relaxed">
           <p className="text-balance max-w-3xl mx-auto">
-            这是一个针对 <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的中文深度解析档案库。
-            我们致力于将海量高质量访谈转化为<strong>可落地的行动单元 (Actionable Insights)</strong>，帮助产品构建者高效获取实战洞察并付诸实践。
+             <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习 AI 的绝佳内容源
+             <br/>simpfly（我）尝试直接用 AI 来阅读
+             <br/>但因缺乏简明有效的结构，效果不理想
+             <br/>把想法付诸实践，始终是渐进的过程
+            <br/>我为其设计了交互，将信息转化为<strong>可落地的行动单元 (Actionable Insights)</strong>
           </p>
         </div>
         
@@ -76,16 +79,16 @@ export default function AboutPage() {
           <div className="w-full relative z-10 pt-12">
             <div className="grid md:grid-cols-3 gap-12">
               {[
-                { icon: CheckCircle2, title: "Action", desc: "将洞察解构为 Checklist，化想法为行动" },
-                { icon: Package, title: "Product", desc: "快速了解访谈中提到的产品和书籍，搭建自己的工具箱" },
-                { icon: Users, title: "Builder", desc: "收录访谈嘉宾的简介和社交账号，关注一手实战信源" }
+                { icon: CheckCircle2, title: "Action", desc: "将洞察解构为 Checklist\n化想法为行动" },
+                { icon: Package, title: "Product", desc: "直达访谈中提到的产品和书籍\n搭建自己的工具箱" },
+                { icon: Users, title: "Builder", desc: "收录访谈嘉宾的简介和社交账号\n关注一手信源" }
               ].map((item, idx) => (
                 <div key={idx} className="flex flex-col items-center group">
                   <div className="bg-primary/5 w-fit p-3 rounded-2xl mb-4 group-hover:bg-primary/10 transition-colors">
                     <item.icon className="w-6 h-6 text-primary/70" />
                   </div>
                   <h4 className="text-lg font-bold mb-2">{item.title}</h4>
-                  <p className="text-sm text-muted-foreground/80 leading-relaxed px-4">
+                  <p className="text-sm text-muted-foreground/80 leading-relaxed px-4 whitespace-pre-line">
                     {item.desc}
                   </p>
                 </div>
@@ -106,7 +109,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <h3 className="font-bold whitespace-nowrap">关键词检索</h3>
               <p className="text-sm text-muted-foreground">
-                搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong> 等核心词，直达专家实战见解。
+                搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong> 等，直达一线实战见解
               </p>
             </div>
           </div>
@@ -115,9 +118,20 @@ export default function AboutPage() {
               <PlusCircle className="w-5 h-5 text-primary" />
             </div>
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-bold whitespace-nowrap">收藏实战锦囊</h3>
+              <h3 className="font-bold whitespace-nowrap">收藏行动锦囊</h3>
               <p className="text-sm text-muted-foreground">
-                点击 "+" 号收藏工具和构建者，在侧边栏分类管理你的个人资料库。
+                以自己为出发点，记录行动，产品，书籍，人物，保存在 Saved 中。支持复制 Markdown 
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 text-left p-3 rounded-xl hover:bg-muted/30 transition-colors group">
+            <div className="flex-shrink-0 bg-primary/5 p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+              <MessageSquare className="w-5 h-5 text-primary" />
+            </div>
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h3 className="font-bold whitespace-nowrap">与内容对话</h3>
+              <p className="text-sm text-muted-foreground">
+                推荐配合 <strong>Dia / ChatGPT Atlas</strong> 阅读原文，与内容对话
               </p>
             </div>
           </div>

@@ -127,8 +127,8 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
-            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors">
+          <div className="flex items-start gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
+            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors mt-0.5">
               <MessageSquare className="w-5 h-5 text-primary" />
             </div>
             <div className="space-y-1">

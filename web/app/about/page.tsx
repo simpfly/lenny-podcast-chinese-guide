@@ -26,7 +26,7 @@ export default function AboutPage() {
         <div className="text-muted-foreground leading-relaxed">
           <p className="text-balance max-w-3xl mx-auto">
              <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习 AI 的绝佳内容源
-             <br/>simpfly（我）尝试直接用 AI 来阅读
+             <br/><a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline underline-offset-4">simpfly</a>（我）尝试直接用 AI 来阅读
              <br/>但因缺乏简明有效的结构，效果不理想
              <br/>把想法付诸实践，始终是渐进的过程
             <br/>我为其设计了交互，将信息转化为<strong>可落地的行动单元 (Actionable Insights)</strong>
@@ -70,7 +70,7 @@ export default function AboutPage() {
             <div className="absolute top-1/2 -translate-y-1/2 z-20">
               <div className="bg-background border border-primary/20 px-6 py-2.5 rounded-full shadow-lg shadow-primary/5 flex items-center gap-3 hover:border-primary/40 transition-all duration-300">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-bold tracking-tight">AI 结构化深度解析</span>
+                <span className="text-sm font-bold tracking-tight">AI 深度解析</span>
               </div>
             </div>
           </div>
@@ -79,15 +79,17 @@ export default function AboutPage() {
           <div className="w-full relative z-10 pt-12">
             <div className="grid md:grid-cols-3 gap-12">
               {[
-                { icon: CheckCircle2, title: "Action", desc: "将洞察解构为 Checklist\n化想法为行动" },
-                { icon: Package, title: "Product", desc: "直达访谈中提到的产品和书籍\n搭建自己的工具箱" },
-                { icon: Users, title: "Builder", desc: "收录访谈嘉宾的简介和社交账号\n关注一手信源" }
+                { icon: CheckCircle2, title: "Actions", link: "/search?v=actions", desc: "将洞察解构为 Checklist\n化想法为行动" },
+                { icon: Package, title: "Products", link: "/search?v=products", desc: "直达访谈中提到的产品和书籍\n搭建自己的工具箱" },
+                { icon: Users, title: "Builders", link: "/search?v=builders", desc: "收录访谈嘉宾的简介和社交账号\n关注一手信源" }
               ].map((item, idx) => (
                 <div key={idx} className="flex flex-col items-center group">
                   <div className="bg-primary/5 w-fit p-3 rounded-2xl mb-4 group-hover:bg-primary/10 transition-colors">
                     <item.icon className="w-6 h-6 text-primary/70" />
                   </div>
-                  <h4 className="text-lg font-bold mb-2">{item.title}</h4>
+                  <a href={item.link} className="hover:text-primary transition-colors">
+                    <h4 className="text-lg font-bold mb-2">{item.title}</h4>
+                  </a>
                   <p className="text-sm text-muted-foreground/80 leading-relaxed px-4 whitespace-pre-line">
                     {item.desc}
                   </p>
@@ -109,7 +111,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <h3 className="font-bold whitespace-nowrap">关键词检索</h3>
               <p className="text-sm text-muted-foreground">
-                搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong> 等，直达一线实战见解
+                搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong> 等，直达一线实战洞察
               </p>
             </div>
           </div>
@@ -118,9 +120,9 @@ export default function AboutPage() {
               <PlusCircle className="w-5 h-5 text-primary" />
             </div>
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-bold whitespace-nowrap">收藏行动锦囊</h3>
+              <h3 className="font-bold whitespace-nowrap">当下可实践</h3>
               <p className="text-sm text-muted-foreground">
-                以自己为出发点，记录行动，产品，书籍，人物，保存在 Saved 中。支持复制 Markdown 
+                从自身出发，将实践，产品，书籍，人物，保存在 <a href="/saved" className="font-medium text-primary hover:underline underline-offset-4">Saved</a> 中。支持复制 Markdown 
               </p>
             </div>
           </div>

@@ -10,7 +10,7 @@
 
 ## 🌟 项目介绍
 
-[Lenny's Podcast](https://www.lennyspodcast.com/) 是了解硅谷一线产品经理、增长黑客和创业者实战经验的绝佳来源。**Builder's Archive** 旨在通过 AI 深度解析，将 200+ 小时的访谈文稿转化为结构化的知识库。
+[Lenny's Podcast](https://www.lennyspodcast.com/) 是了解硅谷一线产品经理、增长黑客和创业者实战经验的绝佳来源。**Builder's** 旨在通过 AI 深度解析，将 200+ 小时的访谈文稿转化为结构化的知识库。
 
 把想法付诸实践是一个渐进的过程。我们通过重新设计交互，将信息解构为：
 

@@ -22,7 +22,7 @@ export default function AboutPage() {
 
       {/* Overview Section */}
       <section className="py-4 md:grid md:grid-cols-4 md:gap-8 items-start">
-        <h2 className="text-2xl font-black tracking-tight mb-6 md:mb-0 md:col-span-1 md:text-left text-center">项目介绍</h2>
+        <h2 className="text-2xl font-black tracking-tight mb-6 md:mb-0 md:col-span-1 md:text-right text-center md:order-last md:pt-1">项目介绍</h2>
         <div className="space-y-6 text-foreground/80 leading-loose tracking-wide md:col-span-3 text-center md:text-left">
           <p>
             <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习 AI 的绝佳内容源。

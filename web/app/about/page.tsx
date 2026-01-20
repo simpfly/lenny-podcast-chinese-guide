@@ -21,15 +21,15 @@ export default function AboutPage() {
       </section>
 
       {/* Overview Section */}
-      <section className="space-y-8 text-center py-4">
-        <h2 className="text-2xl font-black tracking-tight">项目介绍</h2>
-        <div className="space-y-6 text-foreground/80 leading-loose tracking-wide max-w-3xl mx-auto">
+      <section className="py-4 md:grid md:grid-cols-4 md:gap-8 items-start">
+        <h2 className="text-2xl font-black tracking-tight mb-6 md:mb-0 md:col-span-1 md:text-left text-center">项目介绍</h2>
+        <div className="space-y-6 text-foreground/80 leading-loose tracking-wide md:col-span-3 text-center md:text-left">
           <p>
             <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习 AI 的绝佳内容源。
             <a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4 ml-1">simpfly</a>（我）尝试直接用 AI 来阅读，但因缺乏简明有效的结构，效果不理想。
           </p>
           <p>
-            把想法付诸实践，始终是渐进的过程。通过不断迭代，我为其设计了交互，
+            把想法付诸实践，始终是渐进的过程。我为其设计了交互，
             将信息转化为 <strong>可落地的行动单元 (Actionable Insights)</strong>。
           </p>
         </div>
@@ -102,9 +102,9 @@ export default function AboutPage() {
       </section>
 
       {/* Usage Section */}
-      <section className="space-y-10 text-center">
-        <h2 className="text-2xl font-black tracking-tight">如何使用</h2>
-        <div className="flex flex-col gap-6 max-w-3xl mx-auto px-4">
+      <section className="md:grid md:grid-cols-4 md:gap-8 items-start">
+        <h2 className="text-2xl font-black tracking-tight mb-8 md:mb-0 md:col-span-1 md:text-left text-center">如何使用</h2>
+        <div className="flex flex-col gap-6 md:col-span-3">
           <div className="flex items-center gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
             <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors">
               <Search className="w-5 h-5 text-primary" />

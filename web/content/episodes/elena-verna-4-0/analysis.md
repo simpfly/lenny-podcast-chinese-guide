@@ -164,7 +164,7 @@ Elena 深度拆解了 AI 时代增长逻辑的剧变：为什么传统的增长�
 **工具 3**: **Wispr Flow**
 
 - 说明: 语音输入增强工具，让沟通速度超越打字。
-- 链接: [wisprflow.ai](https://wisprflow.ai/)
+- 链接: [Wispr Flow](https://wisprflow.ai/)
 
 **推荐阅读**: **Adjacent User Theory (相邻用户理论)**
 

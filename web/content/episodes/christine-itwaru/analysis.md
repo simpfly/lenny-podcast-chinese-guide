@@ -159,24 +159,45 @@
 
 ## 🛠️ 提到的工具/资源
 
-**核心工具**:
+**工具 1**: **Pendo**
 
-- **Pendo**: 用于用户行为分析、应用内引导和反馈收集。 [官网](https://www.pendo.io/)
-- **Salesforce**: 客户关系管理，与产品数据对接。 [官网](https://www.salesforce.com/)
-- **Looker**: 数据可视化，用于深入分析业务指标。 [官网](https://cloud.google.com/looker)
-- **Miro/Figma**: 用于团队协作和原型设计。
+- 说明: 用于用户行为分析、应用内引导和反馈收集。
+- 链接: [官网](https://www.pendo.io/)
+
+**工具 2**: **Salesforce**
+
+- 说明: 客户关系管理，与产品数据对接。
+- 链接: [官网](https://www.salesforce.com/)
+
+**工具 3**: **Looker**
+
+- 说明: 数据可视化，用于深入分析业务指标。
+- 链接: [官网](https://cloud.google.com/looker)
+
+**工具 4**: **Miro**
+
+- 说明: 用于团队协作和原型设计。
+- 链接: [官网](https://miro.com/)
+
+**工具 5**: **Figma**
+
+- 说明: 用于团队协作和原型设计。
+- 链接: [官网](https://www.figma.com/)
 
 **推荐阅读 1**: **《Inspired》(Marty Cagan)**
 
 - 说明: 产品经理必读圣经。
+- 链接: [Amazon](https://www.amazon.com/INSPIRED-Create-Tech-Products-Customers/dp/1119387507)
 
 **推荐阅读 2**: **《The Product-Led Organization》(Todd Olsen)**
 
 - 说明: Pendo CEO 著作，探讨 PLG 模式。
+- 链接: [Amazon](https://www.amazon.com/Product-Led-Organization-Drive-Growth-Retention/dp/1119660874)
 
 **推荐阅读 3**: **《Product Roadmaps Relaunched》**
 
 - 说明: 经典的路线图制定指南。
+- 链接: [O'Reilly](https://www.oreilly.com/library/view/product-roadmaps-relaunched/9781491971710/)
 
 ---
 

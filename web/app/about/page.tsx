@@ -103,10 +103,10 @@ export default function AboutPage() {
 
       {/* Usage Section */}
       <section className="md:grid md:grid-cols-4 md:gap-8 items-start">
-        <h2 className="text-2xl font-black tracking-tight mb-8 md:mb-0 md:col-span-1 md:text-left text-center">如何使用</h2>
+        <h2 className="text-2xl font-black tracking-tight mb-8 md:mb-0 md:col-span-1 md:text-left text-center md:pt-4">如何使用</h2>
         <div className="flex flex-col gap-6 md:col-span-3">
-          <div className="flex items-center gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
-            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors">
+          <div className="flex items-start gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
+            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors mt-0.5">
               <Search className="w-5 h-5 text-primary" />
             </div>
             <div className="space-y-1">
@@ -116,14 +116,14 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
-            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors">
+          <div className="flex items-start gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
+            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors mt-0.5">
               <PlusCircle className="w-5 h-5 text-primary" />
             </div>
             <div className="space-y-1">
               <h3 className="font-bold text-base">当下可实践</h3>
               <p className="text-sm text-muted-foreground leading-loose tracking-wide">
-                从自身出发，将实践，产品，书籍，人物，保存在 <a href="/saved" className="font-semibold text-primary hover:underline underline-offset-4">Saved</a> 中。支持复制 Markdown 
+                从自身出发，将实践，产品，书籍，人物，保存在 <a href="/saved" className="font-semibold text-primary hover:underline underline-offset-4">Saved</a> 中<br/>支持复制 Markdown 
               </p>
             </div>
           </div>

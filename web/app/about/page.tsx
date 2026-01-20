@@ -16,7 +16,7 @@ export default function AboutPage() {
         <span className="text-primary inline-block">Builder's </span>
         </h1>
         <p className="text-muted-foreground text-xl leading-relaxed max-w-3xl mx-auto text-balance">
-          Lenny's Podcast 知识库：产品经理与增长黑客的实战笔记
+          可以交互的 Lenny 知识库：产品经理与增长黑客的行动仪表盘
         </p>
       </section>
 

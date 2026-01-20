@@ -21,15 +21,16 @@ export default function AboutPage() {
       </section>
 
       {/* Overview Section */}
-      <section className="space-y-6 text-center">
-        <h2 className="text-2xl font-bold tracking-tight">项目介绍</h2>
-        <div className="text-muted-foreground leading-relaxed">
-          <p className="text-balance max-w-3xl mx-auto">
-             <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习 AI 的绝佳内容源
-             <br/><a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline underline-offset-4">simpfly</a>（我）尝试直接用 AI 来阅读
-             <br/>但因缺乏简明有效的结构，效果不理想
-             <br/>把想法付诸实践，始终是渐进的过程
-            <br/>我为其设计了交互，将信息转化为<strong>可落地的行动单元 (Actionable Insights)</strong>
+      <section className="space-y-8 text-center py-4">
+        <h2 className="text-2xl font-black tracking-tight">项目介绍</h2>
+        <div className="space-y-6 text-foreground/80 leading-loose tracking-wide max-w-3xl mx-auto">
+          <p>
+            <a href="https://www.lennyspodcast.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4">Lenny's Podcast</a> 的文稿是了解学习产品与增长的绝佳内容源。
+            <a href="https://www.simpfly.info/about" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline underline-offset-4 ml-1">simpfly</a> 尝试直接利用 AI 进行高效阅读，但因缺乏清晰有效的结构，初始尝试的效果并不理想。
+          </p>
+          <p>
+            把想法付诸实践始终是一个渐进的过程。通过不断迭代，我为这些深度内容设计了全新的交互方式，
+            将庞杂的信息转化为 <strong>可落地的行动单元 (Actionable Insights)</strong>，帮助每一位 Builder 真正消化这些顶级智慧。
           </p>
         </div>
         
@@ -39,9 +40,9 @@ export default function AboutPage() {
             <div className="bg-primary/5 p-2.5 rounded-full w-fit mx-auto mb-4">
               <FileText className="w-5 h-5 text-primary/40" />
             </div>
-            <h3 className="text-xl font-bold tracking-tight mb-3">双语逐字稿</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed px-10">
-            200+ 小时英文访谈文稿 & 中文翻译
+            <h3 className="text-xl font-black tracking-tight mb-3">双语逐字稿</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed px-10 tracking-wide">
+              200+ 小时英文访谈文稿 & 精确翻译
             </p>
           </div>
 
@@ -101,39 +102,39 @@ export default function AboutPage() {
       </section>
 
       {/* Usage Section */}
-      <section className="space-y-8 text-center">
-        <h2 className="text-2xl font-bold tracking-tight">如何使用</h2>
-        <div className="flex flex-col gap-4 max-w-3xl mx-auto px-4">
-          <div className="flex items-center gap-4 text-left p-3 rounded-xl hover:bg-muted/30 transition-colors group">
-            <div className="flex-shrink-0 bg-primary/5 p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+      <section className="space-y-10 text-center">
+        <h2 className="text-2xl font-black tracking-tight">如何使用</h2>
+        <div className="flex flex-col gap-6 max-w-3xl mx-auto px-4">
+          <div className="flex items-center gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
+            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors">
               <Search className="w-5 h-5 text-primary" />
             </div>
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-bold whitespace-nowrap">关键词检索</h3>
-              <p className="text-sm text-muted-foreground">
-                搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong> 等，直达一线实战洞察
+            <div className="space-y-1">
+              <h3 className="font-bold text-base">关键词检索</h3>
+              <p className="text-sm text-muted-foreground leading-loose tracking-wide">
+                支持搜索 <strong>"Figma"</strong>、<strong>"PLG"</strong>、<strong>"AI"</strong> 等关键词，直达硅谷一线大咖的实战洞察。
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-4 text-left p-3 rounded-xl hover:bg-muted/30 transition-colors group">
-            <div className="flex-shrink-0 bg-primary/5 p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+          <div className="flex items-center gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
+            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors">
               <PlusCircle className="w-5 h-5 text-primary" />
             </div>
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-bold whitespace-nowrap">当下可实践</h3>
-              <p className="text-sm text-muted-foreground">
-                从自身出发，将实践，产品，书籍，人物，保存在 <a href="/saved" className="font-medium text-primary hover:underline underline-offset-4">Saved</a> 中。支持复制 Markdown 
+            <div className="space-y-1">
+              <h3 className="font-bold text-base">构建个人知识库</h3>
+              <p className="text-sm text-muted-foreground leading-loose tracking-wide">
+                将心仪的实践建议、工具或书籍保存在 <a href="/saved" className="font-semibold text-primary hover:underline underline-offset-4">Saved</a> 中。我们支持一键复制 Markdown 格式，方便你整理至自己的笔记软件。
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-4 text-left p-3 rounded-xl hover:bg-muted/30 transition-colors group">
-            <div className="flex-shrink-0 bg-primary/5 p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+          <div className="flex items-center gap-5 text-left p-4 rounded-2xl hover:bg-muted/30 transition-all group">
+            <div className="flex-shrink-0 bg-primary/5 p-3 rounded-full group-hover:bg-primary/10 transition-colors">
               <MessageSquare className="w-5 h-5 text-primary" />
             </div>
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-bold whitespace-nowrap">与内容对话</h3>
-              <p className="text-sm text-muted-foreground">
-                推荐配合 <strong>Dia / ChatGPT Atlas</strong> 阅读原文，与内容对话
+            <div className="space-y-1">
+              <h3 className="font-bold text-base">与内容深度对话</h3>
+              <p className="text-sm text-muted-foreground leading-loose tracking-wide">
+                推荐配合 <strong>Dia</strong> 或 <strong>ChatGPT Atlas</strong> 阅读原文。在理解 AI 深度解析的基础上，直接与内容本身进行交互对话。
               </p>
             </div>
           </div>
@@ -142,7 +143,7 @@ export default function AboutPage() {
 
       {/* Credits Section */}
       <section className="space-y-12 text-center pb-20">
-        <h2 className="text-2xl font-bold tracking-tight">内容制作</h2>
+        <h2 className="text-2xl font-black tracking-tight">内容制作</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-12 max-w-4xl mx-auto px-4">
           <div className="flex flex-col items-center gap-4 text-center group">
             <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary/30 transition-all duration-300 shadow-sm">

@@ -89,7 +89,7 @@ export function ClientLayoutWrapper({
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-secondary/50 hover:bg-secondary transition-all"
                   >
-                    Simpfly
+                    simpfly
                   </a>
               </div>
           </footer>

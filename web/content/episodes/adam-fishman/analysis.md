@@ -9,6 +9,7 @@
 ## 🎙️ 主持人介绍
 
 **Lenny Rachitsky**
+
 - **身份**: 前 Airbnb 产品负责人，全球顶级产品与增长专家。
 - **背景**: 在 Airbnb 工作 7 年，曾领导供应端增长团队。
 - **现状**: 运营全球排名第一的产品管理 Newsletter（[Lenny's Newsletter](https://www.lennysnewsletter.com/)）和播客。
@@ -21,6 +22,7 @@
 ## 🎤 嘉宾介绍
 
 **Adam Fishman**
+
 - **核心身份**: 硅谷资深产品与增长高管，Lyft 早期增长功臣。
 - **职业经历**:
   - **Lyft**: 第一位增长与市场负责人（任职约 2.5 年），经历了从 Zimride 到 Lyft 的转型。
@@ -32,7 +34,7 @@
 - **社交媒体**:
   - Twitter/X: [@fishmanaf](https://twitter.com/fishmanaf)
   - LinkedIn: [Adam Fishman](https://www.linkedin.com/in/adam-fishman/)
-  - Newsletter: [Fishman AF Newsletter](https://www.fishmanafnewsletter.com/)
+  - 个人网站/Newsletter: [adamfishman.com](https://adamfishman.com/)
 
 ---
 
@@ -54,11 +56,11 @@
 
 **核心观点**: 增长人才不是“独角兽”，而是由四个维度的具体技能组合而成的。
 
-- **四个象限**: 
-    - **增长执行 (Execution)**: 渠道熟练度、实验能力、将学习成果产品化。
-    - **客户认知 (Customer Knowledge)**: 数据流利度、用户心理学、创意叙事。
-    - **增长策略 (Strategy)**: 增长循环建模、资本分配与预测、优先级排序。
-    - **沟通与影响力 (Communication & Influence)**: 战略沟通、团队领导力、利益相关者管理。
+- **四个象限**:
+  - **增长执行 (Execution)**: 渠道熟练度、实验能力、将学习成果产品化。
+  - **客户认知 (Customer Knowledge)**: 数据流利度、用户心理学、创意叙事。
+  - **增长策略 (Strategy)**: 增长循环建模、资本分配与预测、优先级排序。
+  - **沟通与影响力 (Communication & Influence)**: 战略沟通、团队领导力、利益相关者管理。
 - **招聘建议**: 创始人不应寻找全才，而应根据团队现状补齐短板。对于早期增长职位，Adam 倾向于**内部转岗**，因为内部人才已具备深厚的“客户认知”。
 
 > "Onboarding is the thing that you have to go through in order to use the product. It's also the first opportunity that you have to deliver on the promise that you made out in the marketplace."
@@ -86,18 +88,21 @@
 ## ✅ 数据验证结果
 
 **验证项 1**: Patreon 通过人工干预/产品化引导提升创作者收入。
+
 - 原文声称: "在正确的时间连接人工服务，使创作者前两个月的收入提升了 25%。"
 - 验证结果: ✅ 确认。
 - 来源: [Patreon 官方博客及 Adam 在 Reforge 的案例研究](https://www.reforge.com/blog/patreon-growth-strategy)。
 - 可信度: ⭐⭐⭐
 
 **验证项 2**: Onboarding 对留存的影响。
+
 - 原文声称: "优化 Onboarding 可以将整体留存曲线向上移动 10-20 个百分点。"
 - 验证结果: ✅ 确认。
 - 来源: [ProfitWell 关于 Onboarding 与留存的研究报告](https://www.paddle.com/blog/customer-onboarding-retention)。
 - 可信度: ⭐⭐⭐
 
 **验证项 3**: Lyft 早期增长与 Uber 的竞争背景。
+
 - 原文声称: "Lyft 早期通过粉色胡子（Pink Mustache）进行品牌差异化。"
 - 验证结果: ✅ 确认。
 - 来源: [《Super Pumped》- Mike Isaac](https://www.nytimes.com/2019/09/03/books/review/super-pumped-mike-isaac.html)。
@@ -110,29 +115,35 @@
 ### 🟢 高度正确（已验证/权威来源）
 
 **观点 1**: **增长循环（Growth Loops）优于漏斗模型**。
+
 - 验证依据: Reforge 增长框架的核心理论，已被主流硅谷公司验证。
 
 **观点 2**: **新用户在首日/首周的流失率最高**。
+
 - 验证依据: 移动应用行业基准数据（如 Adjust 或 AppsFlyer 报告）。
 
 ### 🔵 当下可执行（有明确步骤）
 
 **建议 1**: **实施“反向背景调查”**。
+
 - 可执行性: 高。
 - 执行方法: 在面试最后阶段，向面试官索要 2-3 名其前下属的联系方式，询问其管理风格。
 
 **建议 2**: **建立增长胜任力雷达图**。
+
 - 可执行性: 高。
 - 执行方法: 使用 Adam 的四个维度对现有团队成员进行打分，识别招聘需求。
 
 ### 🟡 理智质疑（需验证）
 
 **存疑点**: **内部转岗优于外部招聘增长负责人**。
+
 - 质疑原因: 仅适用于具备强产品文化的公司。如果公司缺乏增长方法论，内部转岗可能导致“盲人摸象”。
 
 ### 🔴 需警惕（可能有问题）
 
 **风险点**: **过度依赖“有主见的默认设置”**。
+
 - 风险说明: 如果默认设置基于错误的数据模型，可能会在大规模范围内误导用户，导致集体流失。
 
 ---
@@ -150,14 +161,17 @@
 ## 🛠️ 提到的工具/资源
 
 **工具 1**: **Coda**
+
 - 说明: Lenny 个人使用的全能文档工具，用于组织 Newsletter 和播客。
 - 链接: [Coda.io](https://coda.io/)
 
 **工具 2**: **Linear**
+
 - 说明: 现代软件团队的首选问题跟踪工具，以速度和设计著称。
 - 链接: [Linear.app](https://linear.app/)
 
 **推荐阅读**: **《Super Pumped: The Battle for Uber》**
+
 - 说明: 描述 Uber 与 Lyft 竞争内幕的权威书籍。
 - 链接: [Amazon 链接](https://www.amazon.com/Super-Pumped-Battle-Mike-Isaac/dp/0393652246)
 
@@ -166,14 +180,17 @@
 ## 📋 行动建议
 
 ### 🚀 立即可做（今天）
+
 - [ ] **自测**: 使用增长胜任力模型，对自己目前的技能点进行 1-10 分打分。
 - [ ] **检查**: 打开自家产品的 Onboarding 流程，看第一页是否明确兑现了广告中的承诺。
 
 ### 📅 本周尝试
+
 - [ ] **数据分析**: 找出 Onboarding 流程中流失率最高的一个步骤，并提出 3 个基于用户心理学的改进假设。
 - [ ] **团队沟通**: 与财务部门沟通，了解公司目前的现金流状况和财务规划（践行 PMF 框架中的 Financials 评估）。
 
 ### 🔍 深入探索
+
 - [ ] **研究**: 阅读 Adam Fishman 关于“增长胜任力模型”的完整博文。
 
 ---
@@ -181,15 +198,19 @@
 ## ⭐ 评分
 
 **知识价值**: 9/10
+
 - 提供了极具框架感的增长人才评估体系。
 
 **可执行性**: 8/10
+
 - 无论是招聘还是优化产品，都有明确的 Checklist。
 
 **商业潜力**: 9/10
+
 - Onboarding 的微小改进往往能带来数百万美元的 LTV 增长。
 
 **投入产出比**: 10/10
+
 - 听一小时播客即可获得硅谷顶级增长专家的十年经验总结。
 
 **综合评分**: **9/10**
@@ -203,7 +224,8 @@
 - [Reforge 增长课程](https://www.reforge.com/)
 
 ---
-*来源*: Lenny's Podcast
-*嘉宾*: Adam Fishman
-*分析师*: AI Deep Analysis Engine
-*生成时间*: 2024-05-22
+
+_来源_: Lenny's Podcast
+_嘉宾_: Adam Fishman
+_分析师_: AI Deep Analysis Engine
+_生成时间_: 2024-05-22

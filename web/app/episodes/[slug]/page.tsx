@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { EpisodeDetailView } from "@/components/episode-detail-view";
+import { SaveBuilderButton } from "@/components/save-builder-button";
 import { RandomEpisodeButton } from "@/components/random-episode-button";
 import { JsonLd } from "@/components/json-ld";
 
@@ -79,6 +80,7 @@ export default async function EpisodePage({ params }: PageProps) {
                 <h1 className="text-4xl font-black tracking-tighter sm:text-6xl text-balance">
                     {metadata.guest}
                 </h1>
+                <SaveBuilderButton episode={metadata} />
             </div>
             <p className="text-muted-foreground text-sm flex items-center gap-2 font-medium">
                 <span>Detailed Analysis & Action Guide</span>

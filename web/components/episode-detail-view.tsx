@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { SaveToolButton } from "@/components/save-tool-button";
+import { SaveBuilderButton } from "@/components/save-builder-button";
 import { Episode } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

@@ -313,12 +313,17 @@ export function getTranscriptContent(slug: string): string | null {
   return null;
 }
 
+// Episodes to exclude from the builders list (non-guest content like compilations)
+const EXCLUDED_SLUGS = new Set([
+  "eoy-review", // 年终回顾特辑，不是单一嘉宾
+]);
+
 export function getAllEpisodes(): Episode[] {
   if (!fs.existsSync(EPISODES_DIR)) return [];
 
   const dirs = fs.readdirSync(EPISODES_DIR).filter((file) => {
     const stats = fs.statSync(path.join(EPISODES_DIR, file));
-    return stats.isDirectory();
+    return stats.isDirectory() && !EXCLUDED_SLUGS.has(file);
   });
 
   return dirs.map((slug) => {

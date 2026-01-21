@@ -34,7 +34,7 @@
 - **社交媒体**:
   - Twitter/X: [@fishmanaf](https://twitter.com/fishmanaf)
   - LinkedIn: [Adam Fishman](https://www.linkedin.com/in/adam-fishman/)
-  - 个人网站/Newsletter: [adamfishman.com](https://adamfishman.com/)
+  - Newsletter: [Fishman AF Newsletter](https://www.fishmanafnewsletter.com/)
 
 ---
 
@@ -224,8 +224,7 @@
 - [Reforge 增长课程](https://www.reforge.com/)
 
 ---
-
-_来源_: Lenny's Podcast
-_嘉宾_: Adam Fishman
-_分析师_: AI Deep Analysis Engine
-_生成时间_: 2024-05-22
+*来源*: Lenny's Podcast
+*嘉宾*: Adam Fishman
+*分析师*: AI Deep Analysis Engine
+*生成时间*: 2024-05-22

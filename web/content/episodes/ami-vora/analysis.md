@@ -34,7 +34,7 @@
 - **核心专长**: 组织架构设计、跨职能协作、产品战略叙事、高管沟通。
 - **社交媒体**:
   - LinkedIn: [Ami Vora](https://www.linkedin.com/in/amivora/)
-  - 个人网站/Newsletter: [The Hard Parts of Growth](https://amivora.substack.com/)
+  - Substack: [The Hard Parts of Growth](https://amivora.substack.com/)
 
 ---
 
@@ -203,6 +203,5 @@
 - [Meta 2018 Annual Report](https://investor.fb.com/)
 
 ---
-
-_生成时间_: 2024-05-22
-_分析师_: AI Deep Analysis Engine
+*生成时间*: 2024-05-22
+*分析师*: AI Deep Analysis Engine

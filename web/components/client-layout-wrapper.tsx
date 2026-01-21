@@ -31,7 +31,7 @@ export function ClientLayoutWrapper({
   }, [pathname]);
 
   return (
-    <div className={`grid h-screen overflow-hidden w-full transition-all duration-300 ${
+    <div className={`grid min-h-screen w-full transition-all duration-300 ${
       isCollapsed 
         ? "md:grid-cols-[60px_1fr] lg:grid-cols-[60px_1fr]" 
         : "md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
@@ -46,7 +46,7 @@ export function ClientLayoutWrapper({
         />
       </div>
 
-      <div className="flex flex-col h-full overflow-hidden">
+      <div className="flex flex-col min-h-screen">
         {/* Mobile Header */}
         <header className="sticky top-0 z-50 flex h-14 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 lg:h-[60px] lg:px-6 md:hidden">
           <Sheet open={open} onOpenChange={setOpen}>
@@ -76,7 +76,7 @@ export function ClientLayoutWrapper({
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto flex flex-col">
+        <main className="flex-1 flex flex-col">
           <div className="flex-1 w-full pt-6 md:pt-12 px-4 md:px-8">
             {children}
           </div>

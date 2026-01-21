@@ -162,8 +162,9 @@ export function getEpisodeMetadata(slug: string): Episode | null {
       }
 
       // Look for personal website/blog link
-      // Matches "个人网站:", "Website:", "Blog:", "个人博客:"
-      const websiteMatch = sectionContent.match(/(?:个人网站|Website|Blog|个人博客|Homepage)[:：]\s*\[.*?\]\((.*?)\)/i);
+      // Matches "个人网站:", "个人网站/Blog:", "个人网站/博客:", "Website:", "Blog:", "个人博客:", "Homepage:"
+      // Also handles variations with slashes like "个人网站/Newsletter:"
+      const websiteMatch = sectionContent.match(/(?:个人网站(?:\/[^\s:：]+)?|Website|Blog|个人博客|Homepage(?:\/[^\s:：]+)?)[:：]\s*\[.*?\]\((.*?)\)/i);
       if (websiteMatch) {
           websiteUrl = websiteMatch[1];
       }

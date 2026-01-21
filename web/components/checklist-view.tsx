@@ -23,7 +23,8 @@ import {
   Linkedin,
   Plus,
   Copy,
-  Check as CheckIcon
+  Check as CheckIcon,
+  ChevronDown
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,9 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [copiedTab, setCopiedTab] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('all');
+  const [buildersExpanded, setBuildersExpanded] = useState(true);
+  const [toolsExpanded, setToolsExpanded] = useState(true);
+  const [actionsExpanded, setActionsExpanded] = useState(true);
 
   useEffect(() => {
     const loadedActions: CompletedAction[] = [];
@@ -340,60 +344,78 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
                  {/* Recent Builders */}
                  {savedBuilders.length > 0 && (
                     <section className="space-y-4">
-                        <div className="flex items-center justify-between">
+                        <button 
+                            onClick={() => setBuildersExpanded(!buildersExpanded)}
+                            className="w-full flex items-center justify-between group hover:bg-muted/50 rounded-lg px-2 py-1 -ml-2 transition-colors"
+                        >
                             <h2 className="text-lg font-semibold flex items-center gap-2">
                                 <Users className="w-4 h-4 text-primary" /> Saved Builders
+                                <Badge variant="secondary" className="h-5 px-1.5 min-w-[1.25rem]">{savedBuilders.length}</Badge>
                             </h2>
-                        </div>
-                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            {savedBuilders.map(builder => {
-                                // Normalize slugs for comparison
-                                const normalizeSlug = (s: string) => s.replace(/\/$/, "").toLowerCase();
-                                const fullEpisode = episodes.find(e => normalizeSlug(e.slug) === normalizeSlug(builder.slug));
-                                const mergedBuilder = fullEpisode ? { ...builder, ...fullEpisode } : builder;
+                            <ChevronDown className={cn("w-5 h-5 text-muted-foreground transition-transform duration-200", buildersExpanded ? "" : "-rotate-90")} />
+                        </button>
+                        {buildersExpanded && (
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 animate-in fade-in-50 slide-in-from-top-2 duration-200">
+                                {savedBuilders.map(builder => {
+                                    // Normalize slugs for comparison
+                                    const normalizeSlug = (s: string) => s.replace(/\/$/, "").toLowerCase();
+                                    const fullEpisode = episodes.find(e => normalizeSlug(e.slug) === normalizeSlug(builder.slug));
+                                    const mergedBuilder = fullEpisode ? { ...builder, ...fullEpisode } : builder;
 
-                                return (
-                                    <div key={builder.slug} className="h-full">
-                                        <BuilderCard episode={mergedBuilder} />
-                                    </div>
-                                );
-                            })}
-                        </div>
+                                    return (
+                                        <div key={builder.slug} className="h-full">
+                                            <BuilderCard episode={mergedBuilder} />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </section>
                 )}
 
                 {/* Recent Tools */}
                 {productStack.length > 0 && (
                     <section className="space-y-4">
-                        <div className="flex items-center justify-between">
+                        <button 
+                            onClick={() => setToolsExpanded(!toolsExpanded)}
+                            className="w-full flex items-center justify-between group hover:bg-muted/50 rounded-lg px-2 py-1 -ml-2 transition-colors"
+                        >
                             <h2 className="text-lg font-semibold flex items-center gap-2">
                                 <Wrench className="w-4 h-4 text-primary" /> My Stack
+                                <Badge variant="secondary" className="h-5 px-1.5 min-w-[1.25rem]">{productStack.length}</Badge>
                             </h2>
-                        </div>
-                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            {productStack.map(product => (
-                                <ToolCard key={product.name} product={product} onRemove={removeFromStack} />
-                            ))}
-                        </div>
+                            <ChevronDown className={cn("w-5 h-5 text-muted-foreground transition-transform duration-200", toolsExpanded ? "" : "-rotate-90")} />
+                        </button>
+                        {toolsExpanded && (
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 animate-in fade-in-50 slide-in-from-top-2 duration-200">
+                                {productStack.map(product => (
+                                    <ToolCard key={product.name} product={product} onRemove={removeFromStack} />
+                                ))}
+                            </div>
+                        )}
                     </section>
                 )}
 
                 {/* Recent Actions */}
                 {completedActions.length > 0 && (
                     <section className="space-y-4">
-                        <div className="flex items-center justify-between">
+                        <button 
+                            onClick={() => setActionsExpanded(!actionsExpanded)}
+                            className="w-full flex items-center justify-between group hover:bg-muted/50 rounded-lg px-2 py-1 -ml-2 transition-colors"
+                        >
                             <h2 className="text-lg font-semibold flex items-center gap-2">
-                                <Rocket className="w-4 h-4 text-primary" /> Recent Actions
+                                <Rocket className="w-4 h-4 text-primary" /> Actions
+                                <Badge variant="secondary" className="h-5 px-1.5 min-w-[1.25rem]">{completedActions.length}</Badge>
                             </h2>
-                            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => (document.querySelector('[data-value="actions"]') as HTMLButtonElement)?.click()}>
-                                View All
-                            </Button>
-                        </div>
-                        <div className="grid gap-3">
-                            {completedActions.map(action => (
-                                <ActionCard key={`${action.episodeSlug}-${action.id}`} action={action} onRemove={removeAction} />
-                            ))}
-                        </div>
+                            <ChevronDown className={cn("w-5 h-5 text-muted-foreground transition-transform duration-200", actionsExpanded ? "" : "-rotate-90")} />
+                        </button>
+                        {actionsExpanded && (
+                            <div className="grid gap-3 animate-in fade-in-50 slide-in-from-top-2 duration-200">
+                                {completedActions.map(action => (
+                                    <ActionCard key={`${action.episodeSlug}-${action.id}`} action={action} onRemove={removeAction} />
+                                ))}
+                            </div>
+                        )}
                     </section>
                 )}
             </TabsContent>

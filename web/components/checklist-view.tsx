@@ -346,7 +346,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
                             </h2>
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            {savedBuilders.slice(0, 3).map(builder => {
+                            {savedBuilders.map(builder => {
                                 // Normalize slugs for comparison
                                 const normalizeSlug = (s: string) => s.replace(/\/$/, "").toLowerCase();
                                 const fullEpisode = episodes.find(e => normalizeSlug(e.slug) === normalizeSlug(builder.slug));
@@ -371,7 +371,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
                             </h2>
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            {productStack.slice(0, 3).map(product => (
+                            {productStack.map(product => (
                                 <ToolCard key={product.name} product={product} onRemove={removeFromStack} />
                             ))}
                         </div>
@@ -390,7 +390,7 @@ export function ChecklistView({ episodes }: ChecklistViewProps) {
                             </Button>
                         </div>
                         <div className="grid gap-3">
-                            {completedActions.slice(0, 3).map(action => (
+                            {completedActions.map(action => (
                                 <ActionCard key={`${action.episodeSlug}-${action.id}`} action={action} onRemove={removeAction} />
                             ))}
                         </div>

@@ -25,6 +25,7 @@ export type Episode = {
   guestIntro?: string;
   twitterUrl?: string;
   linkedinUrl?: string;
+  websiteUrl?: string;
   date?: string;
   summary: string;
   topics: string[];
@@ -142,6 +143,7 @@ export function getEpisodeMetadata(slug: string): Episode | null {
   let guestIntro = "";
   let twitterUrl: string | undefined;
   let linkedinUrl: string | undefined;
+  let websiteUrl: string | undefined;
 
   if (guestIntroSection) {
       const sectionContent = guestIntroSection[1];
@@ -157,6 +159,13 @@ export function getEpisodeMetadata(slug: string): Episode | null {
       const linkedinMatch = sectionContent.match(/LinkedIn[:：]\s*\[.*?\]\((.*?)\)/i);
       if (linkedinMatch) {
           linkedinUrl = linkedinMatch[1];
+      }
+
+      // Look for personal website/blog link
+      // Matches "个人网站:", "Website:", "Blog:", "个人博客:"
+      const websiteMatch = sectionContent.match(/(?:个人网站|Website|Blog|个人博客|Homepage)[:：]\s*\[.*?\]\((.*?)\)/i);
+      if (websiteMatch) {
+          websiteUrl = websiteMatch[1];
       }
 
       // Look for specific identity markers: "核心身份", "身份", "Role", "Core Identity"
@@ -273,6 +282,7 @@ export function getEpisodeMetadata(slug: string): Episode | null {
     guestIntro,
     twitterUrl,
     linkedinUrl,
+    websiteUrl,
     date,
     summary: finalSummary,
     topics,

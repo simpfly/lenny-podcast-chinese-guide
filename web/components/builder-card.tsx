@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Twitter, Linkedin, Plus, Check, Trash2 } from "lucide-react";
+import { Twitter, Linkedin, Plus, Check, Trash2, Globe } from "lucide-react";
 import { Episode } from "@/lib/data";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
@@ -158,6 +158,19 @@ export function BuilderCard({ episode }: BuilderCardProps) {
                   title="Open LinkedIn"
                 >
                   <Linkedin className="w-4 h-4" />
+                </div>
+              )}
+              {episode.websiteUrl && (
+                <div 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(episode.websiteUrl, '_blank');
+                  }}
+                  className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  title="Open Personal Website"
+                >
+                  <Globe className="w-4 h-4" />
                 </div>
               )}
               </div>

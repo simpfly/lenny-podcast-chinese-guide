@@ -14,7 +14,7 @@ import {
   LinkIcon,
   ListTodo,
   Target,
-
+  Globe,
   Wrench,
   Lightbulb,
   FileText,
@@ -623,6 +623,11 @@ export function EpisodeDetailView({
                         {episode.linkedinUrl && (
                             <a href={episode.linkedinUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-muted rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
                                 <Linkedin className="w-5 h-5" />
+                            </a>
+                        )}
+                        {episode.websiteUrl && (
+                            <a href={episode.websiteUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-muted rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
+                                <Globe className="w-5 h-5" />
                             </a>
                         )}
                     </div>

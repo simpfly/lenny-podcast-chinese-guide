@@ -7,6 +7,7 @@
 ## 🎙️ 主持人介绍
 
 **Lenny Rachitsky**
+
 - **身份**: 前 Airbnb 产品负责人，硅谷顶级产品管理专家。
 - **背景**: 在 Airbnb 工作 7 年，负责 Supply Growth 团队，帮助平台从数十万房源增长到数百万。
 - **现状**: 运营全球最大的产品管理 Newsletter（50万+订阅者）和播客，是产品经理社区的意见领袖。
@@ -21,6 +22,7 @@
 ## 🎤 嘉宾介绍
 
 **Shishir Mehrotra**
+
 - **身份**: Coda 联合创始人兼 CEO，硅谷公认的“第一性原理”思想家。
 - **职业经历**:
   - **Coda** - 联合创始人 & CEO (2014 - 至今)
@@ -31,7 +33,7 @@
 - **社交媒体**:
   - Twitter/X: [@shishirmehrotra](https://twitter.com/shishirmehrotra)
   - LinkedIn: [Shishir Mehrotra](https://www.linkedin.com/in/shishirmehrotra/)
-  - 个人网站: [Coda Gallery - Shishir's Docs](https://coda.io/@shishir)
+  - 个人网站: [shishir.io](https://shishir.io/)
 
 ---
 
@@ -90,18 +92,21 @@
 ## ✅ 数据验证结果
 
 **验证项 1**: Coda 的 "Maker Billing" 计费模式。
+
 - 原文声称: Coda 只对文档创建者收费，对查看者和编辑者免费，以减少分享摩擦。
 - 验证结果: ✅ 确认
 - 来源: [Coda Pricing Page](https://coda.io/pricing)
 - 可信度: ⭐⭐⭐
 
 **验证项 2**: YouTube 在 2008 年左右面临的法律和商业困境。
+
 - 原文声称: YouTube 当时被认为是 Google 的失败收购，面临数十亿美元诉讼且画质糟糕。
 - 验证结果: ✅ 确认。2007-2010年间，Viacom 对 YouTube 发起了 10 亿美元的版权诉讼。
 - 来源: [Reuters: Viacom's $1 billion lawsuit against Google](https://www.reuters.com/article/us-google-viacom-idUSBRE93H0S920130418)
 - 可信度: ⭐⭐⭐
 
 **验证项 3**: 早期 iPhone 的 YouTube App 是由 Apple 开发的。
+
 - 原文声称: 2012 年之前，iOS 内置的 YouTube 应用由 Apple 团队维护，Google 后来决定收回开发权。
 - 验证结果: ✅ 确认。iOS 6 移除了内置 YouTube 应用，Google 随后发布了官方独立版。
 - 来源: [The Verge: Apple removing YouTube app from iOS 6](https://www.theverge.com/2012/8/6/3223475/apple-removes-youtube-app-ios-6)
@@ -114,27 +119,33 @@
 ### 🟢 高度正确（已验证/权威来源）
 
 **观点 1**: 增长循环（Loops）优于增长漏斗（Funnels）。
+
 - 验证依据: Reforge 等顶级增长机构的行业共识。
 
 **观点 2**: 决策中的“群体思维”（Groupthink）会降低决策质量。
+
 - 验证依据: 心理学经典理论，Coda 的 Pulse 机制正是为了对抗这一现象。
 
 ### 🔵 当下可执行（有明确步骤）
 
 **建议 1**: 建立团队的“Dory/Pulse”会议机制。
+
 - 执行方法: 会议前先让所有人匿名写下想法，隐藏他人评论，最后根据点赞数讨论问题。
 
 **建议 2**: 识别并命名你的“黄金仪式”。
+
 - 执行方法: 检查团队中是否有符合“命名、全员知晓、模板化”三个标准的习惯，并将其固化。
 
 ### 🟡 理智质疑（需验证）
 
 **存疑点**: 背调（Reference Check）的信号强度总是高于面试。
+
 - 质疑原因: 虽然 Shishir 极力推崇，但背调存在“幸存者偏差”和“推荐人主观偏见”，且在某些法律环境下难以获得真实负面反馈。
 
 ### 🔴 需警惕（可能有问题）
 
 **风险点**: 追求“特征问题”可能导致过度简化。
+
 - 风险说明: 并非所有复杂商业问题都能简化为一个单一的特征问题，过度追求可能会忽略重要的边缘情况。
 
 ---
@@ -152,16 +163,20 @@
 ## 🛠️ 提到的工具/资源
 
 **工具 1**: [Coda](https://coda.io)
+
 - 说明: 嘉宾创办的协作文档工具，支持 Dory/Pulse 等仪式模板。
 
 **工具 2**: [Flatfile](https://flatfile.com)
+
 - 说明: 播客赞助商，解决 CSV 数据导入问题的 B2B 工具。
 
 **推荐阅读**: 《Switch》(改变) - Chip & Dan Heath
+
 - 说明: 探讨如何通过“指挥骑象人、激励大象、塑造路径”来实现组织变革。
 - 链接: [Amazon](https://www.amazon.com/Switch-Change-Things-When-Hard/dp/0385528572)
 
 **推荐阅读**: 《Understanding Comics》 - Scott McCloud
+
 - 说明: 深度探讨视觉沟通和叙事的本质，对产品设计和图表化思考极有启发。
 
 ---
@@ -169,14 +184,17 @@
 ## 📋 行动建议
 
 ### 🚀 立立即做（今天）
+
 - [ ] 检查你下一次会议的议程，尝试引入“先写后说”的 Pulse 模式。
 - [ ] 思考你目前最头疼的业务问题，试着写出它的“特征问题”。
 
 ### 📅 本周尝试
+
 - [ ] 绘制你业务的增长循环图（Loop），识别它是黑环还是蓝环。
 - [ ] 找出一个团队中存在但未命名的好习惯，给它起个名字并模板化。
 
 ### 🔍 深入探索
+
 - [ ] 研究 Coda Gallery 中的 [Eigenquestions 模板](https://coda.io/@shishir/eigenquestions)。
 - [ ] 申请加入 Shishir 的 [Rituals Braintrust](https://coda.io/@shishir/rituals-of-great-teams)。
 
@@ -185,15 +203,19 @@
 ## ⭐ 评分
 
 **知识价值**: 10/10
+
 - 提供了多个可直接复用的顶级商业框架，思维密度极高。
 
 **可执行性**: 9/10
+
 - 无论是会议技巧还是人才评估模型，都有明确的操作手册。
 
 **商业潜力**: 10/10
+
 - 增长循环和特征问题的思考方式对任何规模的企业都有巨大价值。
 
 **投入产出比**: 9/10
+
 - 虽然内容较长，但每一分钟都充满了实战智慧。
 
 **综合评分**: **9.5/10**
@@ -207,6 +229,7 @@
 - [Bing Gordon 关于黄金仪式的论述](https://www.mastersofscale.com)
 
 ---
-*来源*: Lenny's Podcast
-*嘉宾*: Shishir Mehrotra
-*生成时间*: 2024-05-22
+
+_来源_: Lenny's Podcast
+_嘉宾_: Shishir Mehrotra
+_生成时间_: 2024-05-22

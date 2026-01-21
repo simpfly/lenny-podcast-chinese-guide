@@ -36,6 +36,7 @@
 - **社交媒体**:
   - Twitter/X: [@gokulr](https://twitter.com/gokulr)
   - LinkedIn: [Gokul Rajaram](https://www.linkedin.com/in/gokulrajaram/)
+  - 个人网站: [gokulrajaram.com](https://gokulrajaram.com/)
 
 ---
 

@@ -11,6 +11,7 @@
 ## 🎙️ 主持人介绍
 
 **Lenny Rachitsky**
+
 - **身份**: 前 Airbnb 产品负责人，全球顶级产品管理专家。
 - **背景**: 在 Airbnb 工作 7 年，见证了公司从早期阶段到 IPO 的全过程。
 - **现状**: 运营全球排名第一的产品类 Newsletter 和播客，是硅谷产品圈最具影响力的人物之一。
@@ -23,6 +24,7 @@
 ## 🎤 嘉宾介绍
 
 **Shreyas Doshi**
+
 - **身份**: 硅谷公认的“产品管理导师”，以其深刻的框架思维和反直觉的洞察闻名。
 - **职业经历**:
   - **Stripe** - 产品负责人 (2016 - 2021)：负责 Stripe Connect 等核心业务。
@@ -34,6 +36,7 @@
 - **社交媒体**:
   - Twitter/X: [@shreyas](https://twitter.com/shreyas)
   - LinkedIn: [Shreyas Doshi](https://www.linkedin.com/in/shreyasdoshi/)
+  - 个人网站: [shreyasdoshi.com](https://shreyasdoshi.com/)
 
 ---
 
@@ -56,10 +59,10 @@
 **核心观点**: 在项目开始前，假设它已经失败，并倒推原因，以建立心理安全感和共享词汇。
 
 - **心理安全感**: 传统的乐观主义文化让团队不敢指出潜在风险。事前剖析给每个人发放了“批评许可证”。
-- **三大分类**: 
-    - **老虎 (Tigers)**: 真正能杀死项目的威胁。
-    - **纸老虎 (Paper Tigers)**: 看起来可怕但实际可控的风险。
-    - **房间里的象 (Elephants)**: 大家都知道但没人敢提的尴尬事实。
+- **三大分类**:
+  - **老虎 (Tigers)**: 真正能杀死项目的威胁。
+  - **纸老虎 (Paper Tigers)**: 看起来可怕但实际可控的风险。
+  - **房间里的象 (Elephants)**: 大家都知道但没人敢提的尴尬事实。
 
 > "If you do a pre-mortem right, you will not have to do an ugly post-mortem."
 > — Shreyas Doshi
@@ -85,18 +88,21 @@
 ## ✅ 数据验证结果
 
 **验证项 1**: Gary Klein 关于 Pre-mortem 的研究。
+
 - 原文声称: "我从 Gary Klein 在《哈佛商业评论》上的一篇文章中学到了事前剖析的概念。"
 - 验证结果: ✅ 确认
 - 来源: [HBR: Performing a Project Premortem (2007)](https://hbr.org/2007/09/performing-a-project-premortem)
 - 可信度: ⭐⭐⭐
 
 **验证项 2**: Google 的 70-20-10 资源分配法则。
+
 - 原文声称: "Google 在快速增长时期使用 70% 核心业务、20% 相关业务、10% 激进创新的分配比例。"
 - 验证结果: ✅ 确认
 - 来源: [Eric Schmidt, "How Google Works"](https://www.howgoogleworks.net/)
 - 可信度: ⭐⭐⭐
 
 **验证项 3**: "High Agency" (高自主性) 术语的起源。
+
 - 原文声称: "Eric Weinstein 创造了 High Agency 这个词。"
 - 验证结果: ✅ 确认（在科技和创投圈广泛认可此来源）
 - 来源: [Eric Weinstein Twitter/Podcast archives](https://twitter.com/ericwweinstein)
@@ -109,27 +115,33 @@
 ### 🟢 高度正确（已验证/权威来源）
 
 **观点 1**: 事前剖析能显著降低项目失败率。
+
 - 验证依据: 心理学研究表明，前瞻性回顾（Prospective Hindsight）能将识别潜在原因的准确率提高 30%。
 
 **观点 2**: 机会成本思维优于单纯的 ROI 决策。
+
 - 验证依据: 经济学基本原理。在资源有限的情况下，选择 A 的成本是放弃 B 的收益。
 
 ### 🔵 当下可执行（有明确步骤）
 
 **建议 1**: 使用 Coda 模板运行 Pre-mortem。
+
 - 执行方法: 邀请跨职能团队，静默书写 10 分钟风险，投票选出最可怕的“老虎”。
 
 **建议 2**: 改变办公地点以处理 L 级任务。
+
 - 执行方法: 当需要写战略文档时，离开办公室去咖啡馆，物理隔绝琐事干扰。
 
 ### 🟡 理智质疑（需验证）
 
 **存疑点**: "大多数执行问题都是战略问题"。
+
 - 质疑原因: 在初创公司早期，执行问题可能单纯是因为人手不足或技能缺失，而非战略不清晰。
 
 ### 🔴 需警惕（可能有问题）
 
 **风险点**: 追求“Optics”（形象/可见度）。
+
 - 风险说明: 虽然 Shreyas 认为 Optics 是必要的，但过度强调内部 Optics 会导致政治斗争和虚假繁荣，PM 需警惕度。
 
 ---
@@ -147,14 +159,17 @@
 ## 🛠️ 提到的工具/资源
 
 **工具 1**: Coda
+
 - 说明: Shreyas 使用 Coda 制作了大量的 PM 模板，包括 Pre-mortem 模板。
 - 链接: [Coda.io](https://coda.io/@shreyas)
 
 **工具 2**: Productboard
+
 - 说明: 播客赞助商，用于标准化产品优先级和路线图管理。
 - 链接: [Productboard](https://www.productboard.com/)
 
 **推荐阅读**: 《Performing a Project Premortem》
+
 - 说明: Gary Klein 撰写的关于事前剖析的经典文章。
 - 链接: [HBR Article](https://hbr.org/2007/09/performing-a-project-premortem)
 
@@ -163,14 +178,17 @@
 ## 📋 行动建议
 
 ### 🚀 立即可做（今天）
+
 - [ ] **任务审计**: 列出你今天的待办事项，标注哪些是 L、N、O。
 - [ ] **快速清理**: 用最快速度处理掉 O 类任务（如报销、简单回复），为 L 类任务腾出 2 小时深度工作时间。
 
 ### 📅 本周尝试
+
 - [ ] **运行事前剖析**: 在下周的项目启动会或关键里程碑前，组织一次 30 分钟的“老虎与大象”讨论。
 - [ ] **战略对齐**: 询问你的技术和设计搭档，看他们是否清楚当前项目的核心战略。如果不清楚，这就是你的 L 类任务。
 
 ### 🔍 深入探索
+
 - [ ] **研究机会成本**: 重新评估你的季度路线图，问自己：“如果我们不做这 5 个小功能，能换取哪一个改变游戏规则的大机会？”
 
 ---
@@ -178,15 +196,19 @@
 ## ⭐ 评分
 
 **知识价值**: 10/10
+
 - 提供了多个可受用终身的产品思维框架。
 
 **可执行性**: 9/10
+
 - 每一个框架都有具体的落地步骤和模板。
 
 **商业潜力**: 10/10
+
 - 优化战略分配和机会成本决策直接关联公司成败。
 
 **投入产出比**: 10/10
+
 - 听 1 小时播客可能节省未来数月的无效加班。
 
 **综合评分**: **9.8/10**
@@ -200,6 +222,7 @@
 - [Gary Klein 的事前剖析研究](https://hbr.org/2007/09/performing-a-project-premortem)
 
 ---
-*来源*: Lenny's Podcast
-*嘉宾*: Shreyas Doshi
-*生成时间*: 2024-05-23
+
+_来源_: Lenny's Podcast
+_嘉宾_: Shreyas Doshi
+_生成时间_: 2024-05-23

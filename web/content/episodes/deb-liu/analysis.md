@@ -11,6 +11,7 @@
 ## 🎙️ 主持人介绍
 
 **Lenny Rachitsky**
+
 - **身份**: 前 Airbnb 产品负责人，硅谷顶级产品管理专家。
 - **背景**: 在 Airbnb 工作 7 年，负责 Supply Growth 团队，见证了平台从初创到全球巨头的过程。
 - **现状**: 运营全球排名第一的产品管理 Newsletter（50万+订阅者）和播客，是产品经理圈的“教父级”人物。
@@ -24,6 +25,7 @@
 ## 🎤 嘉宾介绍
 
 **Deb Liu (刘德音)**
+
 - **核心身份**: 硅谷最具影响力的女性高管之一，以“从 0 到 1”在巨头内部孵化业务著称。
 - **职业经历**:
   - **Ancestry**: CEO (2021年3月至今)
@@ -34,6 +36,7 @@
 - **社交媒体**:
   - LinkedIn: [Deb Liu](https://www.linkedin.com/in/deborahliu/)
   - Newsletter: [Perspectives by Deb Liu](https://debliu.substack.com/)
+  - 个人网站: [debliu.com](https://debliu.com/)
   - 著作: 《Take Back Your Power》
 
 ---
@@ -84,18 +87,21 @@
 ## ✅ 数据验证结果
 
 **验证项 1**: Facebook Marketplace 的用户规模。
+
 - 原文声称: "Facebook Marketplace... is now used by over 1 billion people monthly."
 - 验证结果: ✅ 确认
 - 来源: Meta 2021年第一季度财报电话会议中，马克·扎克伯格明确提到 Marketplace 月活跃用户超过 10 亿。
 - 可信度: ⭐⭐⭐
 
 **验证项 2**: 游戏业务是 Facebook 第一个十亿美金业务。
+
 - 原文声称: "built games, which was the first billion dollar business."
 - 验证结果: ✅ 确认
 - 来源: 根据 Facebook 2012 年 IPO 招股书，2011 年其“支付及其他服务费”（主要来自 Zynga 等游戏公司的分成）收入为 5.57 亿美元，并在随后几年迅速突破 10 亿大关。
 - 可信度: ⭐⭐⭐
 
 **验证项 3**: 引用 Chuck Swindoll 关于态度的名言。
+
 - 原文声称: "Life is 10% what happens to you and 90% how you react to it."
 - 验证结果: ✅ 确认
 - 来源: 该语录出自查尔斯·斯温道尔（Charles R. Swindoll）的著作《The Grace Awakening》。
@@ -108,22 +114,27 @@
 ### 🟢 高度正确（职场金律）
 
 **观点 1**: 职业生涯是非线性的，持续学习比当下的专家身份更重要。
+
 - 验证依据: 现代职业发展理论（如 Protean Career Model）支持适应性和持续学习是长久成功的核心。
 
 **观点 2**: 结婚对象是人生最重要的职业决策。
+
 - 验证依据: 华盛顿大学圣路易斯分校的研究表明，配偶的性格显著影响个人的收入和晋升潜力。
 
 ### 🔵 当下可执行（实战手册）
 
 **建议 1**: 30/60/90 天入职计划。
+
 - 执行方法: 前 30 天只听不改（Listening Tour），中间 30 天对齐愿景，最后 30 天开始执行。
 
 **建议 2**: 建立“写作问责组”。
+
 - 执行方法: 找 2-3 个同事或朋友，每周/月互相监督发布一篇专业文章，克服对公开表达的恐惧。
 
 ### 🟡 理智质疑（情境限制）
 
 **存疑点**: “在面试中 Fake it till you make it”。
+
 - 质疑原因: 这仅适用于具备极强学习能力和底层素质的人。对于硬技能要求极高的岗位（如架构师），过度包装会导致严重的试用期危机。
 
 ---
@@ -141,13 +152,16 @@
 ## 🛠️ 提到的工具/资源
 
 **工具 1**: **Sounding Board**
+
 - 说明: Deb 丈夫工作的公司，提供领导力教练服务。
 - 链接: [Sounding Board](https://www.soundingboardinc.com/)
 
 **工具 2**: **Pendo / WorkOS**
+
 - 说明: 播客赞助商，产品分析与企业级功能集成工具。
 
 **推荐阅读**:
+
 - **《Quiet》(安静)**: Susan Cain 著。内向者的圣经。
 - **《Power》(权力)**: Jeffrey Pfeffer 著。揭示职场权力的真实运作。
 - **《Fall in Love with the Problem, Not the Solution》**: Uri Levine 著。产品经理的核心思维。
@@ -157,14 +171,17 @@
 ## 📋 行动建议
 
 ### 🚀 立即可做（今天）
+
 - [ ] **重构自我评价**: 在写周报或月报时，将“我做了什么”改为“这些成果如何帮助了团队和公司”。
 - [ ] **预约一个 Listening Session**: 找一个跨部门同事，只问不答，了解他们眼中的产品痛点。
 
 ### 📅 本周尝试
+
 - [ ] **起草你的职业 Spec**: 明确你未来 3 年的“北极星指标”是什么。
 - [ ] **写下你重复说的话**: 整理成一段文字，发布在公司内部论坛或个人博客。
 
 ### 🔍 深入探索
+
 - [ ] **研究 30/60/90 天框架**: 参考 Deb Liu 的 Substack 模板，为你的下一个项目或岗位做准备。
 
 ---
@@ -172,15 +189,19 @@
 ## ⭐ 评分
 
 **知识价值**: 9.5/10
+
 - 涵盖了从执行层到决策层的全方位视角。
 
 **可执行性**: 9/10
+
 - 30/60/90 天计划和写作建议非常具体。
 
 **商业潜力**: 8.5/10
+
 - 内部创业的逻辑对大公司中层极具启发。
 
 **投入产出比**: 10/10
+
 - 1小时的对话足以重塑一个人的职业观。
 
 **综合评分**: **9.3/10**
@@ -194,5 +215,6 @@
 - [Meta Q1 2021 Earnings Report](https://investor.fb.com/)
 
 ---
-*生成时间*: 2024-05-22
-*分析师*: AI Deep Analysis Engine
+
+_生成时间_: 2024-05-22
+_分析师_: AI Deep Analysis Engine

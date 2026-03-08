@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Episode } from "@/lib/data";
+import { BuilderEpisode } from "@/lib/data";
 import { BuilderCard } from "@/components/builder-card";
 import { Input } from "@/components/ui/input";
 import { Search as SearchIcon } from "lucide-react";
 
 interface BuilderListProps {
-  initialEpisodes: Episode[];
+  initialEpisodes: BuilderEpisode[];
   title?: string;
   description?: string;
 }

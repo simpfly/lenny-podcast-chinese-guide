@@ -2,6 +2,7 @@ import {
   getAllCategories, 
   getLatestEpisodes, 
   getTotalActionsCount, 
+  getAllEpisodeSlugs,
   getAllEpisodes, 
   getAllProducts,
   getAllActions
@@ -32,7 +33,8 @@ import { SurpriseMe } from "@/components/surprise-me";
 export default function Home() {
   const categories = getAllCategories();
   const latestEpisodes = getLatestEpisodes(2);
-  const totalEpisodes = getAllEpisodes().length;
+  const episodeSlugs = getAllEpisodeSlugs().map((episode) => episode.slug);
+  const totalEpisodes = episodeSlugs.length;
   const totalActions = getTotalActionsCount();
   const allActions = getAllActions();
   const allProducts = getAllProducts();
@@ -97,7 +99,7 @@ export default function Home() {
       </section>
 
       {/* Knowledge Compass (Client Progress) */}
-      <HomeClientSection totalActions={totalActions} episodes={getAllEpisodes()} />
+      <HomeClientSection totalActions={totalActions} episodeSlugs={episodeSlugs} />
 
       {/* Latest Insights Section */}
       <section>

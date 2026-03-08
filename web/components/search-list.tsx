@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Search as SearchIcon } from "lucide-react";
 import { getSearchTerms } from "@/lib/topic-mapping";
 import { TopicEpisodeList } from "@/components/topic-episode-list";
-import { Episode } from "@/lib/data";
+import { SearchEpisode } from "@/lib/data";
 
-export function SearchList({ episodes }: { episodes: Episode[] }) {
+export function SearchList({ episodes }: { episodes: SearchEpisode[] }) {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const [query, setQuery] = useState(initialQuery);
@@ -25,7 +25,7 @@ export function SearchList({ episodes }: { episodes: Episode[] }) {
             ep.guest.toLowerCase().includes(lowerQuery) ||
             ep.summary.toLowerCase().includes(lowerQuery) ||
             (ep.guestIntro && ep.guestIntro.toLowerCase().includes(lowerQuery)) ||
-            (ep.content && ep.content.toLowerCase().includes(lowerQuery));
+            ep.searchText.includes(lowerQuery);
 
         // 2. Semantic Topic Search
         // Check if ANY of the expanded search terms match ANY of the episode topics

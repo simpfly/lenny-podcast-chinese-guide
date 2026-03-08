@@ -1,4 +1,4 @@
-import { getEpisodeMetadata, getTranscriptContent, getAllEpisodes } from "@/lib/data";
+import { getEpisodeMetadata, getTranscriptContent, getAllEpisodeSlugs } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -8,6 +8,10 @@ import { Metadata } from "next";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
+}
+
+export function generateStaticParams() {
+  return getAllEpisodeSlugs();
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

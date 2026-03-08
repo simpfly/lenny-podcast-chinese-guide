@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { SaveToolButton } from "@/components/save-tool-button";
-import { Episode } from "@/lib/data";
+import { ChecklistEpisode } from "@/lib/data";
 import { parseActions } from "@/lib/action-parser";
 import Link from "next/link";
 import { 
@@ -36,8 +36,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BuilderCard } from "@/components/builder-card";
 
 interface ChecklistViewProps {
-  episodes: Episode[];
+  episodes: ChecklistEpisode[];
 }
+
 
 interface CompletedAction {
   id: string;

@@ -1,11 +1,9 @@
-import { getAllEpisodes } from "@/lib/data";
+import { getAllSearchEpisodes } from "@/lib/data";
 import { SearchList } from "@/components/search-list";
 import { Suspense } from "react";
 
-export const dynamic = 'force-dynamic'; // Ensure we don't statically optimize this too hard if we added more dynamic aspects
-
 export default function SearchPage() {
-  const episodes = getAllEpisodes();
+  const episodes = getAllSearchEpisodes();
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-5xl mx-auto">

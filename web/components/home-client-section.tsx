@@ -7,10 +7,9 @@ import { Progress } from "@/components/ui/progress";
 import { LayoutDashboard, Package, CheckCircle2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useChecklistCount } from "@/hooks/use-checklist-count";
-import { Episode } from "@/lib/data";
 
-export function HomeClientSection({ totalActions, episodes }: { totalActions: number, episodes: Episode[] }) {
-    const completedCount = useChecklistCount(episodes);
+export function HomeClientSection({ totalActions, episodeSlugs }: { totalActions: number, episodeSlugs: string[] }) {
+    const completedCount = useChecklistCount(episodeSlugs);
     const [stackSize, setStackSize] = useState(0);
     const [mounted, setMounted] = useState(false);
 

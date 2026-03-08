@@ -8,17 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Menu, Github } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { JsonLd } from "@/components/json-ld";
-import { Episode, Category } from "@/lib/data";
+import { Category } from "@/lib/data";
 
 interface ClientLayoutWrapperProps {
   children: React.ReactNode;
-  episodes: Episode[];
+  episodeSlugs: string[];
   categories: Category[];
 }
 
 export function ClientLayoutWrapper({
   children,
-  episodes,
+  episodeSlugs,
   categories,
 }: ClientLayoutWrapperProps) {
   const [open, setOpen] = useState(false);
@@ -39,7 +39,7 @@ export function ClientLayoutWrapper({
       {/* Desktop Sidebar */}
       <div className="hidden border-r bg-muted/40 md:block relative group">
         <AppSidebar 
-          episodes={episodes} 
+          episodeSlugs={episodeSlugs}
           categories={categories} 
           isCollapsed={isCollapsed}
           toggleCollapse={() => setIsCollapsed(!isCollapsed)}
@@ -67,7 +67,7 @@ export function ClientLayoutWrapper({
                   浏览所有播客集数和分类
                 </SheetDescription>
               </SheetHeader>
-              <AppSidebar episodes={episodes} categories={categories} />
+              <AppSidebar episodeSlugs={episodeSlugs} categories={categories} />
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">

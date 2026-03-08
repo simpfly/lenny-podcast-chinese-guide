@@ -1,5 +1,5 @@
 import { TopicEpisodeList } from "@/components/topic-episode-list";
-import { getCategoryDetail, getEpisodeMetadata } from "@/lib/data";
+import { getAllCategories, getCategoryDetail, getEpisodeMetadata } from "@/lib/data";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -7,6 +7,10 @@ import { Button } from "@/components/ui/button";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export function generateStaticParams() {
+  return getAllCategories().map((category) => ({ slug: category.slug }));
 }
 
 export default async function TopicPage({ params }: PageProps) {

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useState, useEffect, useMemo } from "react";
-import { Episode } from "@/lib/data";
+import { EpisodeCardData } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SaveToolButton } from "@/components/save-tool-button";
@@ -311,7 +311,7 @@ function ResponsiveTopicTags({ topics }: { topics: string[] }) {
     );
 }
 
-export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: Episode[], initialViewMode?: ViewMode }) {
+export function TopicEpisodeList({ episodes, initialViewMode }: { episodes: EpisodeCardData[], initialViewMode?: ViewMode }) {
   const [viewMode, setViewMode] = useState<ViewMode>(initialViewMode || "keypoints");
 
   return (

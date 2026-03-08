@@ -1,14 +1,15 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { cache } from "react";
 import { normalizeTopic } from "./topic-mapping";
 import { getOfficialDate } from "./episode-date-map";
-import { parseActions } from "./action-parser";
-import { canonicalNames, toolLinks } from "./constants";
 
 const CONTENT_DIR = path.join(process.cwd(), "content"); // Inside web/content
 const EPISODES_DIR = path.join(CONTENT_DIR, "episodes");
 const INDEX_DIR = path.join(CONTENT_DIR, "index");
+const GENERATED_DIR = path.join(process.cwd(), "generated");
+const CONTENT_INDEX_PATH = path.join(GENERATED_DIR, "content-index.json");
 
 export type Score = {
   knowledge: string;
@@ -18,7 +19,7 @@ export type Score = {
   overall: string;
 };
 
-export type Episode = {
+export type EpisodeMetadata = {
   slug: string;
   title: string;
   guest: string;
@@ -32,11 +33,50 @@ export type Episode = {
   score?: Score;
   actions?: string;
   resources?: string;
-  content?: string;
   coreArguments?: string[];
   transcriptUrl?: string;
   transcriptPdfUrl?: string;
 };
+
+export type EpisodeDetail = {
+  metadata: EpisodeMetadata;
+  content: string;
+};
+
+export type Episode = EpisodeMetadata;
+
+export type EpisodeSlug = Pick<EpisodeMetadata, "slug">;
+
+export type EpisodeCardData = EpisodeMetadata;
+
+export type SearchEpisode = EpisodeCardData & {
+  searchText: string;
+};
+
+export type BuilderEpisode = Pick<
+  EpisodeMetadata,
+  | "slug"
+  | "title"
+  | "guest"
+  | "guestIntro"
+  | "summary"
+  | "date"
+  | "twitterUrl"
+  | "linkedinUrl"
+  | "websiteUrl"
+>;
+
+export type ChecklistEpisode = Pick<
+  EpisodeMetadata,
+  | "slug"
+  | "guest"
+  | "guestIntro"
+  | "date"
+  | "actions"
+  | "twitterUrl"
+  | "linkedinUrl"
+  | "websiteUrl"
+>;
 
 export type Category = {
   slug: string;
@@ -100,14 +140,52 @@ export function getCategoryDetail(slug: string): Category | null {
   };
 }
 
-// Helper to get metadata for a single episode without reading all directories
-export function getEpisodeMetadata(slug: string): Episode | null {
+export const getEpisodeMetadata = cache((slug: string): EpisodeMetadata | null => {
+  const analysis = getAnalysisMatter(slug);
+  if (!analysis) return null;
+
+  return buildEpisodeMetadata(slug, analysis.content);
+});
+
+export const getTranscriptContent = cache((slug: string): string | null => {
+  // Try new flattened path first
+  const flatPath = path.join(EPISODES_DIR, slug, "transcript.md");
+  if (fs.existsSync(flatPath)) {
+    return fs.readFileSync(flatPath, "utf8");
+  }
+
+  // Fallback to nested path
+  const nestedPath = path.join(EPISODES_DIR, slug, "transcripts", "transcript.md");
+  if (fs.existsSync(nestedPath)) {
+    return fs.readFileSync(nestedPath, "utf8");
+  }
+  
+  return null;
+});
+
+// Episodes to exclude from the builders list (non-guest content like compilations)
+const EXCLUDED_SLUGS = new Set([
+  "eoy-review", // 年终回顾特辑，不是单一嘉宾
+]);
+
+const getEpisodeDirs = cache((): string[] => {
+  if (!fs.existsSync(EPISODES_DIR)) return [];
+
+  return fs.readdirSync(EPISODES_DIR).filter((file) => {
+    const stats = fs.statSync(path.join(EPISODES_DIR, file));
+    return stats.isDirectory() && !EXCLUDED_SLUGS.has(file);
+  });
+});
+
+const getAnalysisMatter = cache((slug: string) => {
   const analysisPath = path.join(EPISODES_DIR, slug, "analysis.md");
   if (!fs.existsSync(analysisPath)) return null;
 
-  const content = fs.readFileSync(analysisPath, "utf8");
-  const { content: markdownBody } = matter(content);
+  const raw = fs.readFileSync(analysisPath, "utf8");
+  return matter(raw);
+});
 
+function buildEpisodeMetadata(slug: string, markdownBody: string): EpisodeMetadata {
   // Try to extract Guest Name from first H1
   const titleMatch = markdownBody.match(/^# (.*?) - Lenny's Podcast/m);
   const guest = titleMatch ? titleMatch[1] : slug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
@@ -115,30 +193,22 @@ export function getEpisodeMetadata(slug: string): Episode | null {
 
   // Extract Core Topics
   const coreTopicsMatch = markdownBody.match(/## 🏷️ 核心话题\s*([\s\S]*?)\n---/);
-  // ... (previous topic extraction logic kept same, handled by file content replacement context)
   let topics: string[] = [];
   if (coreTopicsMatch) {
-      // Match all `tag` content
       const tags = coreTopicsMatch[1].match(/`([^`]+)`/g);
       if (tags) {
           topics = tags.map(t => normalizeTopic(t.replace(/`/g, '')));
       }
   } else {
-      // Fallback: Try to find topics from any line starting with backticks (legacy support)
       const topicMatch = markdownBody.match(/^`[^`]+`/m);
       topics = topicMatch
           ? topicMatch[0].replace(/`/g, "").split(" ").filter(Boolean).map(normalizeTopic)
           : [];
   }
-    
-  // Extract Content Summary (Content Overview)
+
   const summaryMatch = markdownBody.match(/## 📝 内容概要\s*([\s\S]*?)\n---/);
   const summary = summaryMatch ? summaryMatch[1].trim() : "";
 
-
-
-  // Extract Guest Intro (Core Identity ONLY)
-  // Robust match: stops at separator (---), next header (##), or end of string
   const guestIntroSection = markdownBody.match(/## 🎤 嘉宾介绍\s*([\s\S]*?)(?:\n---|(?:\n##\s)|$)/);
   let guestIntro = "";
   let twitterUrl: string | undefined;
@@ -147,58 +217,42 @@ export function getEpisodeMetadata(slug: string): Episode | null {
 
   if (guestIntroSection) {
       const sectionContent = guestIntroSection[1];
-      
-      // Look for Twitter/X link
-      // Matches "Twitter:" or "Twitter/X:" or "Twitter / X:" followed by link
+
       const twitterMatch = sectionContent.match(/(?:Twitter\/X|Twitter|Twitter \/ X)[:：]\s*\[.*?\]\((.*?)\)/i);
       if (twitterMatch) {
           twitterUrl = twitterMatch[1];
       }
 
-      // Look for LinkedIn link
       const linkedinMatch = sectionContent.match(/LinkedIn[:：]\s*\[.*?\]\((.*?)\)/i);
       if (linkedinMatch) {
           linkedinUrl = linkedinMatch[1];
       }
 
-      // Look for personal website/blog link
-      // Matches "个人网站:", "个人网站/Blog:", "个人网站/博客:", "Website:", "Blog:", "个人博客:", "Homepage:"
-      // Also handles variations with slashes like "个人网站/Newsletter:"
       const websiteMatch = sectionContent.match(/(?:个人网站(?:\/[^\s:：]+)?|Website|Blog|个人博客|Homepage(?:\/[^\s:：]+)?)[:：]\s*\[.*?\]\((.*?)\)/i);
       if (websiteMatch) {
           websiteUrl = websiteMatch[1];
       }
 
-      // Look for specific identity markers: "核心身份", "身份", "Role", "Core Identity"
-      // Matches: - **核心身份**: content OR **核心身份**: content
       const identityMatch = sectionContent.match(/(?:- )?\*\*(?:核心身份|身份|Role|Core Identity)\*\*[:：]\s*(.*)/i);
-      
+
       if (identityMatch) {
           guestIntro = identityMatch[1].trim();
       } else {
-          // Fallback: If no explicit tag, look for the first bullet point which often contains the role
           const firstBullet = sectionContent.match(/- (.*)/);
           if (firstBullet) {
                guestIntro = firstBullet[1].trim();
-               // Clean up if it starts with bold prompt like **Role**:
                guestIntro = guestIntro.replace(/^\*\*.*?\*\*[:：]\s*/, "");
           }
       }
   }
 
-  // Fallback for summary if explicit section not found (old behavior, just in case)
   const legacySummaryMatch = markdownBody.match(/# .*?\n\n([\s\S]*?)\n/);
   const finalSummary = summary || (legacySummaryMatch ? legacySummaryMatch[1].slice(0, 200) + "..." : "");
 
-  // Extract Scores
-  // Robust match for score lines which may be bolded like **Key**: **Value**
   const knowledgeMatch = markdownBody.match(/(?:\*\*)?知识价值(?:\*\*)?[:：]\s*(?:\*\*)?(.*?)(?:\*\*)?\n/);
   const actionableMatch = markdownBody.match(/(?:\*\*)?可执行性(?:\*\*)?[:：]\s*(?:\*\*)?(.*?)(?:\*\*)?\n/);
   const businessMatch = markdownBody.match(/(?:\*\*)?商业潜力(?:\*\*)?[:：]\s*(?:\*\*)?(.*?)(?:\*\*)?\n/);
   const roiMatch = markdownBody.match(/(?:\*\*)?投入产出比(?:\*\*)?[:：]\s*(?:\*\*)?(.*?)(?:\*\*)?\n/);
-  
-  // Robust Overall Score Parsing
-  // Matches "**综合评分**: **9.0/10**" or "综合评分: 9.0/10"
   const overallMatch = markdownBody.match(/(?:\*\*)?综合评分(?:\*\*)?[:：]\s*(?:\*\*)?([\d.]+)\/10(?:\*\*)?/);
   let overallScore = "N/A";
   if (overallMatch) {
@@ -213,39 +267,31 @@ export function getEpisodeMetadata(slug: string): Episode | null {
       overall: overallScore,
   } : undefined;
 
-  // Extract Date (Generated Time)
   const dateMatch = markdownBody.match(/\*生成时间\*:\s*(\d{4}-\d{2}-\d{2})/);
   let date = dateMatch ? dateMatch[1] : "";
-  
-  // Try to look up official date
+
   const officialDate = getOfficialDate(guest, slug);
   if (officialDate) {
       date = officialDate;
   }
 
-  // Extract Action Suggestions
-  // Fix: Ensure we stop at a new H2 (## ) or separator (---), but NOT at H3 (###) or other levels.
   const actionsMatch = markdownBody.match(/## 📋 行动建议\s*([\s\S]*?)(?:\n---|(?:\n##\s))/);
   const actions = actionsMatch ? actionsMatch[1].trim() : undefined;
 
-  // Extract Tools/Resources
   const resourcesMatch = markdownBody.match(/## 🛠️ 提到的工具\/资源\s*([\s\S]*?)(?:\n---|(?:\n##\s))/);
   const resources = resourcesMatch ? resourcesMatch[1].trim() : undefined;
 
-  // Extract Core Arguments
   const argumentsMatch = markdownBody.match(/## 💡 核心论点\s*([\s\S]*?)(?:\n---|(?:\n##\s))/);
   let coreArguments: string[] = [];
   if (argumentsMatch) {
       const argsContent = argumentsMatch[1];
-      // Match headers like ### 论点一：Title
       const argMatches = argsContent.matchAll(/###\s*.*[:：]\s*(.*)/g);
       for (const match of argMatches) {
           if (match[1]) {
               coreArguments.push(match[1].trim());
           }
       }
-      
-      // Fallback: if no colon format, just take the header text after ###
+
       if (coreArguments.length === 0) {
           const simpleMatches = argsContent.matchAll(/###\s*(.*)/g);
            for (const match of simpleMatches) {
@@ -256,25 +302,16 @@ export function getEpisodeMetadata(slug: string): Episode | null {
       }
   }
 
-  // Check for Transcript Markdown
-  // Prioritize new flattened path: content/episodes/[slug]/transcript.md
   let transcriptMdPath = path.join(EPISODES_DIR, slug, "transcript.md");
   let hasTranscriptMd = fs.existsSync(transcriptMdPath);
-  
-  // Fallback to old path: content/episodes/[slug]/transcripts/transcript.md
+
   if (!hasTranscriptMd) {
     transcriptMdPath = path.join(EPISODES_DIR, slug, "transcripts", "transcript.md");
     hasTranscriptMd = fs.existsSync(transcriptMdPath);
   }
 
-  // Optimization: Do NOT use fs.existsSync on the large public/pdf-bilingual folder
-  // 297 episodes matching 297 PDFs. Bundling them into serverless functions causes size limit errors.
   const transcriptPdfUrl = `/pdf-bilingual/${slug}.pdf`;
-  
-  let transcriptUrl: string | undefined;
-  if (hasTranscriptMd) {
-      transcriptUrl = `/episodes/${slug}/transcript`;
-  }
+  const transcriptUrl = hasTranscriptMd ? `/episodes/${slug}/transcript` : undefined;
 
   return {
     slug,
@@ -291,42 +328,13 @@ export function getEpisodeMetadata(slug: string): Episode | null {
     actions,
     resources,
     coreArguments,
-    content: markdownBody,
     transcriptUrl,
-    transcriptPdfUrl
+    transcriptPdfUrl,
   };
 }
 
-export function getTranscriptContent(slug: string): string | null {
-  // Try new flattened path first
-  const flatPath = path.join(EPISODES_DIR, slug, "transcript.md");
-  if (fs.existsSync(flatPath)) {
-    return fs.readFileSync(flatPath, "utf8");
-  }
-
-  // Fallback to nested path
-  const nestedPath = path.join(EPISODES_DIR, slug, "transcripts", "transcript.md");
-  if (fs.existsSync(nestedPath)) {
-    return fs.readFileSync(nestedPath, "utf8");
-  }
-  
-  return null;
-}
-
-// Episodes to exclude from the builders list (non-guest content like compilations)
-const EXCLUDED_SLUGS = new Set([
-  "eoy-review", // 年终回顾特辑，不是单一嘉宾
-]);
-
-export function getAllEpisodes(): Episode[] {
-  if (!fs.existsSync(EPISODES_DIR)) return [];
-
-  const dirs = fs.readdirSync(EPISODES_DIR).filter((file) => {
-    const stats = fs.statSync(path.join(EPISODES_DIR, file));
-    return stats.isDirectory() && !EXCLUDED_SLUGS.has(file);
-  });
-
-  return dirs.map((slug) => {
+export const getAllEpisodes = cache((): EpisodeMetadata[] => {
+  return getEpisodeDirs().map((slug) => {
     return getEpisodeMetadata(slug) || {
         slug,
         title: slug,
@@ -335,15 +343,94 @@ export function getAllEpisodes(): Episode[] {
         topics: [],
     };
   });
+});
+
+export function getAllEpisodeSlugs(): EpisodeSlug[] {
+  return getEpisodeDirs().map((slug) => ({ slug }));
 }
 
-export function getEpisodeContent(slug: string) {
-  const analysisPath = path.join(EPISODES_DIR, slug, "analysis.md");
-  if (!fs.existsSync(analysisPath)) return null;
-
-  const content = fs.readFileSync(analysisPath, "utf8");
-  return matter(content);
+function buildSearchText(episode: EpisodeMetadata): string {
+  return [
+    episode.title,
+    episode.guest,
+    episode.guestIntro,
+    episode.summary,
+    episode.topics.join(" "),
+    episode.coreArguments?.join(" "),
+    episode.actions,
+    episode.resources,
+  ]
+    .filter(Boolean)
+    .join("\n")
+    .toLowerCase();
 }
+
+export function getAllSearchEpisodes(): SearchEpisode[] {
+  return getAllEpisodes().map((episode) => ({
+    ...episode,
+    searchText: buildSearchText(episode),
+  }));
+}
+
+export function getAllBuilderEpisodes(): BuilderEpisode[] {
+  return getAllEpisodes().map(
+    ({
+      slug,
+      title,
+      guest,
+      guestIntro,
+      summary,
+      date,
+      twitterUrl,
+      linkedinUrl,
+      websiteUrl,
+    }) => ({
+      slug,
+      title,
+      guest,
+      guestIntro,
+      summary,
+      date,
+      twitterUrl,
+      linkedinUrl,
+      websiteUrl,
+    }),
+  );
+}
+
+export function getAllChecklistEpisodes(): ChecklistEpisode[] {
+  return getAllEpisodes().map(
+    ({
+      slug,
+      guest,
+      guestIntro,
+      date,
+      actions,
+      twitterUrl,
+      linkedinUrl,
+      websiteUrl,
+    }) => ({
+      slug,
+      guest,
+      guestIntro,
+      date,
+      actions,
+      twitterUrl,
+      linkedinUrl,
+      websiteUrl,
+    }),
+  );
+}
+
+export const getEpisodeDetail = cache((slug: string): EpisodeDetail | null => {
+  const analysis = getAnalysisMatter(slug);
+  if (!analysis) return null;
+
+  return {
+    metadata: buildEpisodeMetadata(slug, analysis.content),
+    content: analysis.content,
+  };
+});
 
 
 export type Product = {
@@ -357,327 +444,6 @@ export type Product = {
   }>;
 };
 
-export function getAllProducts(): Product[] {
-  const episodes = getAllEpisodes();
-  const productMap = new Map<string, Product>();
-
-  // Canonical names for high-frequency tools to ensure perfect deduplication
-  // Imported from ./constants.ts
-
-  episodes.forEach((episode) => {
-    if (!episode.resources) return;
-
-    // Items starting with **Prefix**:
-    const items = episode.resources.split(/\n(?=\*\*)/);
-
-    items.forEach(item => {
-        // Regex adjustment: use [ \t]* instead of \s* to avoid consuming newlines after the colon
-        const headerMatch = item.match(/^\*\*(.*?)\*\*[:：][ \t]*(.*?)(\n|$)/);
-        if (!headerMatch) return;
-
-        const typeRaw = headerMatch[1].trim(); 
-        let contentRaw = headerMatch[2].trim();
-        const restOfItem = item.replace(headerMatch[0], "").trim();
-
-        let baseCategory = "Resource";
-        if (typeRaw.includes("工具")) baseCategory = "Tool";
-        if (typeRaw.includes("书") || typeRaw.includes("阅读")) baseCategory = "Book";
-
-        // Helper function to add a product (available to all parsing logic)
-        const addBook = (rawName: string, description: string, link: string) => {
-            // Clean the name: remove ** markers and trim
-            let name = rawName.replace(/\*\*/g, "").trim();
-            // Remove trailing punctuation from name
-            name = name.replace(/[:：]\s*$/, "").trim();
-            
-            if (name.length < 2) return;
-            // Explicitly block category names if they somehow get parsed
-            if (/^(工具类|阅读类|Tools?|Books?|Resources?|推荐阅读|Concepts?|Products?)$/i.test(name)) return;
-            
-            // Apply canonical names mapping
-            const lowerName = name.toLowerCase();
-            if (canonicalNames[lowerName]) {
-                name = canonicalNames[lowerName];
-            }
-            
-            const key = name.toLowerCase();
-            if (productMap.has(key)) {
-                const existing = productMap.get(key)!;
-                if (!existing.mentionedIn.find(ep => ep.episodeSlug === episode.slug)) {
-                    existing.mentionedIn.push({
-                        episodeSlug: episode.slug,
-                        episodeTitle: episode.guest
-                    });
-                }
-            } else {
-                productMap.set(key, {
-                    name,
-                    category: baseCategory, // Use the dynamic category!
-                    description,
-                    link,
-                    mentionedIn: [{
-                        episodeSlug: episode.slug,
-                        episodeTitle: episode.guest
-                    }]
-                });
-            }
-        };
-
-        // Check if this is a list-style resource section (multiple items starting with - or *)
-        // Format: **推荐阅读**:\n- **《书名》**: 描述\n- **《另一本》**: 描述
-        const listItems = restOfItem.split(/\n/).filter(line => line.trim().match(/^[-*]/));
-        
-        // Process list items if available (for both Books and Tools)
-        if (listItems.length > 0 || baseCategory === "Book") {
-            // 1. Process header content if it contains a book name (Backwards compatibility for Books)
-            // Format: **推荐阅读**: **《书名》**   OR   **推荐阅读**: 《书名》
-            if (contentRaw.length > 0 && (contentRaw.includes("《") || contentRaw.includes("》"))) {
-                let name = contentRaw;
-                let link = "";
-                let description = "";
-                
-                // Extract link if present in name
-                const linkMatch = name.match(/\[(.*?)\]\((.*?)\)/);
-                if (linkMatch) {
-                    link = linkMatch[2];
-                    name = name.replace(/\[.*?\]\(.*?\)/g, "").trim();
-                }
-                
-                // Get description from "- 说明:" or "* 说明:" line
-                const restLines = restOfItem.split('\n');
-                const descLine = restLines.find(line => line.trim().match(/^[-*]\s*说明[:：]/));
-                if (descLine) {
-                    description = descLine.replace(/^[-*]\s*说明[:：]\s*/m, "").trim();
-                }
-                
-                // Get link from "- 链接:" or "* 链接:" line if not found yet
-                if (!link) {
-                    const linkLine = restLines.find(line => line.trim().match(/^[-*]\s*链接[:：]/));
-                    if (linkLine) {
-                        const lineLinkMatch = linkLine.match(/\[(.*?)\]\((.*?)\)/);
-                        if (lineLinkMatch) {
-                            link = lineLinkMatch[2];
-                        }
-                    }
-                }
-                
-                // Clean description
-                description = description.replace(/\[.*?\]\(.*?\)/g, "").replace(/[。\.]$/, "").trim();
-                
-                addBook(name, description, link);
-            }
-
-            // 2. Process each list item
-            let itemsAddedFromList = 0;
-            listItems.forEach(listItem => {
-                // Parse: - **《书名》**: 描述. [Link](url) OR * **Tool Name**: Description
-                const itemMatch = listItem.match(/^[-*]\s*\*\*(.*?)\*\*[:：]?\s*(.*)/);
-                if (!itemMatch) return;
-                
-                let name = itemMatch[1].trim();
-                let description = itemMatch[2].trim();
-                let link = "";
-                
-                // Extract link from description
-                const linkMatch = description.match(/\[(.*?)\]\((.*?)\)/);
-                if (linkMatch) {
-                    link = linkMatch[2];
-                    description = description.replace(/\[.*?\]\(.*?\)/g, "").trim();
-                }
-                
-                // Clean description
-                description = description.replace(/[。\.]$/, "").trim();
-                
-                addBook(name, description, link);
-                itemsAddedFromList++;
-            });
-
-            // If we processed items via list logic OR it was a Book header processing, 
-            // we skip the generic processing to prevent the Header itself from being added as an item.
-            // FIX: Only skip if we ACTUALLY added items from the list, or if it looks like a book header container.
-            if (contentRaw.includes("《") || contentRaw.includes("》") || itemsAddedFromList > 0) {
-                return;
-            }
-        }
-
-
-
-        // Regular single-item processing (original logic)
-        // SPLIT logic: Handle "Cursor / Windsurf" or "Cursor & Replit"
-        const hasHyperlink = contentRaw.includes("[") && contentRaw.includes("](");
-        const hasBookMarker = contentRaw.includes("《") || contentRaw.includes("》") || baseCategory === "Book";
-        const rawNames = (hasHyperlink || hasBookMarker) ? [contentRaw] : contentRaw.split(/\s*[\/&|，,]\s*/);
-
-        rawNames.forEach(rawName => {
-            let name = rawName.trim();
-            let link = "";
-
-            // 1. Extract Name/Link from markdown [Name](url)
-            const inlineLinkMatch = name.match(/^(.+?)(?:\.?\s*\[(?:官网|链接|website|link)\]\((.*?)\))?$/);
-            if (inlineLinkMatch && inlineLinkMatch[2]) {
-                name = inlineLinkMatch[1].trim();
-                link = inlineLinkMatch[2];
-            } else {
-                const linkMatch = name.match(/^\[(.*?)\]\((.*?)\)$/);
-                if (linkMatch) {
-                    name = linkMatch[1];
-                    link = linkMatch[2];
-                } else {
-                    name = name.replace(/\[(?:官网|链接|website|link)\]\(.*?\)/gi, "")
-                               .replace(/[\[\]]/g, "")
-                               .replace(/\(https?:\/\/.*?\)/g, "")
-                               .replace(/\*\*/g, "");
-                }
-            }
-
-            // 2. Normalization
-            name = name.replace(/^[-*•:]\s*/, "")
-                       .replace(/[:：]\s*$/, "")
-                       .replace(/\.\s*$/, "")
-                       .replace(/\.(com|io|co|app|dev|ai)$/i, "")
-                       .replace(/[\u{1F300}-\u{1F9FF}]/gu, "")
-                       .trim();
-            
-            if (name.length < 2) return;
-            if (/^(官网|链接|website|link|官方网站)$/i.test(name)) return;
-
-            // 3. Canonical Mapping
-            const lowerName = name.toLowerCase();
-            let finalName = name;
-            
-            const sortedKeys = Object.keys(canonicalNames).sort((a, b) => b.length - a.length);
-            for (const key of sortedKeys) {
-                if (lowerName === key || lowerName.includes(key)) {
-                    finalName = canonicalNames[key];
-                    break;
-                }
-            }
-
-            // Hardcoded overrides for categories
-            let itemCategory = baseCategory;
-            if (finalName.toLowerCase() === "reforge") {
-                itemCategory = "Tool";
-            }
-
-            // 4. Description Extraction
-            let description = "";
-            const lines = restOfItem.split('\n');
-            
-            // First try to find "- 说明:" line (or *)
-            const descLine = lines.find(line => line.trim().match(/^[-*]\s*说明[:：]/));
-            if (descLine) {
-                description = descLine.replace(/^[-*]\s*说明[:：]\s*/, "").trim();
-            } else {
-                // Fallback to first non-list line
-                const firstLine = lines[0]?.trim() || "";
-                if (!firstLine.match(/^[-*]/)) {
-                    description = firstLine;
-                }
-            }
-
-            if (!link) {
-                // First try to find "- 链接:" line (or *)
-                const linkLine = lines.find(line => line.trim().match(/^[-*]\s*链接[:：]/));
-                if (linkLine) {
-                    const linkMatch = linkLine.match(/\[(.*?)\]\((.*?)\)/);
-                    if (linkMatch) {
-                        link = linkMatch[2];
-                    } else {
-                        const urlMatch = linkLine.match(/https?:\/\/[^\s\)]+/);
-                        if (urlMatch) link = urlMatch[0];
-                    }
-                }
-                
-                // Fallback to description or other methods
-                if (!link) {
-                    const descLinkMatch = description.match(/\[(?:官网|链接|website|link|官方网站)\]\((.*?)\)/i);
-                    if (descLinkMatch) {
-                        link = descLinkMatch[1];
-                    } else {
-                        const urlMatch = description.match(/https?:\/\/[^\s\)]+/);
-                        if (urlMatch) link = urlMatch[0];
-                    }
-                }
-            }
-
-
-
-            const normLow = finalName.toLowerCase();
-            if (!link && toolLinks[normLow]) link = toolLinks[normLow];
-            
-            // Clean description
-            description = description.replace(/^[-*]\s*说明[:：]\s*/m, "")
-                                     .replace(/^[-*]\s*/m, "")
-                                     .replace(/\[(?:官网|链接|website|link|官方网站)\](\(.*\))?/gi, "")
-                                     .replace(/[。\.]$/, "").trim();
-
-            const key = finalName.toLowerCase();
-            if (productMap.has(key)) {
-                const existing = productMap.get(key)!;
-                if (!existing.mentionedIn.find(ep => ep.episodeSlug === episode.slug)) {
-                    existing.mentionedIn.push({
-                        episodeSlug: episode.slug,
-                        episodeTitle: episode.guest
-                    });
-                }
-                if (!existing.description && description) {
-                    existing.description = description;
-                }
-            } else {
-                productMap.set(key, {
-                    name: finalName,
-                    category: itemCategory,
-                    description,
-                    link,
-                    mentionedIn: [{
-                        episodeSlug: episode.slug,
-                        episodeTitle: episode.guest
-                    }]
-                });
-            }
-        });
-    });
-  });
-
-  return Array.from(productMap.values()).sort((a, b) => b.mentionedIn.length - a.mentionedIn.length);
-}
-
-
-export function getAllChecklistItemsCount(): number {
-  const episodes = getAllEpisodes();
-  let count = 0;
-
-  episodes.forEach((episode) => {
-    if (!episode.actions) return;
-
-    // Count lines starting with - [x] or - [X] (completed items)
-    const items = episode.actions.match(/-\s*\[[xX]\]/g);
-    if (items) {
-      count += items.length;
-    }
-  });
-
-  return count;
-}
-
-/**
- * Get total number of all possible actions ( [ ], [x], [/] )
- */
-export function getTotalActionsCount(): number {
-    const episodes = getAllEpisodes();
-    let count = 0;
-  
-    episodes.forEach((episode) => {
-      if (!episode.actions) return;
-      const items = episode.actions.match(/-\s*\[[\s/xX]\]/g);
-      if (items) {
-        count += items.length;
-      }
-    });
-  
-    return count;
-}
-
 export interface ActionContext {
   id: string; 
   originalId: string;
@@ -687,31 +453,41 @@ export interface ActionContext {
   episodeTitle: string;
 }
 
-export function getAllActions(): ActionContext[] {
-    const episodes = getAllEpisodes();
-    const allActions: ActionContext[] = [];
+type ContentIndex = {
+  generatedAt: string;
+  products: Product[];
+  allActions: ActionContext[];
+  totalActionsCount: number;
+  completedChecklistItemsCount: number;
+};
 
-    episodes.forEach(episode => {
-        if (!episode.actions) return;
-        const categories = parseActions(episode.actions);
-        categories.forEach(cat => {
-            cat.items.forEach(item => {
-                 allActions.push({
-                     id: `${episode.slug}-${item.id}`,
-                     originalId: item.id,
-                     text: item.text,
-                     category: cat.label,
-                     episodeSlug: episode.slug,
-                     episodeTitle: episode.guest
-                 });
-            });
-        });
-    });
+const readContentIndex = cache((): ContentIndex => {
+  if (!fs.existsSync(CONTENT_INDEX_PATH)) {
+    throw new Error(
+      `Missing generated content index at ${CONTENT_INDEX_PATH}. Run \`node scripts/generate-content-index.cjs\` first.`,
+    );
+  }
 
-    return allActions;
+  return JSON.parse(fs.readFileSync(CONTENT_INDEX_PATH, "utf8")) as ContentIndex;
+});
+
+export function getAllProducts(): Product[] {
+  return readContentIndex().products;
 }
 
-export function getLatestEpisodes(limit: number = 3): Episode[] {
+export function getAllChecklistItemsCount(): number {
+  return readContentIndex().completedChecklistItemsCount;
+}
+
+export function getTotalActionsCount(): number {
+  return readContentIndex().totalActionsCount;
+}
+
+export function getAllActions(): ActionContext[] {
+  return readContentIndex().allActions;
+}
+
+export function getLatestEpisodes(limit: number = 3): EpisodeMetadata[] {
     const episodes = getAllEpisodes();
     return episodes
         .filter(ep => ep.date) // Only include episodes with a date
@@ -736,6 +512,3 @@ export function getAllTopicsWithCounts(): { topic: string; count: number }[] {
     .map(([topic, count]) => ({ topic, count }))
     .sort((a, b) => b.count - a.count);
 }
-
-
-

@@ -1,4 +1,4 @@
-import { getEpisodeContent, getEpisodeMetadata, getAllEpisodes } from "@/lib/data";
+import { getEpisodeDetail, getEpisodeMetadata, getAllEpisodeSlugs, getAllEpisodes } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -12,6 +12,10 @@ import { Metadata } from "next";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
+}
+
+export function generateStaticParams() {
+  return getAllEpisodeSlugs();
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -46,14 +50,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function EpisodePage({ params }: PageProps) {
   const { slug } = await params;
-  const contentData = getEpisodeContent(slug);
-  const metadata = getEpisodeMetadata(slug);
+  const detail = getEpisodeDetail(slug);
 
-  if (!contentData || !metadata) {
+  if (!detail) {
     notFound();
   }
 
-  const { content } = contentData;
+  const { metadata, content } = detail;
 
   // Remove the first H1 from markdown content if it exists
   const contentWithoutTitle = content.replace(/^# .*?\n/, '');

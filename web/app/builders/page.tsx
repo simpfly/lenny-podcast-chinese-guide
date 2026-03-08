@@ -1,4 +1,4 @@
-import { getAllEpisodes } from "@/lib/data";
+import { getAllBuilderEpisodes } from "@/lib/data";
 import { BuilderList } from "@/components/builder-list";
 
 export const metadata = {
@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 export default function BuildersPage() {
-  const episodes = getAllEpisodes();
+  const episodes = getAllBuilderEpisodes();
   
   const sortedEpisodes = [...episodes].sort((a, b) => {
     if (!a.date) return 1;

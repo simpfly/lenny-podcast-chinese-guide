@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Episode, Category } from "@/lib/data";
+import { Category } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Home, Folder, History, CheckSquare, Package, Users, Info, PanelLeft } from "lucide-react";
@@ -15,7 +15,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 // ... existing imports
 
 interface AppSidebarProps {
-    episodes?: Episode[];
+    episodeSlugs?: string[];
     categories?: Category[];
     isCollapsed?: boolean;
     toggleCollapse?: () => void;
@@ -37,13 +37,13 @@ function NavTooltip({ children, content, side = "right", isCollapsed }: { childr
 }
 
 export function AppSidebar({ 
-    episodes = [], 
+    episodeSlugs = [],
     categories = [], 
     isCollapsed = false, 
     toggleCollapse 
 }: AppSidebarProps) {
   const [mounted, setMounted] = useState(false);
-  const checklistCount = useChecklistCount(episodes);
+  const checklistCount = useChecklistCount(episodeSlugs);
 
   useEffect(() => {
     setMounted(true);

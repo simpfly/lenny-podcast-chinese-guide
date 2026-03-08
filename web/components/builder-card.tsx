@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Twitter, Linkedin, Plus, Check, Trash2, Globe } from "lucide-react";
-import { Episode } from "@/lib/data";
+import { BuilderEpisode, ChecklistEpisode } from "@/lib/data";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { cn, getLinkTarget } from "@/lib/utils";
 
 
 interface BuilderCardProps {
-  episode: Episode;
+  episode: BuilderEpisode | ChecklistEpisode;
 }
 
 export function BuilderCard({ episode }: BuilderCardProps) {

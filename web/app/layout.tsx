@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { getAllEpisodes, getAllCategories } from "@/lib/data";
+import { getAllEpisodeSlugs, getAllCategories } from "@/lib/data";
 import { ClientLayoutWrapper } from "@/components/client-layout-wrapper";
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const episodes = getAllEpisodes();
+  const episodeSlugs = getAllEpisodeSlugs().map((episode) => episode.slug);
   const categories = getAllCategories();
 
   return (
@@ -57,7 +57,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          <ClientLayoutWrapper episodes={episodes} categories={categories}>
+          <ClientLayoutWrapper episodeSlugs={episodeSlugs} categories={categories}>
             {children}
           </ClientLayoutWrapper>
         </ThemeProvider>

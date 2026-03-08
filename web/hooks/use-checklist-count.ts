@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Episode } from "@/lib/data";
 
-export function useChecklistCount(episodes: Episode[]) {
+export function useChecklistCount(episodeSlugs: string[]) {
   const [count, setCount] = useState<number>(0);
 
   useEffect(() => {
@@ -11,15 +10,15 @@ export function useChecklistCount(episodes: Episode[]) {
       let total = 0;
       
       // Count completed episode actions
-      episodes.forEach((episode) => {
-        const storageKey = `lenny_actions_${episode.slug}`;
+      episodeSlugs.forEach((slug) => {
+        const storageKey = `lenny_actions_${slug}`;
         const saved = localStorage.getItem(storageKey);
         if (saved) {
           try {
             const checkedState: Record<string, boolean> = JSON.parse(saved);
             total += Object.values(checkedState).filter(val => val === true).length;
           } catch (e) {
-            console.error("Failed to parse actions count for", episode.slug, e);
+            console.error("Failed to parse actions count for", slug, e);
           }
         }
       });
@@ -55,7 +54,7 @@ export function useChecklistCount(episodes: Episode[]) {
       window.removeEventListener("storage", calculateCount);
       window.removeEventListener("checklist-updated", calculateCount);
     };
-  }, [episodes]);
+  }, [episodeSlugs]);
 
   return count;
 }
